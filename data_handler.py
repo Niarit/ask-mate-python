@@ -65,4 +65,3 @@ def add_new_question_to_file(question, append=True):
 def get_submission_time():
     return int(time.time())
 
->>>>>>> 70286f66bacfc3859250c28147fc1498ff1718b6
