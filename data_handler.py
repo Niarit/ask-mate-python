@@ -45,21 +45,13 @@ def creat_new_id(csv_file):
 def add_new_question(question):
     question['id'] = creat_new_id(QUESTION_DATA_PATH)
     question['submission_time'] = get_submission_time()
-    add_new_question_to_file(question, True)
+    add_new_question_to_file(question)
 
 
-def add_new_question_to_file(question, append=True):
-    existing_data = get_all_data(QUESTION_DATA_PATH)
-    with open(QUESTION_DATA_PATH, 'w', newline='', encoding='utf-8') as questions:
-        writer = csv.DictWriter(questions, fieldnames=QUESTION_HEADERS)
-        writer.writeheader()
-        for row in existing_data:
-            if not append:
-                if row['id'] == question['id']:
-                    row = question
-            writer.writerow(row)
-            if append:
-                writer.writerow(question)
+def add_new_question_to_file(question):
+    with open(QUESTION_DATA_PATH, 'a', newline='', encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=QUESTION_HEADERS)
+        writer.writerow(question)
 
 
 def get_submission_time():
