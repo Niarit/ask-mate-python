@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}
+    Ask Mate! | Answers
+{% endblock %}
+{% block content %}
+    <h1>{{ question_title }}</h1>
+    {% for answer in current_answers %}
+        <p>{{answer['message']}}</p>
+    {% endfor %}
+{% endblock %}
