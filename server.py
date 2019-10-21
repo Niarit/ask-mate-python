@@ -24,6 +24,11 @@ def add_question():
     return render_template('add.html')
 
 
+@app.route('/question/<question_id>', methods=['GET', 'POST'])
+def show_answers():
+    pass
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
