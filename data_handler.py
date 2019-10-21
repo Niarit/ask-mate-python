@@ -3,8 +3,8 @@ import time
 
 ANSWER_DATA_PATH = 'answer.csv'
 QUESTION_DATA_PATH = 'question.csv'
-ANSWER_HEADERS = ['id', 'submission_time', 'question_id', 'message']
-QUESTION_HEADERS = ['id', 'submission_time', 'view_number', 'title', 'message']
+ANSWER_HEADERS = ['id', 'submission_time','vote_number', 'question_id', 'message','image']
+QUESTION_HEADERS = ['id', 'submission_time', 'view_number','vote_number', 'title', 'message', 'image']
 
 
 def get_data_from_csv(csv_file, qa_id=None):
