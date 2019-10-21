@@ -39,7 +39,7 @@ def show_answers(question_id):
                 current_answers.append(answer)
         return render_template('answer.html',
                                form_url=url_for('show_answers', question_id=question_id),
-                               question_title=question_title,
+                               question_title=question_title[0],
                                current_answers=current_answers)
 
 
