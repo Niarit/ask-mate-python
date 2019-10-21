@@ -7,19 +7,15 @@
     {% if current_answers != [] %}
         <table>
             <tr>
-                <th> ID </th>
-                <th> Submission Time</th>
-                <th> Vote Number</th>
                 <th> Message</th>
                 <th> Image</th>
+                <th> Vote Number</th>
             </tr>
                 {% for answer in current_answers %}
                     <tr>
-                    <td>{{ answer['id'] }}</td>
-                    <td>{{ answer['submission_time'] }}</td>
-                    <td>{{ answer['vote_number'] }}</td>
-                    <td>{{ answer['message'] | safe}}</td>
-                    <td>{{ answer['image'] }}</td>
+                        <td>{{ answer['message'] | safe}}</td>
+                        <td>{{ answer['image'] }}</td>
+                        <td>{{ answer['vote_number'] }}</td>
                     </tr>
                 {% endfor %}
             {% else %}
