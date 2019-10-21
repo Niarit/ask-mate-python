@@ -6,10 +6,11 @@ app = Flask(__name__)
 
 saved_data = {}
 
+
 @app.route('/')
 @app.route('/list')
 def route_list():
-    questions = data_handler.get_all_data(break_lines=True)
+    questions = data_handler.get_all_data('question.csv',break_lines=True)
     return render_template('list.html', questions=questions)
 
 
