@@ -21,7 +21,7 @@ def add_question():
             saved_data[item] = request.form[item]
         data_handler.add_new_question(saved_data)
         return redirect('/list')
-    return render_template('add.html')
+    return render_template('add.html',)
 
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])

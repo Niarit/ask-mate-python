@@ -23,8 +23,8 @@
 				<td>{{ question['submission_time'] }}</td>
 				<td>{{ question['view_number'] }}</td>
 				<td>{{ question['vote_number'] }}</td>
-                    <td><a href="{{ url_for('show_answer', _id=question['id']) }}">{{ question['Title'] }}</a></td>
-				<td>{{ question['message'] | safe}}h</td>
+                    <td><a href="/question/{{ question['id'] }}">{{ question['title'] }}</a></td>
+				<td>{{ question['message'] | safe}}</td>
 				<td>{{ question['image'] }}</td>
 				</tr>
         {% endfor %}
