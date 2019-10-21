@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 
-# import data_handler
+import data_handler
 
 app = Flask(__name__)
 
@@ -11,8 +11,10 @@ def route_list():
     pass
 
 
-@app.route('/add')
+@app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
+    if request.method == 'POST':
+        pass
     return render_template('add.html')
 
 
