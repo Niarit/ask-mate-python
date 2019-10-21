@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
-{% block title %}Super Sprinter{% endblock %}
+{% block title %}Ask Question{% endblock %}
 {% block content %}
 <h1>Add Question</h1>
+<form action="/add-question" method="POST">
+    <label for="title">Title</label><br>
+    <input type="text" name="title" id="title"><br>
+    <label for="question">Question</label><br>
+    <textarea rows="5" cols="45" name="message" id="question"></textarea><br>
+    <button type="submit">Submit</button>
+</form>
 
 
 {% endblock %}
