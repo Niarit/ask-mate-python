@@ -21,26 +21,29 @@ def add_question():
             saved_data[item] = request.form[item]
         data_handler.add_new_question(saved_data)
         return redirect('/list')
-    return render_template('add.html')
+    return render_template('add.html',)
 
 
-@app.route('/question/<question_id>', methods=['GET', 'POST'])
+@app.route('/question/<question_id>')
 def show_answers(question_id):
-    if request.method == 'GET':
-        current_answers = []
-        question_title = []
-        all_questions = data_handler.get_all_data('question.csv', True)
-        for question in all_questions:
-            if question['id'] == question_id:
-                question_title.append(question['title'])
-        all_answers = data_handler.get_all_data('answer.csv', True)
-        for answer in all_answers:
-            if answer['question_id'] == question_id:
-                current_answers.append(answer)
-        return render_template('answer.html',
-                               form_url=url_for('show_answers', question_id=question_id),
-                               question_title=question_title[0],
-                               current_answers=current_answers)
+    questions = data_handler.get_all_data('question.csv', True)
+    title = ''.join([question['title'] for question in questions if question['id'] == question_id])
+    answers = data_handler.get_all_data('answer.csv', True)
+    answers_for_question = [answer for answer in answers if answer['question_id'] == question_id]
+    return render_template('answer.html',
+                           question_title=title,
+                           current_answers=answers_for_question,
+                           question_id=question_id)
+
+
+@app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
+def add_new_answer(question_id):
+    if request.method == 'POST':
+        data_handler.add_new_message(request.form, question_id)
+        return redirect(f'/question/{question_id}')
+    questions = data_handler.get_all_data('question.csv', True)
+    title = ''.join([question['title'] for question in questions if question['id'] == question_id])
+    return render_template('new_answer.html', title=title, question_id=question_id)
 
 
 if __name__ == '__main__':

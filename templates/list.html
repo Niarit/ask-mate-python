@@ -15,14 +15,14 @@
             <th> View Number</th>
             <th> Vote Number</th>
         </tr>
-            {% for question in questions |sort(attribute='submission_time', reverse = True) %}
-                <tr>
+			{% for question in questions %}
+				<tr>
                     <td><a href="/question/{{ question['id'] }}">{{ question['title'] }}</a></td>
                     <td>{{ question['message'] | safe}}</td>
                     <td>{{ question['image'] }}</td>
                     <td>{{ question['view_number'] }}</td>
                     <td>{{ question['vote_number'] }}</td>
-                </tr>
-            {% endfor %}
+				</tr>
+        {% endfor %}
     </table>
 {% endblock %}
