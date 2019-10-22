@@ -31,8 +31,8 @@ def convert_enter_to_br(original_string):
     return '<br>'.join(original_string.split('\n'))
 
 
-def get_id(_id):
-    return get_data_from_csv(_id)
+def get_id(file_name, _id):
+    return get_data_from_csv(file_name, _id)
 
 
 def creat_new_id(csv_file):

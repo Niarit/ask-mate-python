@@ -4,4 +4,15 @@
 {% endblock %}
 {% block content %}
     <h1>{{ title }}</h1>
-
+        <form action="/question/{{ question_id }}/edit" method="post">
+            <p>
+                <label for="title">Question Title: </label><br>
+                <input type="text" name="title" id="title" required minlength="5" value="{{ question_data['title'] }}">
+            </p>
+            <p>
+                <label for="user_story">User Story:</label><br>
+                <textarea name="user_story" id="user_story" cols="40" rows="4" required>{{ question_data['user_story']|safe }}</textarea>
+            </p>
+        <button type="submit">Add answer</button>
+        </form>
+{% endblock %}
