@@ -13,7 +13,7 @@ def get_data_from_csv(csv_file, qa_id=None):
         reader = csv.DictReader(file)
         for row in reader:
             single_data = dict(row)
-            if qa_id is not None and qa_id == single_data['id']:
+            if qa_id and qa_id == single_data['id']:
                 return single_data
             all_data.append(single_data)
     return all_data
