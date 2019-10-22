@@ -40,6 +40,8 @@ def creat_new_id(csv_file):
 def add_new_question(question):
     question['id'] = creat_new_id(QUESTION_DATA_PATH)
     question['submission_time'] = get_submission_time()
+    question['vote_number'] = 0
+    question['view_number'] = 0
     add_new_data_to_file(question, QUESTION_DATA_PATH, QUESTION_HEADERS)
 
 
