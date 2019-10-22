@@ -72,9 +72,9 @@ def edit_question(question_id):
 def question_vote_up(question_id):
     questions = data_handler.get_all_data('question.csv', True)
     for question in questions:
-        if question['id'] == question_id:
+        if question['id'] == int(question_id):
             if question['vote_number']:
-                question['vote_number'] = str(int(question['vote_number']) + 1)
+                question['vote_number'] = question['vote_number'] + 1
             else:
                 question['vote_number'] = '1'
     data_handler.question_vote_update(questions)
@@ -85,9 +85,9 @@ def question_vote_up(question_id):
 def question_vote_down(question_id):
     questions = data_handler.get_all_data('question.csv', True)
     for question in questions:
-        if question['id'] == question_id:
-            if question['vote_number'] and int(question['vote_number']) > 1:
-                question['vote_number'] = str(int(question['vote_number']) - 1)
+        if question['id'] == int(question_id):
+            if question['vote_number'] and question['vote_number'] > 1:
+                question['vote_number'] = question['vote_number'] - 1
             else:
                 question['vote_number'] = '0'
     data_handler.question_vote_update(questions)
