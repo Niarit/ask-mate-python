@@ -45,6 +45,7 @@ def add_new_answer(question_id):
     title = ''.join([question['title'] for question in questions if question['id'] == question_id])
     return render_template('new_answer.html', title=title, question_id=question_id)
 
+
 @app.route('/question/<question_id>/edit', methods=['GET','POST'])
 def edit_question(question_id):
     if request.method == 'POST':
@@ -68,7 +69,7 @@ def question_vote_up(question_id):
                 question['vote_number'] = str(int(question['vote_number']) + 1)
             else:
                 question['vote_number'] = '1'
-    # print(questions)
+    data_handler.question_vote_up(questions)
     return redirect('/list')
 
 
