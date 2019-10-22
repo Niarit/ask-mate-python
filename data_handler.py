@@ -65,7 +65,7 @@ def edit_question(data, file_to):
     update_existing_file(data, file_to, QUESTION_HEADERS)
 
 
-def question_vote_up(data):
+def question_vote_update(data):
     update_existing_file(data, QUESTION_DATA_PATH, QUESTION_HEADERS)
 
 
