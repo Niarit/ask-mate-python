@@ -7,16 +7,15 @@ ANSWER_HEADERS = ['id', 'submission_time','vote_number', 'question_id', 'message
 QUESTION_HEADERS = ['id', 'submission_time', 'view_number','vote_number', 'title', 'message', 'image']
 
 
-def get_data_from_csv(csv_file, qa_id=None):
+def get_data_from_csv(csv_file):
     with open(csv_file, encoding='utf-8') as file:
         reader = csv.DictReader(file)
         all_data = list(reader)
-        if qa_id:
-            for row in all_data:
-                single_data = dict(row)
-                if qa_id == single_data['id']:
-                    return single_data
-    return all_data
+        for row in all_data:
+            for key, val in row.items():
+                if val.isdigit():
+                    row[key] = int(val)
+        return all_data
 
 
 def get_all_data(csv_file, break_lines=False):
@@ -29,10 +28,6 @@ def get_all_data(csv_file, break_lines=False):
 
 def convert_enter_to_br(original_string):
     return '<br>'.join(original_string.split('\n'))
-
-
-def get_id(file_name, _id):
-    return get_data_from_csv(file_name, _id)
 
 
 def creat_new_id(csv_file):
