@@ -7,6 +7,12 @@ app = Flask(__name__)
 saved_data = {}
 
 
+def get_row_index_by_id(id_to_find, data):
+    for index, row in enumerate(data):
+        if row['id'] == id_to_find:
+            return index
+
+
 @app.route('/')
 @app.route('/list')
 def route_list():
@@ -48,19 +54,31 @@ def add_new_answer(question_id):
 
 @app.route('/question/<question_id>/edit', methods=['GET','POST'])
 def edit_question(question_id):
+    all_questions = data_handler.get_data_from_csv("question.csv")
+    question_index = get_row_index_by_id(question_id, all_questions)
+    question_data = all_questions[question_index]
     if request.method == 'POST':
-        question_data = {
-            'id': question_id,
-            'title': request.form.get('title'),
-            'message': request.form.get('message'),
-        }
-        data_handler.edit_question(question_data, 'question.csv')
+        question_data['title'] = request.form.get('title')
+        question_data['message'] = request.form.get('message')
+        data_handler.update_existing_file(all_questions, 'question.csv', data_handler.QUESTION_HEADERS)
         return redirect('/list')
-    question_data = data_handler.get_id('question.csv', question_id)
     return render_template('edit_question.html',
                            title='Edit Question',
                            question_id=question_id,
                            question_data=question_data)
+
+
+@app.route('/question/<question_id>/vote_up')
+def question_vote_up(question_id):
+    questions = data_handler.get_all_data('question.csv', True)
+    for question in questions:
+        if question['id'] == question_id:
+            if question['vote_number']:
+                question['vote_number'] = str(int(question['vote_number']) + 1)
+            else:
+                question['vote_number'] = '1'
+    data_handler.question_vote_up(questions)
+    return redirect('/list')
 
 
 if __name__ == '__main__':
