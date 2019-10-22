@@ -8,14 +8,14 @@ QUESTION_HEADERS = ['id', 'submission_time', 'view_number','vote_number', 'title
 
 
 def get_data_from_csv(csv_file, qa_id=None):
-    all_data = []
     with open(csv_file, encoding='utf-8') as file:
         reader = csv.DictReader(file)
-        for row in reader:
-            single_data = dict(row)
-            if qa_id is not None and qa_id == single_data['id']:
-                return single_data
-            all_data.append(single_data)
+        all_data = list(reader)
+        if qa_id:
+            for row in all_data:
+                single_data = dict(row)
+                if qa_id == single_data['id']:
+                    return single_data
     return all_data
 
 
@@ -45,15 +45,22 @@ def creat_new_id(csv_file):
 def add_new_question(question):
     question['id'] = creat_new_id(QUESTION_DATA_PATH)
     question['submission_time'] = get_submission_time()
-    add_new_question_to_file(question)
+    add_new_data_to_file(question, QUESTION_DATA_PATH, QUESTION_HEADERS)
 
 
-def add_new_question_to_file(question):
-    with open(QUESTION_DATA_PATH, 'a', newline='', encoding='utf-8') as file:
-        writer = csv.DictWriter(file, fieldnames=QUESTION_HEADERS)
-        writer.writerow(question)
+def add_new_data_to_file(data, file_to, header):
+    with open(file_to, 'a', newline='', encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=header)
+        writer.writerow(data)
+
+
+def add_new_message(answer, question_id):
+    answer = dict(answer)
+    answer['id'] = creat_new_id(ANSWER_DATA_PATH)
+    answer['submission_time'] = get_submission_time()
+    answer['question_id'] = question_id
+    add_new_data_to_file(answer, ANSWER_DATA_PATH, ANSWER_HEADERS)
 
 
 def get_submission_time():
     return int(time.time())
-
