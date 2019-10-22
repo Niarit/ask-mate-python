@@ -48,7 +48,8 @@ def add_new_question(question):
     add_new_data_to_file(question, QUESTION_DATA_PATH, QUESTION_HEADERS)
 
 
-def add_new_data_to_file(data, file_to, header):
+def add_new_data_to_file(data, file_to, header, append=True):
+    existing_data = get_all_data(file_to)
     with open(file_to, 'a', newline='', encoding='utf-8') as file:
         writer = csv.DictWriter(file, fieldnames=header)
         writer.writerow(data)
@@ -64,3 +65,20 @@ def add_new_message(answer, question_id):
 
 def get_submission_time():
     return int(time.time())
+
+
+def edit_question(data, file_to):
+    update_existing_file(data, file_to, QUESTION_HEADERS,False)
+
+
+def update_existing_file(data, file_to, header, append=True):
+    existing_data = get_all_data(file_to)
+    with open(file_to, 'w', newline='', encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=header)
+        for row in existing_data:
+            if not append:
+                if row['id'] == data['id']:
+                    row = data
+            writer.writerow(row)
+        if append:
+            writer.writerow(data)

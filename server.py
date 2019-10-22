@@ -45,6 +45,19 @@ def add_new_answer(question_id):
     title = ''.join([question['title'] for question in questions if question['id'] == question_id])
     return render_template('new_answer.html', title=title, question_id=question_id)
 
+@app.route('/question/<question_id>/edit', methods=['GET','POST'])
+def edit_question(question_id):
+    if request.method == 'POST':
+        question_data = {
+            'id': question_id,
+            'title': request.form.get('title'),
+            'message': request.form.get('message'),
+        }
+        data_handler.edit_question(question_data, 'question.csv')
+        return redirect('/list')
+    question_data = data_handler.get_id(question_id)
+    return render_template()
+
 
 @app.route('/question/<question_id>/vote_up')
 def question_vote_up(question_id):
