@@ -31,8 +31,8 @@ def convert_enter_to_br(original_string):
     return '<br>'.join(original_string.split('\n'))
 
 
-def get_id(_id):
-    return get_data_from_csv(_id)
+def get_id(file_name, _id):
+    return get_data_from_csv(file_name, _id)
 
 
 def creat_new_id(csv_file):
@@ -48,8 +48,7 @@ def add_new_question(question):
     add_new_data_to_file(question, QUESTION_DATA_PATH, QUESTION_HEADERS)
 
 
-def add_new_data_to_file(data, file_to, header, append=True):
-    existing_data = get_all_data(file_to)
+def add_new_data_to_file(data, file_to, header):
     with open(file_to, 'a', newline='', encoding='utf-8') as file:
         writer = csv.DictWriter(file, fieldnames=header)
         writer.writerow(data)
@@ -75,6 +74,7 @@ def update_existing_file(data, file_to, header, append=True):
     existing_data = get_all_data(file_to)
     with open(file_to, 'w', newline='', encoding='utf-8') as file:
         writer = csv.DictWriter(file, fieldnames=header)
+        writer.writeheader()
         for row in existing_data:
             if not append:
                 if row['id'] == data['id']:

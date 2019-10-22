@@ -10,7 +10,7 @@ saved_data = {}
 @app.route('/')
 @app.route('/list')
 def route_list():
-    questions = data_handler.get_all_data('question.csv',break_lines=True)
+    questions = data_handler.get_all_data('question.csv', break_lines=True)
     return render_template('list.html', questions=questions)
 
 
@@ -45,6 +45,7 @@ def add_new_answer(question_id):
     title = ''.join([question['title'] for question in questions if question['id'] == question_id])
     return render_template('new_answer.html', title=title, question_id=question_id)
 
+
 @app.route('/question/<question_id>/edit', methods=['GET','POST'])
 def edit_question(question_id):
     if request.method == 'POST':
@@ -55,8 +56,11 @@ def edit_question(question_id):
         }
         data_handler.edit_question(question_data, 'question.csv')
         return redirect('/list')
-    question_data = data_handler.get_id(question_id)
-    return render_template()
+    question_data = data_handler.get_id('question.csv', question_id)
+    return render_template('edit_question.html',
+                           title='Edit Question',
+                           question_id=question_id,
+                           question_data=question_data)
 
 
 if __name__ == '__main__':

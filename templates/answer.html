@@ -3,7 +3,9 @@
     Ask Mate! | Answers
 {% endblock %}
 {% block content %}
-    <h1>{{ question_title }}</h1><form>Edit question</form>
+    <h1>{{ question_title }}</h1><form action="/question/{{ question_id }}/edit">
+    <button type="submit">Edit question</button>
+</form>
     {% if current_answers != [] %}
         <table>
             <tr>
