@@ -8,6 +8,7 @@ saved_data = {}
 
 
 def get_row_index_by_id(id_to_find, data):
+    id_to_find = int(id_to_find)
     for index, row in enumerate(data):
         if row['id'] == id_to_find:
             return index
@@ -32,6 +33,7 @@ def add_question():
 
 @app.route('/question/<question_id>')
 def show_answers(question_id):
+    question_id = int(question_id)
     questions = data_handler.get_all_data('question.csv', True)
     title = ''.join([question['title'] for question in questions if question['id'] == question_id])
     answers = data_handler.get_all_data('answer.csv', True)
