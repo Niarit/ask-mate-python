@@ -46,6 +46,19 @@ def add_new_answer(question_id):
     return render_template('new_answer.html', title=title, question_id=question_id)
 
 
+@app.route('/question/<question_id>/vote_up')
+def question_vote_up(question_id):
+    questions = data_handler.get_all_data('question.csv', True)
+    for question in questions:
+        if question['id'] == question_id:
+            if question['vote_number']:
+                question['vote_number'] = str(int(question['vote_number']) + 1)
+            else:
+                question['vote_number'] = '1'
+    # print(questions)
+    return redirect('/list')
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
