@@ -21,7 +21,9 @@
                     <td>{{ question['message'] | safe}}</td>
                     <td>{{ question['image'] }}</td>
                     <td>{{ question['view_number'] }}</td>
-                    <td>{{ question['vote_number'] }}</td>
+                    <td>
+                        {{ question['vote_number'] }}
+                    </td>
 				</tr>
         {% endfor %}
     </table>
