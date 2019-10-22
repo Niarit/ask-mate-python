@@ -70,30 +70,17 @@ def edit_question(question_id):
                            question_data=question_data)
 
 
-@app.route('/question/<question_id>/vote-up')
+@app.route('/question/<question_id>/vote_up')
 def question_vote_up(question_id):
     questions = data_handler.get_all_data('question.csv', True)
     for question in questions:
-        if question['id'] == int(question_id):
+        if question['id'] == question_id:
             if question['vote_number']:
-                question['vote_number'] = question['vote_number'] + 1
+                question['vote_number'] = str(int(question['vote_number']) + 1)
             else:
                 question['vote_number'] = '1'
-    data_handler.question_vote_update(questions)
+    data_handler.question_vote_up(questions)
     return redirect('/list')
-
-
-@app.route('/question/<question_id>/vote-down')
-def question_vote_down(question_id):
-    questions = data_handler.get_all_data('question.csv', True)
-    for question in questions:
-        if question['id'] == int(question_id):
-            if question['vote_number'] and question['vote_number'] > 1:
-                question['vote_number'] = question['vote_number'] - 1
-            else:
-                question['vote_number'] = '0'
-    data_handler.question_vote_update(questions)
-    return redirect('/')
 
 
 if __name__ == '__main__':
