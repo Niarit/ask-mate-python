@@ -4,7 +4,22 @@
 {% endblock %}
 {% block content %}
     <h1>{{ question_title }}</h1>
-    {% for answer in current_answers %}
-        <p>{{answer['message']}}</p>
-    {% endfor %}
+    {% if current_answers != [] %}
+        <table>
+            <tr>
+                <th> Message</th>
+                <th> Image</th>
+                <th> Vote Number</th>
+            </tr>
+                {% for answer in current_answers %}
+                    <tr>
+                        <td>{{ answer['message'] | safe}}</td>
+                        <td>{{ answer['image'] }}</td>
+                        <td>{{ answer['vote_number'] }}</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <p>There is no answer yet!<br> Be the first who solves the problem!</p>
+            {% endif %}
+    </table>
 {% endblock %}
