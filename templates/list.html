@@ -20,9 +20,15 @@
                     <td><a href="/question/{{ question['id'] }}">{{ question['title'] }}</a></td>
                     <td>{{ question['message'] | safe}}</td>
                     <td>{{ question['image'] }}</td>
-                    <td>{{ question['view_number'] }}</td>
-                    <td>
-                        {{ question['vote_number'] }}
+                    <td align="right">{{ question['view_number'] }}</td>
+                    <td align="right">
+                        <a href="/question/{{ question['id'] }}/vote-up">
+                            <img src="/static/img/up.png" alt="">
+                        </a><br>
+                        {{ question['vote_number'] }}<br>
+                        <a href="/question/{{ question['id'] }}/vote-down">
+                            <img src="/static/img/down.png" alt="">
+                        </a>
                     </td>
 				</tr>
         {% endfor %}
