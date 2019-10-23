@@ -86,3 +86,7 @@ def update_existing_file(data, file_to, header):
         writer.writeheader()
         for row in data:
             writer.writerow(row)
+
+
+def save_answers(answers):
+    update_existing_file(answers, ANSWER_DATA_PATH, ANSWER_HEADERS)
