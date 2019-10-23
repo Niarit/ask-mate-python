@@ -71,6 +71,15 @@ def delete_question(id_to_delete, csv_type, file_to, header):
     update_existing_file(updated_data, file_to, header)
 
 
+def delete_answer(id_to_delete):
+    data = get_data('answers')
+    for row in data[:]:
+        if row['id'] == id_to_delete:
+            data.remove(row)
+    update_existing_file(data, ANSWER_DATA_PATH, ANSWER_HEADERS)
+    pass
+
+
 def save_answers(answers):
     update_existing_file(answers, ANSWER_DATA_PATH, ANSWER_HEADERS)
 

@@ -112,6 +112,13 @@ def delete_question(question_id):
     return redirect('/list')
 
 
+@app.route('/answer/<int:answer_id>/delete')
+def delete_answer(answer_id):
+    question_id = request.args.get('question_id')
+    data_handler.delete_answer(answer_id)
+    return redirect(f'/question/{question_id}')
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

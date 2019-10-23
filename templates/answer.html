@@ -15,6 +15,7 @@
                 <th> Message</th>
                 <th> Image</th>
                 <th> Vote Number</th>
+                <th></th>
             </tr>
                 {% for answer in current_answers %}
                     <tr>
@@ -28,7 +29,10 @@
                             <a href="/answer/{{ answer['id'] }}/vote_down">
                                 <img src="/static/img/down.png" alt="Vote down">
                             </a>
-                    </td>
+                        </td>
+                        <td>
+                            <a href="/answer/{{ answer['id'] }}/delete?question_id={{ question_id }}">Delete this answer</a>
+                        </td>
                     </tr>
                 {% endfor %}
             {% else %}
