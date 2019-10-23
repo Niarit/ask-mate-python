@@ -106,6 +106,12 @@ def answer_vote_down(answer_id):
     return redirect(f'/question/{answer["question_id"]}')
 
 
+@app.route('/question/<int:question_id>/deleteendpoint')
+def delete_question(question_id):
+    data_handler.delete_question(question_id, 'questions', data_handler.QUESTION_DATA_PATH, data_handler.QUESTION_HEADERS)
+    return redirect('/list')
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
