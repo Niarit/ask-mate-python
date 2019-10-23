@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 
 import data_handler
+import util
 
 app = Flask(__name__)
 
@@ -98,6 +99,18 @@ def question_vote_down(question_id):
             question['vote_number'] = question['vote_number'] - 1
     data_handler.question_vote_update(questions)
     return redirect('/')
+
+
+@app.route('/answer/<answer_id>/vote_up')
+def answer_vote_up(answer_id):
+    answer = util.vote_answer(answer_id, lambda vote_number: vote_number + 1)
+    return redirect(f'/question/{answer["question_id"]}')
+
+
+@app.route('/answer/<answer_id>/vote_down')
+def answer_vote_down(answer_id):
+    answer = util.vote_answer(answer_id, lambda vote_number: vote_number - 1)
+    return redirect(f'/question/{answer["question_id"]}')
 
 
 def __preformat_for_sort(data):
