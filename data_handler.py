@@ -13,9 +13,18 @@ def get_data_from_csv(csv_file):
         all_data = list(reader)
         for row in all_data:
             for key, val in row.items():
-                if val.isdigit():
+                if is_number(val):
                     row[key] = int(val)
         return all_data
+
+
+def is_number(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        pass
+    return False
 
 
 def get_all_data(csv_file, break_lines=False):
