@@ -59,3 +59,15 @@ def get_row_index_by_id(id_to_find, data):
     for index, row in enumerate(data):
         if row['id'] == id_to_find:
             return index
+
+
+def delete_question(id_to_delete, csv_type, file_to, header):
+    updated_data = []
+    all_data = get_data(csv_type)
+    for row in all_data:
+        updated_data.append(row)
+        if row['id'] == id_to_delete:
+            updated_data.remove(row)
+    update_existing_file(updated_data, file_to, header)
+
+
