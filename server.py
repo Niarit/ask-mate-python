@@ -17,8 +17,18 @@ def get_row_index_by_id(id_to_find, data):
 @app.route('/')
 @app.route('/list')
 def route_list():
-    questions = data_handler.get_all_data('question.csv', break_lines=True)
-    return render_template('list.html', questions=questions)
+    questions = data_handler.get_all_data('question.csv',break_lines=True)
+    should_reverse = True
+    if request.args.get('order_direction') == 'asc':
+        should_reverse = False
+    column_name = 'submission_time'
+    if request.args.get('order_by'):
+        column_name = request.args.get('order_by')
+    sorted_questions = sorted(questions, key=lambda question: __preformat_for_sort(question[column_name]), reverse=should_reverse)
+    order_direction = 'desc'
+    if should_reverse:
+        order_direction = 'asc'
+    return render_template('list.html', questions=sorted_questions, order_direction=order_direction)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -88,6 +98,13 @@ def question_vote_down(question_id):
             question['vote_number'] = question['vote_number'] - 1
     data_handler.question_vote_update(questions)
     return redirect('/')
+
+
+def __preformat_for_sort(data):
+    if isinstance(data, str):
+        return data.lower()
+    else:
+        return data
 
 
 if __name__ == '__main__':

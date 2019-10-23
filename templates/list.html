@@ -9,11 +9,11 @@
     <br>
     <table>
         <tr>
-            <th> Title</th>
-            <th> Message</th>
+            <th><a href="/list?order_by=title&order_direction={{ order_direction }}">Title</a></th>
+            <th><a href="/list?order_by=message&order_direction={{ order_direction }}">Message</a></th>
             <th> Image</th>
-            <th> View Number</th>
-            <th>Vote</th>
+            <th><a href="/list?order_by=view_number&order_direction={{ order_direction }}">View Number</a></th>
+            <th><a href="/list?order_by=vote_number&order_direction={{ order_direction }}">Vote Number</a></th>
         </tr>
 			{% for question in questions %}
 				<tr>
