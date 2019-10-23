@@ -17,7 +17,15 @@
                     <tr>
                         <td>{{ answer['message'] | safe}}</td>
                         <td>{{ answer['image'] }}</td>
-                        <td>{{ answer['vote_number'] }}</td>
+                        <td align="right">
+                            <a href="/answer/{{ answer['id'] }}/vote_up">
+                                <img src="/static/img/up.png" alt="Vote up">
+                            </a><br>
+                            {{ answer['vote_number'] }}<br>
+                            <a href="/answer/{{ answer['id'] }}/vote_down">
+                                <img src="/static/img/down.png" alt="Vote down">
+                            </a>
+                    </td>
                     </tr>
                 {% endfor %}
             {% else %}

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 
 import data_handler
+import util
 
 app = Flask(__name__)
 
@@ -17,7 +18,7 @@ def route_list():
     column_name = 'submission_time'
     if request.args.get('order_by'):
         column_name = request.args.get('order_by')
-    sorted_questions = sorted(questions, key=lambda question: __preformat_for_sort(question[column_name]), reverse=should_reverse)
+    sorted_questions = sorted(questions, key=lambda question: util.__preformat_for_sort(question[column_name]), reverse=should_reverse)
     order_direction = 'desc'
     if should_reverse:
         order_direction = 'asc'
@@ -93,11 +94,16 @@ def question_vote_down(question_id):
     return redirect('/')
 
 
-def __preformat_for_sort(data):
-    if isinstance(data, str):
-        return data.lower()
-    else:
-        return data
+@app.route('/answer/<answer_id>/vote_up')
+def answer_vote_up(answer_id):
+    answer = util.vote_answer(answer_id, lambda vote_number: vote_number + 1)
+    return redirect(f'/question/{answer["question_id"]}')
+
+
+@app.route('/answer/<answer_id>/vote_down')
+def answer_vote_down(answer_id):
+    answer = util.vote_answer(answer_id, lambda vote_number: vote_number - 1)
+    return redirect(f'/question/{answer["question_id"]}')
 
 
 if __name__ == '__main__':
