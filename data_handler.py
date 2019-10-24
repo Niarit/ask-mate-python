@@ -61,31 +61,21 @@ def get_row_index_by_id(id_to_find, data):
             return index
 
 
-def delete_question(id_to_delete):
-    updated_questions = []
-    updated_answers = []
-    all_questions = get_data('questions')
-    all_answers = get_data('answers')
-    for row in all_questions:
-        updated_questions.append(row)
-        if row['id'] == id_to_delete:
-            updated_questions.remove(row)
-    update_existing_file(updated_questions, QUESTION_DATA_PATH, QUESTION_HEADERS)
-    for row in all_answers:
-        updated_answers.append(row)
-        if row['question_id'] == id_to_delete:
-            updated_answers.remove(row)
-    update_existing_file(updated_answers, ANSWER_DATA_PATH, ANSWER_HEADERS)
-
-
-def delete_answer(id_to_delete):
-    data = get_data('answers')
-    for row in data[:]:
-        if row['id'] == id_to_delete:
-            data.remove(row)
-    update_existing_file(data, ANSWER_DATA_PATH, ANSWER_HEADERS)
-
-
 def save_answers(answers):
     update_existing_file(answers, ANSWER_DATA_PATH, ANSWER_HEADERS)
 
+
+def insert_answer(answer):
+    """
+    :param answer: (dict)
+    :return: (None)
+    """
+
+    answer['id'] = connection.creat_new_id(ANSWER_DATA_PATH)
+    answer['submission_time'] = connection.get_submission_time()
+    answer['vote_number'] = 0
+    add_new_data_to_file(answer, 'answer.csv', ANSWER_HEADERS)
+
+
+def save_questions(questions):
+    update_existing_file(questions, QUESTION_DATA_PATH, QUESTION_HEADERS)
