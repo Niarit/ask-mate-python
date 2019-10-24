@@ -3,30 +3,36 @@
     Welcome!
 {% endblock %}
 {% block content %}
-    <h1> Ask Mate! </h1>
+<div class="jumbotron" align="center">
+    <h1 class="display-3"> Ask Mate! </h1>
+</div>
+<!--    <a href="{{ url_for('add_question')}}">Ask a question</a>-->
+    <form action="{{ url_for('add_question')}}" method="GET" class="f-right">
+        <button type="submit" class="btn btn-primary">Ask a question</button>
+    </form>
     <br>
-    <a href="{{ url_for('add_question')}}">Ask a question</a>
-    <br>
-    <table>
-        <tr>
+    <table class="table">
+        <thead class="thead-light">
+        <tr align="center">
             <th><a href="/list?order_by=title&order_direction={{ order_direction }}">Title</a></th>
             <th><a href="/list?order_by=message&order_direction={{ order_direction }}">Message</a></th>
             <th> Image</th>
             <th><a href="/list?order_by=view_number&order_direction={{ order_direction }}">View Number</a></th>
             <th><a href="/list?order_by=vote_number&order_direction={{ order_direction }}">Vote Number</a></th>
         </tr>
+        </thead>
 			{% for question in questions %}
 				<tr>
-                    <td><a href="/question/{{ question['id'] }}">{{ question['title'] }}</a></td>
+                    <td><a href="{{ url_for('show_answers', question_id=question['id']) }}">{{ question['title'] }}</a> </td>
                     <td>{{ question['message'] | safe}}</td>
                     <td>{{ question['image'] }}</td>
                     <td align="right">{{ question['view_number'] }}</td>
                     <td align="right" >
-                        <a href="/question/{{ question['id'] }}/vote-up">
+                        <a href="{{ url_for('question_vote_up', question_id=question['id']) }}">
                             <img src="/static/img/up.png" alt="">
                         </a><br>
                         {{ question['vote_number'] }}<br>
-                        <a href="/question/{{ question['id'] }}/vote-down">
+                        <a href="{{ url_for('question_vote_down', question_id=question['id']) }}">
                             <img src="/static/img/down.png" alt="">
                         </a>
                     </td>
