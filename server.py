@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, send_from_directory
+from flask import Flask, render_template, request, redirect, send_from_directory, url_for
 
 import data_handler
 import os
@@ -77,7 +77,7 @@ def edit_question(question_id):
         __delete_image(question_data)
         __upload_file_if_any(request, question_data)
         data_handler.update_existing_file(all_questions, 'question.csv', data_handler.QUESTION_HEADERS)
-        return redirect('/list')
+        return redirect(url_for('show_answers', question_id=question_id))
     return render_template('edit_question.html',
                            title='Edit Question',
                            question_id=question_id,
