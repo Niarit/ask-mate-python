@@ -2,9 +2,13 @@
 {% block title %}New Answer{% endblock %}
 {% block content %}
     <h1>{{ title }}</h1>
-    <form action="/question/{{ question_id }}/new-answer" method="POST">
+    <form action="/question/{{ question_id }}/new-answer" method="POST" enctype="multipart/form-data">
         <label for="answer">Answer:</label><br>
         <textarea cols="45" rows="5" name="message" id="answer"></textarea><br>
+
+        <label for="image">Attach an image:</label>
+        <input type="file" name="image" id="image">
+
         <button type="submit">Add answer</button>
     </form>
 {% endblock %}
