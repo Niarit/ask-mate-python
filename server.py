@@ -108,7 +108,7 @@ def answer_vote_down(answer_id):
 
 @app.route('/question/<int:question_id>/deleteendpoint')
 def delete_question(question_id):
-    data_handler.delete_question(question_id, 'questions', data_handler.QUESTION_DATA_PATH, data_handler.QUESTION_HEADERS)
+    data_handler.delete_question(question_id)
     return redirect('/list')
 
 
