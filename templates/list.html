@@ -16,7 +16,6 @@
         <tr align="center">
             <th><a href="/list?order_by=title&order_direction={{ order_direction }}">Title</a></th>
             <th><a href="/list?order_by=message&order_direction={{ order_direction }}">Message</a></th>
-            <th> Image</th>
             <th><a href="/list?order_by=view_number&order_direction={{ order_direction }}">View Number</a></th>
             <th><a href="/list?order_by=vote_number&order_direction={{ order_direction }}">Vote Number</a></th>
         </tr>
@@ -25,7 +24,6 @@
 				<tr>
                     <td><a href="{{ url_for('show_answers', question_id=question['id']) }}">{{ question['title'] }}</a> </td>
                     <td>{{ question['message'] | safe}}</td>
-                    <td>{{ question['image'] }}</td>
                     <td align="right">{{ question['view_number'] }}</td>
                     <td align="right" >
                         <a href="{{ url_for('question_vote_up', question_id=question['id']) }}">
