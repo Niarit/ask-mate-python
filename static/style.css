@@ -28,3 +28,11 @@ a:hover {
     float: right;
     padding-bottom: 10px;
 }
+
+.btn.btn-danger {
+    color: white;
+}
+
+.btn.btn-primary {
+    color: white;
+}
