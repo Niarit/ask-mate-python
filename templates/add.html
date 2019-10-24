@@ -3,14 +3,28 @@
 {% block content %}
     <h1>Add Question</h1>
     <form action="/add-question" method="POST" enctype="multipart/form-data">
-        <label for="title">Title</label><br>
-        <input type="text" name="title" id="title"><br>
-        <label for="question">Question</label><br>
-        <textarea rows="5" cols="45" name="message" id="question"></textarea><br>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" aria-describedby="title" placeholder="Short, descriptive title of Your problem">
+        </div>
 
-        <label for="image">Attach an image:</label>
-        <input type="file" name="image" id="image">
+        <div class="form-group">
+            <label for="title">Question</label>
+            <textarea name="message" class="form-control" aria-label="Question"></textarea>
+            <small class="form-text text-muted">Be as specific as possible with Your problem.</small>
+        </div>
 
-        <button type="submit">Submit</button>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Image attachment</span>
+            </div>
+            <div class="custom-file">
+                <input type="file" name="image" class="form-control custom-file-input" id="image-attachment" aria-descri bedby="image-attachment">
+                <label class="custom-file-label" for="image-attachment">Choose file</label>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-primary mb-3">Submit</button>
     </form>
+    <button type="button" class="btn btn-info" onclick="location.href='{{ url_for('route_list') }}'">Back to Main menu</button>
 {% endblock %}
