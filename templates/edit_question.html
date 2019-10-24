@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
     <h1>{{ title }}</h1>
-        <form action="/question/{{ question_id }}/edit" method="post">
+        <form action="/question/{{ question_id }}/edit" method="post" enctype="multipart/form-data">
             <p>
                 <label for="title">Question Title: </label><br>
                 <input type="text" name="title" id="title" required minlength="5" value="{{ question_data['title'] }}">
@@ -13,6 +13,13 @@
                 <label for="message">Message:</label><br>
                 <textarea name="message" id="message" cols="40" rows="4" required>{{ question_data['message']|safe }}</textarea>
             </p>
-        <button type="submit">Update question</button>
+            <p>
+                {% if question_data['image'] %}
+                    Currently attached image:
+                    <img src="{{ url_for('static', filename='uploads/images') }}/{{ question_data['image'] }}" alt="Attached image" onerror="">
+                {% endif %}
+                <input type="file" name="image" id="image">
+            </p>
+            <button type="submit">Update question</button>
         </form>
 {% endblock %}

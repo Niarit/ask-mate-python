@@ -3,24 +3,33 @@
     Ask Mate! | Answers
 {% endblock %}
 {% block content %}
-    <h1>{{ question_title }}</h1><form action="/question/{{ question_id }}/edit">
+    <h1>{{ question_title }}</h1><form action="/question/{{ question['id'] }}/edit">
     <button type="submit">Edit question</button>
+
 </form>
-    <form action="/question/{{ question_id }}/deleteendpoint">
+    <form action="/question/{{ question['id'] }}/deleteendpoint">
     <button type="submit">Delete question</button>
     </form>
+    {% if question['image'] %}
+        <p>Attached image for question:</p>
+        <img src="{{ url_for('static', filename='uploads/images') }}/{{ question['image'] }}" alt="Attached image" onerror="">
+    {% endif %}
     {% if current_answers != [] %}
         <table>
             <tr>
                 <th> Message</th>
-                <th> Image</th>
+                <th>Image</th>
                 <th> Vote Number</th>
                 <th></th>
             </tr>
                 {% for answer in current_answers %}
                     <tr>
                         <td>{{ answer['message'] | safe}}</td>
-                        <td>{{ answer['image'] }}</td>
+                        <td>
+                            {% if answer['image'] %}
+                                <img src="{{ url_for('static', filename='uploads/images') }}/{{ answer['image'] }}" alt="Attached image" onerror="">
+                            {% endif %}
+                        </td>
                         <td align="right">
                             <a href="/answer/{{ answer['id'] }}/vote_up">
                                 <img src="/static/img/up.png" alt="Vote up">
