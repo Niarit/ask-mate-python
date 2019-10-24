@@ -24,7 +24,6 @@
 				<tr>
                     <td><a href="{{ url_for('show_answers', question_id=question['id']) }}">{{ question['title'] }}</a> </td>
                     <td>{{ question['message'] | safe}}</td>
-                    <td>{{ question['image'] }}</td>
                     <td align="right" id="v_number">{{ question['view_number'] }}</td>
                     <td align="right" id="int_1" >
                         <a href="{{ url_for('question_vote_up', question_id=question['id']) }}">
