@@ -3,10 +3,13 @@
     Ask Mate! | Answers
 {% endblock %}
 {% block content %}
-    <h1>{{ question_title }}</h1><form action="/question/{{ question['id'] }}/edit">
-    <button type="submit">Edit question</button>
-
-</form>
+    <div class="jumbotron">
+        <h1>{{ question['title'] }}</h1>
+        <p class="lead">{{ question['message'].replace('<br>', ' ') }}</p>
+    </div>
+    <form action="/question/{{ question['id'] }}/edit">
+        <button type="submit">Edit question</button>
+    </form>
     <form action="/question/{{ question['id'] }}/deleteendpoint">
     <button type="submit">Delete question</button>
     </form>
