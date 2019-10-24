@@ -1,14 +1,30 @@
 {% extends 'base.html' %}
 {% block title %}New Answer{% endblock %}
 {% block content %}
-    <h1>{{ title }}</h1>
-    <form action="/question/{{ question_id }}/new-answer" method="POST" enctype="multipart/form-data">
-        <label for="answer">Answer:</label><br>
-        <textarea cols="45" rows="5" name="message" id="answer"></textarea><br>
+<div class="jumbotron">
+    <h1>{{ question['title'] }}</h1>
+    <p class="lead">{{ question['message'].replace('<br>', ' ') }}</p>
+    <form action="/question/{{ question['id'] }}/new-answer" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="answer">Answer:</label><br>
+            <textarea class="form-control" cols="45" rows="5" name="message" id="answer"></textarea><br>
+        </div>
 
-        <label for="image">Attach an image:</label>
-        <input type="file" name="image" id="image">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Image attachment</span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" name="image" class="form-control custom-file-input" id="image-attachment" aria-descri bedby="image-attachment">
+                    <label class="custom-file-label" for="image-attachment">Choose file</label>
+                </div>
+            </div>
+<!--        <label for="image">Attach an image:</label>-->
+<!--        <input type="file" name="image" id="image">-->
 
-        <button type="submit">Add answer</button>
+        <button type="submit" class="btn btn-primary mb-3">Submit</button>
+<!--        <button type="submit">Add answer</button>-->
     </form>
+    <a class="btn btn-info" href="{{ url_for('route_list') }}">Back to Main menu</a>
+</div>
 {% endblock %}

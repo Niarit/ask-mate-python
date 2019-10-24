@@ -61,9 +61,13 @@ def add_new_answer(question_id):
         __upload_file_if_any(request, answer)
         data_handler.insert_answer(answer)
         return redirect(f'/question/{question_id}')
+    question_id = int(question_id)
     questions = data_handler.get_data('questions')
-    title = ''.join([question['title'] for question in questions if question['id'] == question_id])
-    return render_template('new_answer.html', title=title, question_id=question_id)
+    question_row_index = data_handler.get_row_index_by_id(question_id, questions)
+    question = questions[question_row_index]
+    # questions = data_handler.get_data('questions')
+    # title = ''.join([question['title'] for question in questions if question['id'] == int(question_id)])
+    return render_template('new_answer.html', question=question)
 
 
 @app.route('/question/<question_id>/edit', methods=['GET','POST'])
