@@ -36,3 +36,26 @@ a:hover {
 .btn.btn-primary {
     color: white;
 }
+
+footer{
+    margin-top: auto;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 111, 255, 0.64);
+    color: white;
+    text-align: justify;
+    font-family:  'Rubik Mono One', sans-serif;;
+}
+footer>p{
+    margin-bottom: 0;
+}
+html, body{height: 100%;margin:0}
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+.footer_text{
+    font-family: sans-serif;
+    font-size: 100%;
+}
