@@ -3,25 +3,26 @@
     Ask Mate! | Edit
 {% endblock %}
 {% block content %}
-    <div class="jumbotron">
+<div class="jumbotron" xmlns="http://www.w3.org/1999/html">
         <h1>{{ title }}</h1>
     </div>
         <form action="/question/{{ question_id }}/edit" method="post" enctype="multipart/form-data">
-            <p>
+            <div class="form-group">
                 <label for="title">Question Title: </label><br>
-                <input type="text" name="title" id="title" required minlength="5" value="{{ question_data['title'] }}">
-            </p>
-            <p>
-                <label for="message">Message:</label><br>
-                <textarea name="message" id="message" cols="40" rows="4" required>{{ question_data['message']|safe }}</textarea>
-            </p>
-            <p>
+                <input class="form-control" type="text" name="title" id="title" required minlength="5" value="{{ question_data['title'] }}">
+            </div>
+            <div class="form-group"
+                <label for="message">Question:</label><br>
+                <textarea class="form-control" name="message" id="message" cols="40" rows="4" required>{{ question_data['message']|safe }}</textarea>
+            </div>
+
+            <div class="input-group mb-3">
                 {% if question_data['image'] %}
                     Currently attached image:
                     <img src="{{ url_for('static', filename='uploads/images') }}/{{ question_data['image'] }}" alt="Attached image" onerror="">
                 {% endif %}
-                <input type="file" name="image" id="image">
-            </p>
-            <button type="submit">Update question</button>
+                <input class="form-control custom-file-input" type="file" name="image" id="image">
+            </div>
+            <button type="button" class="btn btn-primary mb-3">Update question</button>
         </form>
 {% endblock %}

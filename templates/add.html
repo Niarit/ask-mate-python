@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}Ask Question{% endblock %}
 {% block content %}
-    <h1>Add Question</h1>
+    <div class="jumbotron">
+        <h1>Ask Question</h1>
+    </div>
     <form action="/add-question" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Title</label>
@@ -26,5 +28,5 @@
 
         <button type="button" class="btn btn-primary mb-3">Submit</button>
     </form>
-    <button type="button" class="btn btn-info" onclick="location.href='{{ url_for('route_list') }}'">Back to Main menu</button>
+    <a class="btn btn-info" href="{{ url_for('route_list') }}">Back to Main menu</a>
 {% endblock %}

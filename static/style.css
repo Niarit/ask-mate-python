@@ -38,6 +38,9 @@ a:hover {
     color: white;
 }
 
+.btn.btn-info {
+    color: white;
+}
 footer{
     margin-top: auto;
     bottom: 0;
@@ -56,10 +59,19 @@ body{
     flex-direction: column;
 }
 
-.footer_text{
+.footer_text {
     font-family: sans-serif;
     font-size: 100%;
+}
 
 #int {
     padding-right: 70px;
+}
+
+#int_1 {
+    padding-right: 30px;
+}
+
+#v_number {
+    padding-top: 35px;
 }
