@@ -3,9 +3,8 @@
     Ask Mate! | Edit
 {% endblock %}
 {% block content %}
-<div class="jumbotron" xmlns="http://www.w3.org/1999/html">
+    <div class="jumbotron" xmlns="http://www.w3.org/1999/html">
         <h1>{{ title }}</h1>
-    </div>
         <form action="/question/{{ question_id }}/edit" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Question Title: </label><br>
@@ -25,4 +24,5 @@
             </div>
             <button type="submit" class="btn btn-primary mb-3">Update question</button>
         </form>
+    </div>
 {% endblock %}
