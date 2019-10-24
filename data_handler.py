@@ -61,14 +61,21 @@ def get_row_index_by_id(id_to_find, data):
             return index
 
 
-def delete_question(id_to_delete, csv_type, file_to, header):
-    updated_data = []
-    all_data = get_data(csv_type)
-    for row in all_data:
-        updated_data.append(row)
+def delete_question(id_to_delete):
+    updated_questions = []
+    updated_answers = []
+    all_questions = get_data('questions')
+    all_answers = get_data('answers')
+    for row in all_questions:
+        updated_questions.append(row)
         if row['id'] == id_to_delete:
-            updated_data.remove(row)
-    update_existing_file(updated_data, file_to, header)
+            updated_questions.remove(row)
+    update_existing_file(updated_questions, QUESTION_DATA_PATH, QUESTION_HEADERS)
+    for row in all_answers:
+        updated_answers.append(row)
+        if row['question_id'] == id_to_delete:
+            updated_answers.remove(row)
+    update_existing_file(updated_answers, ANSWER_DATA_PATH, ANSWER_HEADERS)
 
 
 def delete_answer(id_to_delete):
@@ -77,7 +84,6 @@ def delete_answer(id_to_delete):
         if row['id'] == id_to_delete:
             data.remove(row)
     update_existing_file(data, ANSWER_DATA_PATH, ANSWER_HEADERS)
-    pass
 
 
 def save_answers(answers):
