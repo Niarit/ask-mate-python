@@ -12,7 +12,7 @@
             </div>
             <div class="form-group">
                 <label for="message">Question:</label><br>
-                <textarea class="form-control" name="message" id="message" cols="40" rows="4" required>{{ question_data['message']|safe }}</textarea>
+                <textarea class="form-control" name="message" id="message" cols="40" rows="4" required>{{ question_data['message'].replace('<br>', ' ')|safe }}</textarea>
             </div>
 
             {% if question_data['image'] %}
@@ -35,5 +35,7 @@
             </div>
             <button type="submit" class="btn btn-primary mb-3">Update question</button>
         </form>
+        <a class="btn btn-info" href="{{ url_for('route_list') }}">Back to Main menu</a>
+
     </div>
 {% endblock %}
