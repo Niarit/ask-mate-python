@@ -7,24 +7,25 @@
         <h1>{{ question['title'] }}</h1>
         <p class="lead">{{ question['message'].replace('<br>', ' ') }}</p>
     </div>
-    <form action="/question/{{ question['id'] }}/edit">
-        <button type="submit">Edit question</button>
-    </form>
-    <form action="/question/{{ question['id'] }}/deleteendpoint">
-    <button type="submit">Delete question</button>
-    </form>
+    <a class="btn btn-primary" href="/question/{{ question['id'] }}/edit">Edit question</a>
+<!--    <form action="/question/{{ question['id'] }}/deleteendpoint">-->
+<!--    <button type="submit">Delete question</button>-->
+<!--    </form>-->
+    <a class="btn btn-danger f-right" href="/question/{{ question['id'] }}/deleteendpoint">Delete question</a>
     {% if question['image'] %}
         <p>Attached image for question:</p>
         <img src="{{ url_for('static', filename='uploads/images') }}/{{ question['image'] }}" alt="Attached image" onerror="">
     {% endif %}
     {% if current_answers != [] %}
-        <table>
-            <tr>
+        <table class="table">
+            <thead class="thead-light">
+            <tr align="center">
                 <th> Message</th>
                 <th>Image</th>
                 <th> Vote Number</th>
                 <th></th>
             </tr>
+            </thead>
                 {% for answer in current_answers %}
                     <tr>
                         <td>{{ answer['message'] | safe}}</td>
@@ -33,7 +34,7 @@
                                 <img src="{{ url_for('static', filename='uploads/images') }}/{{ answer['image'] }}" alt="Attached image" onerror="">
                             {% endif %}
                         </td>
-                        <td align="right">
+                        <td align="right" id="int">
                             <a href="/answer/{{ answer['id'] }}/vote_up">
                                 <img src="/static/img/up.png" alt="Vote up">
                             </a><br>
@@ -42,7 +43,7 @@
                                 <img src="/static/img/down.png" alt="Vote down">
                             </a>
                         </td>
-                        <td>
+                        <td class="f-right">
                             <a class="btn btn-danger" href="/answer/{{ answer['id'] }}/delete?question_id={{ question_id }}">Delete answer</a>
                         </td>
                     </tr>

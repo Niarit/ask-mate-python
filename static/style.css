@@ -31,8 +31,13 @@ a:hover {
 
 .btn.btn-danger {
     color: white;
+    margin-bottom: 20px;
 }
 
 .btn.btn-primary {
     color: white;
+}
+
+#int {
+    padding-right: 70px;
 }
