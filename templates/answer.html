@@ -3,10 +3,13 @@
     Ask Mate! | Answers
 {% endblock %}
 {% block content %}
-    <h1>{{ question_title }}</h1><form action="/question/{{ question['id'] }}/edit">
-    <button type="submit">Edit question</button>
-
-</form>
+    <div class="jumbotron">
+        <h1>{{ question['title'] }}</h1>
+        <p class="lead">{{ question['message'].replace('<br>', ' ') }}</p>
+    </div>
+    <form action="/question/{{ question['id'] }}/edit">
+        <button type="submit">Edit question</button>
+    </form>
     <form action="/question/{{ question['id'] }}/deleteendpoint">
     <button type="submit">Delete question</button>
     </form>
@@ -40,7 +43,7 @@
                             </a>
                         </td>
                         <td>
-                            <a href="/answer/{{ answer['id'] }}/delete?question_id={{ question['id'] }}">Delete this answer</a>
+                            <a class="btn btn-danger" href="/answer/{{ answer['id'] }}/delete?question_id={{ question_id }}">Delete answer</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -48,7 +51,5 @@
                 <p>There is no answer yet!<br> Be the first who solves the problem!</p>
             {% endif %}
     </table>
-    <form action="/question/{{ question['id'] }}/new-answer">
-        <button type="submit">Answer</button>
-    </form>
+    <a class="btn btn-primary" href="/question/{{ question_id }}/new-answer">Answer</a>
 {% endblock %}
