@@ -6,6 +6,7 @@
     <div class="jumbotron">
         <h1>{{ question['title'] }}</h1>
         <p class="lead">{{ question['message'] | safe }}</p>
+        <small class="form-text text-muted mb-3">Posted: {{ question['submission_time'] }}</small>
         {% if question['image'] %}
             <div class="mb-3">
                 <p>Attached image for question:</p>
@@ -19,6 +20,7 @@
             <table class="table">
                 <thead class="thead-light">
                 <tr align="center">
+                    <th>Posted</th>
                     <th> Message</th>
                     <th>Image</th>
                     <th> Vote Number</th>
@@ -27,6 +29,7 @@
                 </thead>
                     {% for answer in current_answers %}
                         <tr>
+                            <td>{{ answer['submission_time'] }}</td>
                             <td>{{ answer['message'] | safe}}</td>
                             <td>
                                 {% if answer['image'] %}

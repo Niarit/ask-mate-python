@@ -17,8 +17,6 @@ __ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 @app.route('/list')
 def route_list():
     questions = data_handler.get_data('questions')
-    for question in questions:
-        question['submission_time'] = time.strftime("%Y %m/%d %H:%M", time.localtime(int(question['submission_time'])))
     should_reverse = True
     if request.args.get('order_direction') == 'asc':
         should_reverse = False
@@ -26,6 +24,8 @@ def route_list():
     if request.args.get('order_by'):
         column_name = request.args.get('order_by')
     sorted_questions = sorted(questions, key=lambda question: util.__preformat_for_sort(question[column_name]), reverse=should_reverse)
+    for question in questions:
+        question['submission_time'] = util.timestamp_for_ui(question['submission_time'])
     order_direction = 'desc'
     if should_reverse:
         order_direction = 'asc'
@@ -49,8 +49,11 @@ def show_answers(question_id):
     questions = data_handler.get_data('questions')
     question_row_index = data_handler.get_row_index_by_id(question_id, questions)
     question = questions[question_row_index]
+    question['submission_time'] = util.timestamp_for_ui(question['submission_time'])
     answers = data_handler.get_data('answers')
     answers_for_question = [answer for answer in answers if answer['question_id'] == question_id]
+    for answer in answers:
+        answer['submission_time'] = util.timestamp_for_ui(answer['submission_time'])
     return render_template('answer.html',
                            question=question,
                            current_answers=answers_for_question)
