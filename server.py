@@ -4,6 +4,7 @@ import data_handler
 import os
 import util
 import uuid
+import time
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads/images/'
@@ -16,6 +17,8 @@ __ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 @app.route('/list')
 def route_list():
     questions = data_handler.get_data('questions')
+    for question in questions:
+        question['submission_time'] = time.strftime("%Y %m/%d %H:%M", time.localtime(int(question['submission_time'])))
     should_reverse = True
     if request.args.get('order_direction') == 'asc':
         should_reverse = False

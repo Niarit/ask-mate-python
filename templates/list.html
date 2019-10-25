@@ -14,6 +14,7 @@
     <table class="table">
         <thead class="thead-light">
         <tr align="center">
+            <th><a href="/list?order_by=submission_time&order_direction={{ submission_time }}">Time</a></th>
             <th><a href="/list?order_by=title&order_direction={{ order_direction }}">Title</a></th>
             <th><a href="/list?order_by=message&order_direction={{ order_direction }}">Message</a></th>
             <th><a href="/list?order_by=view_number&order_direction={{ order_direction }}">View Number</a></th>
@@ -22,6 +23,7 @@
         </thead>
 			{% for question in questions %}
 				<tr>
+                    <td align="right">{{ question['submission_time'] }}</td>
                     <td><a href="{{ url_for('show_answers', question_id=question['id']) }}">{{ question['title'] }}</a> </td>
                     <td>{{ question['message'] | safe}}</td>
                     <td align="right" id="v_number">{{ question['view_number'] }}</td>
