@@ -39,3 +39,14 @@ def update(cursor, data):
                        'id': data['id']
                    })
 
+
+@connection.connection_handler
+def delete(cursor, data):
+    cursor.execute("""
+                    DELETE FROM answer
+                    WHERE id = %(id)s;
+                    """,
+                   {
+                       'id': data['id']
+                   })
+

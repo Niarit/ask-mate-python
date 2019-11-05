@@ -32,7 +32,7 @@ def update(cursor, data):
                         title = %(title)s,
                         message = %(message)s,
                         image = %(image)s
-                    WHERE id = %(question_id)s;
+                    WHERE id = %(id)s;
                     """,
                    {
                        'view_number': data['view_number'],
@@ -40,6 +40,16 @@ def update(cursor, data):
                        'title': data['title'],
                        'message': data['message'],
                        'image': data['image'],
-                       'question_id': data['question_id']
+                       'id': data['id']
                    })
 
+
+@connection.connection_handler
+def delete(cursor, data):
+    cursor.execute("""
+                    DELETE FROM question
+                    WHERE id = %(id)s;
+                    """,
+                   {
+                       'id': data['id']
+                   })
