@@ -5,3 +5,5 @@ Jinja2==2.10.3
 MarkupSafe==1.1.1
 uuid==1.30
 Werkzeug==0.16.0
+psycopg2-binary==2.7.5
+requests==2.19.1
