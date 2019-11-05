@@ -71,7 +71,10 @@ def get_answers_for_a_question(question_id):
 def edit_question(request, question_data, send_from_directory, app):
     form_request = dict(request.form)
     __delete_image(question_data, app)
-    __upload_file_if_any(request.form, form_request, send_from_directory, app)
+    __upload_file_if_any(request, form_request, send_from_directory, app)
+    form_request['view_number'] = question_data['view_number']
+    form_request['vote_number'] = question_data['vote_number']
+    form_request['id'] = question_data['id']
     DAL.questions.update(form_request)
 
 #
