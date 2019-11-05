@@ -20,7 +20,7 @@ DROP TABLE IF EXISTS public.question;
 DROP SEQUENCE IF EXISTS public.question_id_seq;
 CREATE TABLE question (
     id serial NOT NULL,
-    submission_time timestamp without time zone,
+    submission_time timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     view_number integer,
     vote_number integer,
     title text,
@@ -32,7 +32,7 @@ DROP TABLE IF EXISTS public.answer;
 DROP SEQUENCE IF EXISTS public.answer_id_seq;
 CREATE TABLE answer (
     id serial NOT NULL,
-    submission_time timestamp without time zone,
+    submission_time timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     vote_number integer,
     question_id integer,
     message text,
@@ -46,7 +46,7 @@ CREATE TABLE comment (
     question_id integer,
     answer_id integer,
     message text,
-    submission_time timestamp without time zone,
+    submission_time timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     edited_count integer
 );
 
