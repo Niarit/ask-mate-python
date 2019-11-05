@@ -4,7 +4,6 @@ import data_handler
 import os
 import util
 import uuid
-import time
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads/images/'
