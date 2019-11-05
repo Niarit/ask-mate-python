@@ -29,7 +29,7 @@ def route_list():
     order_direction = 'desc'
     if should_reverse:
         order_direction = 'asc'
-    return render_template('list.html', questions=sorted_questions, order_direction=order_direction)
+    return render_template('question/display_all.html', questions=sorted_questions, order_direction=order_direction)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -40,7 +40,7 @@ def add_question():
         __upload_file_if_any(request, saved_data)
         data_handler.add_new_question(saved_data)
         return redirect('/list')
-    return render_template('add.html',)
+    return render_template('question/create.html',)
 
 
 @app.route('/question/<question_id>')
@@ -54,7 +54,7 @@ def show_answers(question_id):
     answers_for_question = [answer for answer in answers if answer['question_id'] == question_id]
     for answer in answers:
         answer['submission_time'] = util.timestamp_for_ui(answer['submission_time'])
-    return render_template('answer.html',
+    return render_template('question/display_one.html',
                            question=question,
                            current_answers=answers_for_question)
 
@@ -73,7 +73,7 @@ def add_new_answer(question_id):
     question = questions[question_row_index]
     # questions = data_handler.get_data('questions')
     # title = ''.join([question['title'] for question in questions if question['id'] == int(question_id)])
-    return render_template('new_answer.html', question=question)
+    return render_template('answer/create.html', question=question)
 
 
 @app.route('/question/<question_id>/edit', methods=['GET','POST'])
@@ -88,7 +88,7 @@ def edit_question(question_id):
         __upload_file_if_any(request, question_data)
         data_handler.update_existing_file(all_questions, 'question.csv', data_handler.QUESTION_HEADERS)
         return redirect(url_for('show_answers', question_id=question_id))
-    return render_template('edit_question.html',
+    return render_template('question/edit.html',
                            title='Edit Question',
                            question_id=question_id,
                            question_data=question_data)
