@@ -23,7 +23,7 @@ def add_question():
     if request.method == 'POST':
         data_handler.add_question(request,send_from_directory, app)
         return redirect('/list')
-    return render_template('question/create.html',)
+    return render_template('question/create.html')
 
 
 @app.route('/question/<question_id>')
@@ -36,11 +36,11 @@ def add_new_answer(question_id):
     pass
 
 
-@app.route('/question/<question_id>/edit', methods=['GET','POST'])
+@app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
     question_data = data_handler.get_one_question(question_id)
     if request.method == 'POST':
-        data_handler.edit_question(request,question_data, send_from_directory, app)
+        data_handler.edit_question(request, question_data, send_from_directory, app)
         return redirect(url_for('show_answers', question_id=question_id))
     return render_template('question/edit.html',
                            title='Edit Question',
