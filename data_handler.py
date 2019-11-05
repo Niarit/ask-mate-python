@@ -1,67 +1,173 @@
-import connection
+import DAL.answers
+import DAL.questions
+import os
+import uuid
+
+__ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 
-# def add_new_question(question):
-#     question['id'] = connection.creat_new_id(QUESTION_DATA_PATH)
-#     question['submission_time'] = connection.get_submission_time()
-#     question['vote_number'] = 0
-#     question['view_number'] = 0
-#     add_new_data_to_file(question, QUESTION_DATA_PATH, QUESTION_HEADERS)
+def route_list(request):
+    order_direction = 'DESC'
+    if 'order_direction' in request.args:
+        order_direction = request.args.get('order_direction')
+    column_name = 'submission_time'
+    if 'order_by' in request.args:
+        column_name = request.args.get('order_by')
+    sorted_questions = DAL.questions.get_questions(column_name, order_direction)
+    if order_direction == 'DESC':
+        order_direction = 'ASC'
+    else:
+        order_direction = 'DESC'
+    return sorted_questions, order_direction
 
 
-# def add_new_data_to_file(data, file_to, header):
-#     with open(file_to, 'a', newline='', encoding='utf-8') as file:
-#         writer = csv.DictWriter(file, fieldnames=header)
-#         writer.writerow(data)
+def add_question(request, upload_image_func, app):
+    request_form = dict(request.form)
+    __upload_file_if_any(request, request_form, upload_image_func, app)
+    DAL.questions.add_new(request_form)
 
 
-# def add_new_message(answer, question_id):
-#     answer = dict(answer)
-#     answer['id'] = connection.creat_new_id(ANSWER_DATA_PATH)
-#     answer['submission_time'] = connection.get_submission_time()
-#     answer['question_id'] = question_id
-#     answer['vote_number'] = 0
-#     add_new_data_to_file(answer, ANSWER_DATA_PATH, ANSWER_HEADERS)
+def get_one_question(question_id):
+    question_data = DAL.questions.select_one(question_id)
+    return question_data
+#
+# def show_answers(question_id):
+#     question_id = int(question_id)
+#     questions = data_handler.get_data('questions')
+#     question_row_index = data_handler.get_row_index_by_id(question_id, questions)
+#     question = questions[question_row_index]
+#     question['submission_time'] = util.timestamp_for_ui(question['submission_time'])
+#     answers = data_handler.get_data('answers')
+#     answers_for_question = [answer for answer in answers if answer['question_id'] == question_id]
+#     for answer in answers:
+#         answer['submission_time'] = util.timestamp_for_ui(answer['submission_time'])
+#     return render_template('question/display_one.html',
+#                            question=question,
+#                            current_answers=answers_for_question)
+#
+#
+# def add_new_answer(question_id):
+#     if request.method == 'POST':
+#         answer = dict(request.form)
+#         answer['question_id'] = question_id
+#         __upload_file_if_any(request, answer)
+#         data_handler.insert_answer(answer)
+#         return redirect(f'/question/{question_id}')
+#     question_id = int(question_id)
+#     questions = data_handler.get_data('questions')
+#     question_row_index = data_handler.get_row_index_by_id(question_id, questions)
+#     question = questions[question_row_index]
+#     # questions = data_handler.get_data('questions')
+#     # title = ''.join([question['title'] for question in questions if question['id'] == int(question_id)])
+#     return render_template('answer/create.html', question=question)
 
 
-# def edit_question(data, file_to):
-#     update_existing_file(data, file_to, QUESTION_HEADERS)
+def edit_question(request, question_data, send_from_directory, app):
+    form_request = dict(request.form)
+    __delete_image(question_data, app)
+    __upload_file_if_any(request.form, form_request, send_from_directory, app)
+    DAL.questions.update(form_request)
+
+#
+#
+# def question_vote_up(question_id):
+#     questions = data_handler.get_data('questions')
+#     for question in questions:
+#         if question['id'] == int(question_id):
+#             question['vote_number'] = question['vote_number'] + 1
+#     data_handler.question_vote_update(questions)
+#     return redirect('/list')
+#
+#
+# def question_vote_down(question_id):
+#     questions = data_handler.get_data('questions')
+#     for question in questions:
+#         if question['id'] == int(question_id):
+#             question['vote_number'] = question['vote_number'] - 1
+#     data_handler.question_vote_update(questions)
+#     return redirect('/')
+#
+#
+# def answer_vote_up(answer_id):
+#     answer = util.vote_answer(answer_id, lambda vote_number: vote_number + 1)
+#     return redirect(f'/question/{answer["question_id"]}')
+#
+#
+#
+# def answer_vote_down(answer_id):
+#     answer = util.vote_answer(answer_id, lambda vote_number: vote_number - 1)
+#     return redirect(f'/question/{answer["question_id"]}')
+#
+#
+#
+# def delete_question(question_id):
+#     questions = data_handler.get_data('questions')
+#     question_row_index = data_handler.get_row_index_by_id(question_id, questions)
+#     answers = data_handler.get_data('answers')
+#     for answer in answers:
+#         if answer['question_id'] == question_id:
+#             delete_answer(answer['id'])
+#     __delete_image(questions[question_row_index])
+#     questions.pop(question_row_index)
+#     data_handler.save_questions(questions)
+#     return redirect('/list')
+#
+#
+#
+# def delete_answer(answer_id):
+#     question_id = request.args.get('question_id')
+#     answers = data_handler.get_data('answers')
+#     answer_row_index = data_handler.get_row_index_by_id(answer_id, answers)
+#     __delete_image(answers[answer_row_index])
+#     answers.pop(answer_row_index)
+#     data_handler.save_answers(answers)
+#     return redirect(f'/question/{question_id}')
+#
+#
 
 
-def question_vote_update(data):
-    update_existing_file(data, QUESTION_DATA_PATH, QUESTION_HEADERS)
-
-
-def update_existing_file(data, file_to, header):
-    with open(file_to, 'w', newline='', encoding='utf-8') as file:
-        writer = csv.DictWriter(file, fieldnames=header)
-        writer.writeheader()
-        for row in data:
-            writer.writerow(row)
-
-
-def get_row_index_by_id(id_to_find, data):
-    id_to_find = int(id_to_find)
-    for index, row in enumerate(data):
-        if row['id'] == id_to_find:
-            return index
-
-
-def save_answers(answers):
-    update_existing_file(answers, ANSWER_DATA_PATH, ANSWER_HEADERS)
-
-
-def insert_answer(answer):
+def __upload_file_if_any(form_request, item, send_from_directory, app):
     """
-    :param answer: (dict)
-    :return: (None)
+    Uploads the POST-ed file if the request contains an image.
+    :param form_request: POST request from a HTML form.
+    :param item: (dict) Question or an Answer entity.
+    :return: (None) item['image'] key gets updated with the image ID.
     """
 
-    answer['id'] = connection.creat_new_id(ANSWER_DATA_PATH)
-    answer['submission_time'] = connection.get_submission_time()
-    answer['vote_number'] = 0
-    add_new_data_to_file(answer, 'answer.csv', ANSWER_HEADERS)
+    if form_request.method != 'POST':
+        item['image'] = ''
+        return None
+
+    if 'image' not in form_request.files:
+        item['image'] = ''
+        return None
+
+    image = form_request.files['image']
+
+    if image.filename == '':
+        item['image'] = ''
+        return None
+
+    if image and __allowed_file(image.filename):
+        file_extension = os.path.splitext(image.filename)[1]
+        filename = str(uuid.uuid1()) + file_extension
+        item['image'] = filename
+        image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    item['image'] = ''
 
 
-def save_questions(questions):
-    update_existing_file(questions, QUESTION_DATA_PATH, QUESTION_HEADERS)
+def __allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in __ALLOWED_EXTENSIONS
+
+
+def __delete_image(item, app):
+    """Remove image from the disk.
+
+    :param item: (dict) Answer or Question entity.
+    :return: (None
+    """
+
+    if item['image']:
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], item['image']))

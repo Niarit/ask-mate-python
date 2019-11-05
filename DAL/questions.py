@@ -2,9 +2,10 @@ import connection
 
 
 @connection.connection_handler
-def get_questions(cursor):
-    cursor.execute("""
+def get_questions(cursor, column, order):
+    cursor.execute(f"""
                     SELECT * FROM question
+                    ORDER BY {column} {order}; 
                     """)
     all_questions = cursor.fetchall()
     return all_questions
@@ -53,3 +54,15 @@ def delete(cursor, data):
                    {
                        'id': data['id']
                    })
+
+
+@connection.connection_handler
+def select_one(cursor, id_):
+    cursor.execute("""
+                    SELECT * FROM question
+                    WHERE id = %(id)s;
+                    """,
+                   {'id': id_})
+    one_row = cursor.fetchone()
+    return one_row
+
