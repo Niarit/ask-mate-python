@@ -37,13 +37,13 @@
                                 {% endif %}
                             </td>
                             <td align="right" id="int">
-                                <a href="/answer/{{ answer['id'] }}/vote_up">
-                                    <img src="/static/img/up.png" alt="Vote up">
-                                </a><br>
+<!--                                <a href="/answer/{{ answer['id'] }}/vote_up">-->
+<!--                                    <img src="/static/img/up.png" alt="Vote up">-->
+<!--                                </a><br>-->
                                 {{ answer['vote_number'] }}<br>
-                                <a href="/answer/{{ answer['id'] }}/vote_down">
-                                    <img src="/static/img/down.png" alt="Vote down">
-                                </a>
+<!--                                <a href="/answer/{{ answer['id'] }}/vote_down">-->
+<!--                                    <img src="/static/img/down.png" alt="Vote down">-->
+<!--                                </a>-->
                             </td>
                             <td class="f-right">
                                 <a class="btn btn-danger" href="/answer/{{ answer['id'] }}/delete?question_id={{ question['id'] }}">Delete answer</a>
@@ -55,7 +55,7 @@
                 {% endif %}
         </table>
         <a class="btn btn-primary" href="/question/{{ question['id'] }}/new-answer">Answer</a><br>
-        <a class="btn btn-info" href="{{ url_for('route_list') }}" id="ans-button">Back to Main menu</a>
+        <a class="btn btn-info" href="{{ url_for('show_questions') }}" id="ans-button">Back to Main menu</a>
 
     </div>
 {% endblock %}

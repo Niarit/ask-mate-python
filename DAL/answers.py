@@ -11,6 +11,18 @@ def get_answers(cursor):
 
 
 @connection.connection_handler
+def get_answers_for_a_question(cursor, q_id):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE question_id = %(q_id)s
+                    """,
+                   {
+                       'q_id': q_id
+                   })
+    answers = cursor.fetchall()
+    return answers
+
+@connection.connection_handler
 def add_new(cursor, data):
     cursor.execute("""
                     INSERT INTO answer (vote_number, question_id, message, image)

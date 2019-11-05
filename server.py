@@ -23,12 +23,14 @@ def add_question():
     if request.method == 'POST':
         data_handler.add_question(request,send_from_directory, app)
         return redirect('/list')
-    return render_template('question/create.html',)
+    return render_template('question/create.html')
 
 
-@app.route('/question/<question_id>')
+@app.route('/question/<int:question_id>')
 def show_answers(question_id):
-    pass
+    question_data = data_handler.get_one_question(question_id)
+    answers = data_handler.get_answers_for_a_question(question_id)
+    return render_template('question/display_one.html', question=question_data, current_answers=answers)
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])

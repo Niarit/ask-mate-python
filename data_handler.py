@@ -30,6 +30,12 @@ def add_question(request, upload_image_func, app):
 def get_one_question(question_id):
     question_data = DAL.questions.select_one(question_id)
     return question_data
+
+
+def get_answers_for_a_question(question_id):
+    answers = DAL.answers.get_answers_for_a_question(question_id)
+    return answers
+
 #
 # def show_answers(question_id):
 #     question_id = int(question_id)
