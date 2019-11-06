@@ -75,17 +75,20 @@ def question_vote_down(question_id):
     question['vote_number'] = question['vote_number'] - 1
     DAL.questions.update(question)
 
-#
-#
-# def answer_vote_up(answer_id):
-#     answer = util.vote_answer(answer_id, lambda vote_number: vote_number + 1)
-#     return redirect(f'/question/{answer["question_id"]}')
-#
-#
-#
-# def answer_vote_down(answer_id):
-#     answer = util.vote_answer(answer_id, lambda vote_number: vote_number - 1)
-#     return redirect(f'/question/{answer["question_id"]}')
+
+def answer_vote_up(answer_id):
+    answer = DAL.answers.select_one(answer_id)
+    answer['vote_number'] = answer['vote_number'] + 1
+    DAL.answers.update(answer)
+    return answer
+
+
+def answer_vote_down(answer_id):
+    answer = DAL.answers.select_one(answer_id)
+    answer['vote_number'] = answer['vote_number'] - 1
+    DAL.answers.update(answer)
+    return answer
+
 #
 #
 #
