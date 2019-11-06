@@ -62,3 +62,15 @@ def delete(cursor, data):
                        'id': data['id']
                    })
 
+
+@connection.connection_handler
+def add_answer(cursor, q_id, data):
+    cursor.execute("""
+                    INSERT INTO answer (vote_number, question_id, message, image)
+                    VALUES (0, %(q_id)s, %(message)s, %(image)s)
+                    """,
+                   {
+                       'q_id': q_id,
+                       'message': data['message'],
+                       'image': data['image']
+                   })

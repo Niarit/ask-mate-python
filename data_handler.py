@@ -36,6 +36,12 @@ def get_answers_for_a_question(question_id):
     answers = DAL.answers.get_answers_for_a_question(question_id)
     return answers
 
+
+def add_answer(question_id, request):
+    request_form = dict(request.form)
+    request_form['image']=''
+    DAL.answers.add_answer(question_id, request_form)
+
 #
 # def show_answers(question_id):
 #     question_id = int(question_id)
