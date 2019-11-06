@@ -78,6 +78,7 @@ def delete(cursor, data):
                    })
 
 
+@connection.connection_handler
 def select_one(cursor, id_):
     cursor.execute("""
                     SELECT * FROM answer
