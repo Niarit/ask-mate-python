@@ -85,6 +85,12 @@ def delete_answer(answer_id):
     return redirect(url_for('show_answers', question_id=question_id))
 
 
+@app.route('/search')
+def search():
+    result = data_handler.search(request)
+    return render_template('question/display_all.html', questions=result)
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

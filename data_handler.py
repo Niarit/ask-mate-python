@@ -1,9 +1,22 @@
 import DAL.answers
 import DAL.questions
+import DAL.searching
 import os
 import uuid
 
 __ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+
+def search(request):
+    result = []
+    phrase = request.args.get('q')
+    question_ids = DAL.searching.in_questions(phrase)
+    return question_ids
+    # for row in question_ids:
+    #     result.append(row)
+    # for i, id in enumerate(result):
+    #     result[i] = DAL.questions.select_one(id)
+    # print(result)
 
 
 def route_list(request):
@@ -36,13 +49,6 @@ def get_answers_for_a_question(question_id):
     answers = DAL.answers.get_answers_for_a_question(question_id)
     return answers
 
-
-def add_answer(question_id, request, upload_image_func, app):
-    request_form = dict(request.form)
-    __upload_file_if_any(request, request_form, upload_image_func, app)
-    request_form['question_id'] = question_id
-    DAL.answers.add_new(request_form)
-
 #
 #
 # def add_new_answer(question_id):
@@ -59,6 +65,13 @@ def add_answer(question_id, request, upload_image_func, app):
 #     # questions = data_handler.get_data('questions')
 #     # title = ''.join([question['title'] for question in questions if question['id'] == int(question_id)])
 #     return render_template('answer/create.html', question=question)
+
+
+def add_answer(question_id, request, upload_image_func, app):
+    request_form = dict(request.form)
+    __upload_file_if_any(request, request_form, upload_image_func, app)
+    request_form['question_id'] = question_id
+    DAL.answers.add_new(request_form)
 
 
 def edit_question(request, question_data, send_from_directory, app):
