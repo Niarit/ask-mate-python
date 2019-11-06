@@ -6,10 +6,7 @@
 <div class="jumbotron" align="center">
     <h1 class="display-3"> Ask Mate! </h1>
 </div>
-<!--    <a href="{{ url_for('add_question')}}">Ask a question</a>-->
-    <form action="{{ url_for('add_question')}}" method="GET" class="f-right">
-        <button type="submit" class="btn btn-primary">Ask a question</button>
-    </form>
+    <a href="{{ url_for('add_question')}}" class="btn btn-primary f-right">Ask a question</a>
     <br>
     <table class="table">
         <thead class="thead-light">
