@@ -70,9 +70,10 @@ def answer_vote_down(answer_id):
     pass
 
 
-@app.route('/question/<int:question_id>/deleteendpoint')
+@app.route('/question/<int:question_id>/delete')
 def delete_question(question_id):
-    pass
+    data_handler.delete_question(question_id, app)
+    return redirect(url_for('show_questions'))
 
 
 @app.route('/answer/<int:answer_id>/delete')

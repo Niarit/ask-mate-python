@@ -106,20 +106,15 @@ def edit_question(request, question_data, send_from_directory, app):
 # def answer_vote_down(answer_id):
 #     answer = util.vote_answer(answer_id, lambda vote_number: vote_number - 1)
 #     return redirect(f'/question/{answer["question_id"]}')
-#
-#
-#
-# def delete_question(question_id):
-#     questions = data_handler.get_data('questions')
-#     question_row_index = data_handler.get_row_index_by_id(question_id, questions)
-#     answers = data_handler.get_data('answers')
-#     for answer in answers:
-#         if answer['question_id'] == question_id:
-#             delete_answer(answer['id'])
-#     __delete_image(questions[question_row_index])
-#     questions.pop(question_row_index)
-#     data_handler.save_questions(questions)
-#     return redirect('/list')
+
+
+def delete_question(question_id, app):
+    question = DAL.questions.select_one(question_id)
+    question_answers = DAL.answers.get_answers_for_a_question(question_id)
+    for answer in question_answers:
+        __delete_image(answer, app)
+    __delete_image(question, app)
+    DAL.questions.delete(question)
 
 
 def delete_answer(answer_id, app):
