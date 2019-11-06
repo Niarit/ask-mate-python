@@ -48,6 +48,9 @@
                             <td class="f-right">
                                 <a class="btn btn-danger" href="/answer/{{ answer['id'] }}/delete?question_id={{ question['id'] }}">Delete answer</a>
                             </td>
+                            <td class="f-right">
+                                <a class="btn btn-warning" href="/answer/{{ answer['id'] }}/edit">Edit answer</a>
+                            </td>
                         </tr>
                     {% endfor %}
                 {% else %}

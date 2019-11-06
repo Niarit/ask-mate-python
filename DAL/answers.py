@@ -54,15 +54,11 @@ def add_new(cursor, data):
 def update(cursor, data):
     cursor.execute("""
                     UPDATE answer
-                    SET vote_number = %(vote_number)s,
-                        message = %(message)s,
-                        image = %(image)s
+                    SET message = %(message)s
                     WHERE id = %(id)s;
                     """,
                    {
-                       'vote_number': data['vote_number'],
                        'message': data['message'],
-                       'image': data['image'],
                        'id': data['id']
                    })
 
