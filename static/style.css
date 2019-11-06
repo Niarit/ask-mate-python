@@ -80,6 +80,7 @@ body{
     margin-top: 15px;
 }
 
+<<<<<<< Updated upstream
 .search {
     background: #f2f2f2;
     font-family: 'Open Sans', sans-serif;
@@ -121,3 +122,5 @@ body{
     left: 50%;
     transform: translate(-54%, -200%);
 }
+=======
+>>>>>>> Stashed changes

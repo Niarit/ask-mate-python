@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}
+    Welcome!
+{% endblock %}
+{% block content %}
+<div class="jumbotron" align="center">
+    <h1 class="display-3"> Ask Mate! </h1>
+</div>
+    <a href="{{ url_for('show_questions')}}" class="btn btn-primary">Full question list</a>
+    <a href="{{ url_for('add_question')}}" class="btn btn-primary f-right">Ask a question</a>
+    <table class="table">
+        <thead class="thead-light">
+        <tr align="center">
+            <th>Time</th>
+            <th>Title</th>
+            <th>Message</th>
+            <th>View Number</th>
+            <th>Vote Number</th>
+        </tr>
+        </thead>
+			{% for question in questions %}
+				<tr>
+                    <td align="right">{{ question['submission_time'] }}</td>
+                    <td><a href="{{ url_for('show_answers', question_id=question['id']) }}">{{ question['title'] }}</a> </td>
+                    <td>{{ question['message'] | safe}}</td>
+                    <td align="right" id="v_number">{{ question['view_number'] }}</td>
+                    <td align="right" id="int_1" >
+                        <a href="{{ url_for('question_vote_up', question_id=question['id']) }}">
+                            <img src="/static/img/up.png" alt="">
+                        </a><br>
+                        {{ question['vote_number'] }}<br>
+                        <a href="{{ url_for('question_vote_down', question_id=question['id']) }}">
+                            <img src="/static/img/down.png" alt="">
+                        </a>
+                    </td>
+				</tr>
+        {% endfor %}
+    </table>
+{% endblock %}

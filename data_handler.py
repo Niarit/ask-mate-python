@@ -19,6 +19,11 @@ def search(request):
     # print(result)
 
 
+def route_five_list():
+    data = DAL.questions.get_five_newest()
+    return data
+
+
 def route_list(request):
     order_direction = 'DESC'
     if 'order_direction' in request.args:
@@ -48,23 +53,6 @@ def get_one_question(question_id):
 def get_answers_for_a_question(question_id):
     answers = DAL.answers.get_answers_for_a_question(question_id)
     return answers
-
-#
-#
-# def add_new_answer(question_id):
-#     if request.method == 'POST':
-#         answer = dict(request.form)
-#         answer['question_id'] = question_id
-#         __upload_file_if_any(request, answer)
-#         data_handler.insert_answer(answer)
-#         return redirect(f'/question/{question_id}')
-#     question_id = int(question_id)
-#     questions = data_handler.get_data('questions')
-#     question_row_index = data_handler.get_row_index_by_id(question_id, questions)
-#     question = questions[question_row_index]
-#     # questions = data_handler.get_data('questions')
-#     # title = ''.join([question['title'] for question in questions if question['id'] == int(question_id)])
-#     return render_template('answer/create.html', question=question)
 
 
 def add_answer(question_id, request, upload_image_func, app):

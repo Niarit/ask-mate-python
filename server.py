@@ -7,6 +7,11 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads/images/'
 
 
 @app.route('/')
+def show_five_question():
+    questions = data_handler.route_five_list()
+    return render_template('question/display_five.html', questions=questions)
+
+
 @app.route('/list')
 def show_questions():
     result_data = data_handler.route_list(request)
