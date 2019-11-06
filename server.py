@@ -52,12 +52,14 @@ def edit_question(question_id):
 
 @app.route('/question/<question_id>/vote-up')
 def question_vote_up(question_id):
-    pass
+    data_handler.question_vote_up(question_id)
+    return redirect('/list')
 
 
 @app.route('/question/<question_id>/vote-down')
 def question_vote_down(question_id):
-    pass
+    data_handler.question_vote_down(question_id)
+    return redirect('/')
 
 
 @app.route('/answer/<answer_id>/vote_up')

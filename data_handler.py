@@ -37,20 +37,6 @@ def get_answers_for_a_question(question_id):
     return answers
 
 #
-# def show_answers(question_id):
-#     question_id = int(question_id)
-#     questions = data_handler.get_data('questions')
-#     question_row_index = data_handler.get_row_index_by_id(question_id, questions)
-#     question = questions[question_row_index]
-#     question['submission_time'] = util.timestamp_for_ui(question['submission_time'])
-#     answers = data_handler.get_data('answers')
-#     answers_for_question = [answer for answer in answers if answer['question_id'] == question_id]
-#     for answer in answers:
-#         answer['submission_time'] = util.timestamp_for_ui(answer['submission_time'])
-#     return render_template('question/display_one.html',
-#                            question=question,
-#                            current_answers=answers_for_question)
-#
 #
 # def add_new_answer(question_id):
 #     if request.method == 'POST':
@@ -77,24 +63,18 @@ def edit_question(request, question_data, send_from_directory, app):
     form_request['id'] = question_data['id']
     DAL.questions.update(form_request)
 
-#
-#
-# def question_vote_up(question_id):
-#     questions = data_handler.get_data('questions')
-#     for question in questions:
-#         if question['id'] == int(question_id):
-#             question['vote_number'] = question['vote_number'] + 1
-#     data_handler.question_vote_update(questions)
-#     return redirect('/list')
-#
-#
-# def question_vote_down(question_id):
-#     questions = data_handler.get_data('questions')
-#     for question in questions:
-#         if question['id'] == int(question_id):
-#             question['vote_number'] = question['vote_number'] - 1
-#     data_handler.question_vote_update(questions)
-#     return redirect('/')
+
+def question_vote_up(question_id):
+    question = DAL.questions.select_one(question_id)
+    question['vote_number'] = question['vote_number'] + 1
+    DAL.questions.update(question)
+
+
+def question_vote_down(question_id):
+    question = DAL.questions.select_one(question_id)
+    question['vote_number'] = question['vote_number'] - 1
+    DAL.questions.update(question)
+
 #
 #
 # def answer_vote_up(answer_id):
