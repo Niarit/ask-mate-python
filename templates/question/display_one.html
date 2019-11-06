@@ -14,7 +14,7 @@
             </div>
         {% endif %}
         <a class="btn btn-primary" href="/question/{{ question['id'] }}/edit">Edit question</a>
-        <a class="btn btn-danger f-right" href="/question/{{ question['id'] }}/deleteendpoint">Delete question</a>
+        <a class="btn btn-danger f-right" href="/question/{{ question['id'] }}/delete">Delete question</a>
 
         {% if current_answers != [] %}
             <table class="table">
