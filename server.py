@@ -29,6 +29,7 @@ def add_question():
 @app.route('/question/<int:question_id>')
 def show_answers(question_id):
     question_data = data_handler.get_one_question(question_id)
+    data_handler.increase_view_number(question_data)
     answers = data_handler.get_answers_for_a_question(question_id)
     return render_template('question/display_one.html', question=question_data, current_answers=answers)
 

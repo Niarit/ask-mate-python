@@ -72,6 +72,11 @@ def edit_question(request, question_data, send_from_directory, app):
     DAL.questions.update(form_request)
 
 
+def increase_view_number(question_data):
+    question_data['view_number'] += 1
+    DAL.questions.update(question_data)
+
+
 def question_vote_up(question_id):
     question = DAL.questions.select_one(question_id)
     question['vote_number'] = question['vote_number'] + 1
