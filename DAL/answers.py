@@ -62,3 +62,13 @@ def delete(cursor, data):
                        'id': data['id']
                    })
 
+
+@connection.connection_handler
+def select_one(cursor, id_):
+    cursor.execute("""
+                    SELECT * FROM answer
+                    WHERE id = %(id)s;
+                    """,
+                   {'id': id_})
+    one_row = cursor.fetchone()
+    return one_row

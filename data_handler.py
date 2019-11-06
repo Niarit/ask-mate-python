@@ -120,19 +120,14 @@ def edit_question(request, question_data, send_from_directory, app):
 #     questions.pop(question_row_index)
 #     data_handler.save_questions(questions)
 #     return redirect('/list')
-#
-#
-#
-# def delete_answer(answer_id):
-#     question_id = request.args.get('question_id')
-#     answers = data_handler.get_data('answers')
-#     answer_row_index = data_handler.get_row_index_by_id(answer_id, answers)
-#     __delete_image(answers[answer_row_index])
-#     answers.pop(answer_row_index)
-#     data_handler.save_answers(answers)
-#     return redirect(f'/question/{question_id}')
-#
-#
+
+
+def delete_answer(answer_id, app):
+    answer = DAL.answers.select_one(answer_id)
+    question_id = answer['question_id']
+    __delete_image(answer, app)
+    DAL.answers.delete(answer)
+    return question_id
 
 
 def __upload_file_if_any(form_request, item, send_from_directory, app):
