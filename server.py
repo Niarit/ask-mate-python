@@ -36,7 +36,8 @@ def show_answers(question_id):
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def add_new_answer(question_id):
     if request.method == 'POST':
-        data_handler.add_answer(question_id, request)
+        data_handler.add_answer(question_id, request, send_from_directory, app)
+        return redirect(url_for('show_answers', question_id=question_id))
     question_data = data_handler.get_one_question(question_id)
     return render_template('answer/create.html', question=question_data)
 
@@ -73,14 +74,16 @@ def answer_vote_down(answer_id):
     pass
 
 
-@app.route('/question/<int:question_id>/deleteendpoint')
+@app.route('/question/<int:question_id>/delete')
 def delete_question(question_id):
-    pass
+    data_handler.delete_question(question_id, app)
+    return redirect(url_for('show_questions'))
 
 
 @app.route('/answer/<int:answer_id>/delete')
 def delete_answer(answer_id):
-    pass
+    question_id = data_handler.delete_answer(answer_id, app)
+    return redirect(url_for('show_answers', question_id=question_id))
 
 
 if __name__ == '__main__':

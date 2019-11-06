@@ -22,6 +22,20 @@ def get_answers_for_a_question(cursor, q_id):
     answers = cursor.fetchall()
     return answers
 
+
+@connection.connection_handler
+def add_answer(cursor, q_id, data):
+    cursor.execute("""
+                    INSERT INTO answer (vote_number, question_id, message, image)
+                    VALUES (0, %(q_id)s, %(message)s, %(image)s)
+                    """,
+                   {
+                       'q_id': q_id,
+                       'message': data['message'],
+                       'image': data['image']
+                   })
+
+
 @connection.connection_handler
 def add_new(cursor, data):
     cursor.execute("""
@@ -63,14 +77,11 @@ def delete(cursor, data):
                    })
 
 
-@connection.connection_handler
-def add_answer(cursor, q_id, data):
+def select_one(cursor, id_):
     cursor.execute("""
-                    INSERT INTO answer (vote_number, question_id, message, image)
-                    VALUES (0, %(q_id)s, %(message)s, %(image)s)
+                    SELECT * FROM answer
+                    WHERE id = %(id)s;
                     """,
-                   {
-                       'q_id': q_id,
-                       'message': data['message'],
-                       'image': data['image']
-                   })
+                   {'id': id_})
+    one_row = cursor.fetchone()
+    return one_row
