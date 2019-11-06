@@ -15,6 +15,7 @@ def get_answers_for_a_question(cursor, q_id):
     cursor.execute("""
                     SELECT * FROM answer
                     WHERE question_id = %(q_id)s
+                    ORDER BY id ASC;
                     """,
                    {
                        'q_id': q_id

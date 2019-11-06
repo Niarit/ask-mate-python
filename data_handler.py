@@ -87,14 +87,14 @@ def answer_vote_up(answer_id):
     answer = DAL.answers.select_one(answer_id)
     answer['vote_number'] = answer['vote_number'] + 1
     DAL.answers.update(answer)
-    return answer
+    return answer['question_id']
 
 
 def answer_vote_down(answer_id):
     answer = DAL.answers.select_one(answer_id)
     answer['vote_number'] = answer['vote_number'] - 1
     DAL.answers.update(answer)
-    return answer
+    return answer['question_id']
 
 
 def delete_question(question_id, app):

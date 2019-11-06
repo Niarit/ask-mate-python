@@ -1,14 +1,9 @@
 from flask import Flask, render_template, request, redirect, send_from_directory, url_for
 
 import data_handler
-import os
-import util
-import uuid
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads/images/'
-
-saved_data = {}
 
 
 @app.route('/')
@@ -69,13 +64,13 @@ def question_vote_down(question_id):
 @app.route('/answer/<answer_id>/vote_up')
 def answer_vote_up(answer_id):
     answer = data_handler.answer_vote_up(answer_id)
-    return redirect(f'/question/{answer["question_id"]}')
+    return redirect(url_for('show_answers', question_id=answer))
 
 
 @app.route('/answer/<answer_id>/vote_down')
 def answer_vote_down(answer_id):
     answer = data_handler.answer_vote_down(answer_id)
-    return redirect(f'/question/{answer["question_id"]}')
+    return redirect(url_for('show_answers', question_id=answer))
 
 
 @app.route('/question/<int:question_id>/delete')
