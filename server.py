@@ -96,6 +96,15 @@ def search():
     return render_template('question/display_all.html', questions=result)
 
 
+@app.route('/answer/<int:answer_id>/edit', methods=['GET', 'POST'])
+def edit_answer(answer_id):
+    if request.method == 'POST':
+        question_id = data_handler.edit_answer(request.form)
+        return redirect(url_for('show_answers', question_id=question_id))
+    answer = data_handler.get_answer_with_its_question(answer_id)
+    return render_template('answer/edit.html', answer=answer)
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

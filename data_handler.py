@@ -50,6 +50,13 @@ def get_one_question(question_id):
     return question_data
 
 
+def get_answer_with_its_question(answer_id):
+    answer_data = DAL.answers.select_one(answer_id)
+    question_data = DAL.questions.select_one(answer_data['question_id'])
+    answer_data['question'] = question_data
+    return answer_data
+
+
 def get_answers_for_a_question(question_id):
     answers = DAL.answers.get_answers_for_a_question(question_id)
     return answers
@@ -113,6 +120,13 @@ def delete_answer(answer_id, app):
     __delete_image(answer, app)
     DAL.answers.delete(answer)
     return question_id
+
+
+def edit_answer(request):
+    answer = dict(request)
+    DAL.answers.update(answer)
+    answer = DAL.answers.select_one(answer['id'])
+    return answer['question_id']
 
 
 def __upload_file_if_any(form_request, item, send_from_directory, app):
