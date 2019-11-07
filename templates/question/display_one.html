@@ -29,8 +29,9 @@
                     <div class="col-md-10 border-top border-bottom p-1">
                         <span>
                             {{ comment['message'] }}
-                            <small class="text-muted">- {{ comment['submission_time'] }}</small>
-                            <a id="comment_delete" class="text-danger" href="/comments/{{ comment['id'] }}/delete">Delete comment</a>
+                            <small class="text-muted">- {{ comment['submission_time'] }} {% if comment['edited_count'] %} edited {{ comment['edited_count'] }} time(s) {% endif %} </small>
+                            <a class="text-danger comment_delete" href="/comments/{{ comment['id'] }}/delete">Delete comment</a>
+                            <a class="comment_delete" href="/comments/{{ comment['id'] }}/edit">Edit comment</a>
                         </span>
                     </div>
                 </div>
@@ -64,7 +65,7 @@
                                         <span>
                                             {{ comment['message'] }}
                                             <small class="text-muted">- {{ comment['submission_time'] }}</small>
-                                            <a id="comment_delete" class="text-danger" href="/comments/{{ comment['id'] }}/delete">Delete comment</a>
+                                            <a id="" class="text-danger comment_delete" href="/comments/{{ comment['id'] }}/delete">Delete comment</a>
                                         </span>
                                     </div>
                                 </div>
