@@ -1,4 +1,5 @@
 import DAL.answers
+import DAL.comments
 import DAL.questions
 import DAL.searching
 import os
@@ -41,6 +42,7 @@ def add_question(request, upload_image_func, app):
 
 def get_one_question(question_id):
     question_data = DAL.questions.select_one(question_id)
+    question_data['comments'] = DAL.comments.get_comments_for_a_question(question_id)
     return question_data
 
 
@@ -126,6 +128,12 @@ def edit_answer(request):
     DAL.answers.update(answer)
     answer = DAL.answers.select_one(answer['id'])
     return answer['question_id']
+
+
+def comment_on_question(request):
+    comment = dict(request.form)
+    comment['answer_id'] = None
+    DAL.comments.add_new(comment)
 
 
 def __upload_file_if_any(form_request, item, send_from_directory, app):

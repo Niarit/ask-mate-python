@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Add comment{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h1>{{ question['title'] }}</h1>
+        <p class="lead">{{ question['message'] | safe }}</p>
+        {% if question['image'] %}
+            <div class="mb-3">
+                <p>Attached image for question:</p>
+                <img src="{{ url_for('static', filename='uploads/images') }}/{{ question['image'] }}" alt="Attached image" onerror="">
+            </div>
+        {% endif %}
+        <form action="{{ url_for('comment_on_question', question_id=question['id'])}}" method="POST" enctype="multipart/form-data" autocomplete="OFF">
+            <input type="hidden" name="question_id" value="{{ question['id']}}">
+            <div class="form-group">
+                <label for="message">Your comment</label>
+                <textarea name="message" id="message" class="form-control" aria-label="Question"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary mb-3">Submit</button>
+        </form>
+        <a class="btn btn-info" href="{{ url_for('show_answers', question_id=question['id']) }}">Back to the question</a>
+        <a class="btn btn-info" href="{{ url_for('show_questions') }}">Back to Main menu</a>
+    </div>
+{% endblock %}
