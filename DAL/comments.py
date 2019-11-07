@@ -47,12 +47,14 @@ def update(cursor, data):
     cursor.execute("""
                     UPDATE comment
                     SET message = %(message)s,
+                        submission_time = %(submission_time)s,
                         edited_count = %(edited_count)s
                     WHERE id= %(_id)s
                     """,
                    {
                        '_id': data['id'],
                        'message': data['message'],
+                       'submission_time': data['submission_time'],
                        'edited_count': data['edited_count']
                    })
 

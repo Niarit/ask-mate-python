@@ -5,6 +5,9 @@ import DAL.searching
 import DAL.tags
 import os
 import uuid
+import time
+from datetime import datetime
+
 
 __ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
@@ -155,6 +158,9 @@ def edit_comment(request):
         edited_comment['edited_count'] = comment['edited_count'] + 1
     else:
         edited_comment['edited_count'] = 1
+    current_time = time.time()
+    edited_comment['submission_time'] = datetime.fromtimestamp(current_time)
+    print(current_time)
     if comment['answer_id']:
         result = DAL.answers.get_question_id_from_answer(comment['answer_id'])
         comment['question_id'] = result['question_id']
