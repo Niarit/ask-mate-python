@@ -124,9 +124,10 @@ def delete_answer(answer_id, app):
 
 
 def edit_answer(request):
-    answer = dict(request)
-    DAL.answers.update(answer)
-    answer = DAL.answers.select_one(answer['id'])
+    edited_answer = dict(request)
+    answer = DAL.answers.select_one(edited_answer['id'])
+    edited_answer['vote_number'] = answer['vote_number']
+    DAL.answers.update(edited_answer)
     return answer['question_id']
 
 
