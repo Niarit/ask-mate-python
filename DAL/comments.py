@@ -34,7 +34,7 @@ def delete_from_question(cursor, comment_id):
     cursor.execute("""
                     DELETE FROM comment
                     WHERE id = %(id)s
-                    RETURNING question_id;
+                    RETURNING question_id, answer_id;
                     """,
                    {
                        'id': comment_id

@@ -139,7 +139,11 @@ def comment_on_question(request):
 
 def delete_comment(comment_id):
     comment = DAL.comments.delete_from_question(comment_id)
-    return comment['question_id']
+    if comment['question_id'] is not None:
+        return comment['question_id']
+    else:
+        relevant_question = DAL.answers.select_one(comment['answer_id'])
+        return relevant_question['question_id']
 
 
 def comment_on_answer(request):
