@@ -93,7 +93,6 @@ body{
     margin-top: 15px;
 }
 
-<<<<<<< Updated upstream
 .search {
     background: #f2f2f2;
     font-family: 'Open Sans', sans-serif;
@@ -133,8 +132,7 @@ body{
     transform: translate(-54%, -200%);
 }
 
-#comment_delete{
+.comment_delete{
     float: right;
+    margin-left: 10px;
 }
-=======
->>>>>>> Stashed changes
