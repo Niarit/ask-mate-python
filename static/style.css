@@ -103,14 +103,8 @@ body{
 .searchTerm {
     width: 90%;
     border: 3px solid #00B4CC;
-<<<<<<< Updated upstream
     padding: 5px;
     height: 36px;
-=======
-    border-right: none;
-    padding: 5px;
-    height: 31px;
->>>>>>> Stashed changes
     border-radius: 5px 0 0 5px;
     outline: none;
     color: #9DBFAF;
@@ -129,27 +123,18 @@ body{
     color: #fff;
     border-radius: 0 5px 5px 0;
     cursor: pointer;
-<<<<<<< Updated upstream
-}
-
-=======
-    font-size: 20px;
 }
 
 
->>>>>>> Stashed changes
 .wrap{
     width: 30%;
     position: absolute;
     left: 50%;
     transform: translate(-54%, -200%);
-<<<<<<< Updated upstream
 }
 
 .comment_delete{
     float: right;
     margin-left: 10px;
 }
-=======
-}
->>>>>>> Stashed changes
+
