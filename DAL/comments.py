@@ -30,13 +30,14 @@ def add_new(cursor, data):
 
 
 @connection.connection_handler
-def delete_from_question(cursor, question_id):
+def delete_from_question(cursor, question_id, comment_id):
     cursor.execute("""
                     DELETE FROM comment
-                    WHERE question_id = %(question_id)s;
+                    WHERE question_id = %(question_id)s AND id = %(id)s;
                     """,
                    {
-                       'question_id': question_id
+                       'question_id': question_id,
+                       'id': comment_id
                    })
 
 

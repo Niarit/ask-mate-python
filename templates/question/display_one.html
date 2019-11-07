@@ -30,6 +30,7 @@
                         <span>
                             {{ comment['message'] }}
                             <small class="text-muted">- {{ comment['submission_time'] }}</small>
+                            <a id="comment_delete" class="text-danger" href="/question/{{ question['id'] }}/delete-comment-{{ comment['id'] }}">Delete comment</a>
                         </span>
                     </div>
                 </div>
