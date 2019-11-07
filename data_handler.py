@@ -57,7 +57,9 @@ def get_answer_with_its_question(answer_id):
 def get_comment_with_its_question(comment_id):
     comment_data = DAL.comments.select_one(comment_id)
     question_data = DAL.questions.select_one(comment_data['question_id'])
+    answer_data = DAL.answers.select_one(comment_data['answer_id'])
     comment_data['question'] = question_data
+    comment_data['answer'] = answer_data
     return comment_data
 
 
@@ -153,8 +155,9 @@ def edit_comment(request):
         edited_comment['edited_count'] = comment['edited_count'] + 1
     else:
         edited_comment['edited_count'] = 1
-    # print(comment)
-    # print(edited_comment)
+    if comment['answer_id']:
+        result = DAL.answers.get_question_id_from_answer(comment['answer_id'])
+        comment['question_id'] = result['question_id']
     DAL.comments.update(edited_comment)
     return comment['question_id']
 

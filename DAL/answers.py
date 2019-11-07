@@ -85,3 +85,16 @@ def select_one(cursor, id_):
                    {'id': id_})
     one_row = cursor.fetchone()
     return one_row
+
+
+@connection.connection_handler
+def get_question_id_from_answer(cursor, ans_id):
+    cursor.execute("""
+                    SELECT question_id FROM answer
+                    WHERE id = %(ans_id)s
+                    """,
+                   {
+                       'ans_id': ans_id
+                   })
+    one_row = cursor.fetchone()
+    return one_row

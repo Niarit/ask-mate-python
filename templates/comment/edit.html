@@ -9,6 +9,7 @@
         <h1>{{ comment['question']['title'] }}</h1>
 
         <p>{{ comment['question']['message'] | safe }}</p>
+        <p>{{ comment['answer']['message'] | safe }}</p>
 
         <form action="/comments/{{ comment['id'] }}/edit" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" value="{{ comment['id'] }}">
