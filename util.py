@@ -4,8 +4,8 @@ Helper functions which can be called from any other layer. (but mainly from the 
 
 import time
 from datetime import datetime
+import re
 import data_handler
-
 
 
 def pretty_datetime_for_ui(dt):
@@ -27,6 +27,13 @@ def pretty_datetime_for_ui(dt):
         return f'{int(total_hours)} hour ago'
     else:
         return time.strftime("%Y %m/%d %H:%M", time.localtime(timestamp))
+
+
+def highlight_phrase():
+    def _highlight_phrase(text_content, phrase):
+        pattern = re.compile(phrase, re.IGNORECASE)
+        return pattern.sub(f'<span class="highlight">{phrase}</span>', text_content)
+    return dict(highlight_phrase=_highlight_phrase)
 
 
 def __preformat_for_sort(data):

@@ -97,7 +97,7 @@ def delete_answer(answer_id):
 @app.route('/search')
 def search():
     result = data_handler.search(request)
-    return render_template('search/search_result.html', questions=result)
+    return render_template('search/search_result.html', questions=result, phrase=request.args.get('q'))
 
 
 @app.route('/answer/<int:answer_id>/edit', methods=['GET', 'POST'])
@@ -170,6 +170,11 @@ def remote_tag_from_question(question_id, tag_id):
 @app.template_filter('pretty_time')
 def pretty_datetime_for_ui_filter(datetime):
     return util.pretty_datetime_for_ui(datetime)
+
+
+@app.context_processor
+def highlight_phrase():
+    return util.highlight_phrase()
 
 
 if __name__ == '__main__':
