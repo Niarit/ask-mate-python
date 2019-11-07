@@ -38,3 +38,11 @@ def add_to_question(cursor, tag):
                     VALUES
                         (%s, %s);
                     """ % (tag['question_id'], tag['id']))
+
+
+@connection.connection_handler
+def remove_from_question(cursor, question_id, tag_id):
+    cursor.execute("""
+                    DELETE FROM question_tag
+                    WHERE question_id=%d AND tag_id=%d
+                    """ % (question_id, tag_id))

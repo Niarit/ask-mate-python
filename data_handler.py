@@ -204,6 +204,10 @@ def add_tag_to_question(request):
     DAL.tags.add_to_question(tag)
 
 
+def remote_tag_from_question(question_id, tag_id):
+    DAL.tags.remove_from_question(question_id, tag_id)
+
+
 def __upload_file_if_any(form_request, item, send_from_directory, app):
     """
     Uploads the POST-ed file if the request contains an image.

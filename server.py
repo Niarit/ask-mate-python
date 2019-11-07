@@ -160,6 +160,12 @@ def add_tag(question_id):
     return render_template('tag/add_to_question.html', question=question_data, tags=tags_data)
 
 
+@app.route('/question/<int:question_id>/tag/<int:tag_id>/delete')
+def remote_tag_from_question(question_id, tag_id):
+    data_handler.remote_tag_from_question(question_id, tag_id)
+    return redirect(request.referrer)
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

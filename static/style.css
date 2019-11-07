@@ -138,3 +138,25 @@ body{
     margin-left: 10px;
 }
 
+a.delete-button-link {
+    color: black;
+}
+
+a.delete-button-link:hover {
+    background-color: #17a2b8;
+    color: white;
+    transition: background-color 500ms linear;
+}
+
+a.delete-button-link:hover span.delete-button-icon {
+    display: inline;
+    visibility: visible;
+    opacity: 1;
+}
+
+span.delete-button-icon {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+}
