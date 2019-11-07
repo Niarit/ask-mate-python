@@ -8,15 +8,9 @@ __ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 
 def search(request):
-    result = []
     phrase = request.args.get('q')
     question_ids = DAL.searching.in_questions(phrase)
     return question_ids
-    # for row in question_ids:
-    #     result.append(row)
-    # for i, id in enumerate(result):
-    #     result[i] = DAL.questions.select_one(id)
-    # print(result)
 
 
 def route_list(request):
