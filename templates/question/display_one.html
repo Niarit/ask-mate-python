@@ -51,8 +51,23 @@
                     <div class="col-sm">
                         <p>{{ answer['message'] | safe}}</p>
                         <small class="form-text text-muted mb-3 d-inline-block">Posted: {{ question['submission_time'] }}</small>
-                        <a href="/answer/{{ answer['id'] }}/edit" class="text-primary">Edit answer</a>
+                        <a href="/answer/{{ answer['id'] }}/edit" class="text-warning">Edit answer</a>
+                        <a href="/answer/{{ answer['id'] }}/new-comment" class="text-primary">Add comment</a>
                         <a href="/answer/{{ answer['id'] }}/delete?question_id={{ question['id'] }}" class="text-danger">Delete answer</a>
+
+                        <div class="container mt-2 mb-2">
+                            {% for comment in answer['comments'] %}
+                                <div class="row">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-10 border-top border-bottom p-1">
+                                        <span>
+                                            {{ comment['message'] }}
+                                            <small class="text-muted">- {{ comment['submission_time'] }}</small>
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             {% endfor %}

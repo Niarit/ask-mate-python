@@ -141,6 +141,17 @@ def delete_comment(question_id):
     DAL.comments.delete_from_question(question_id)
 
 
+def comment_on_answer(request):
+    comment = dict(request.form)
+    comment['question_id'] = None
+    DAL.comments.add_new(comment)
+
+
+def get_comments_for_answers(answers):
+    for answer in answers:
+        answer['comments'] = DAL.comments.get_comments_for_an_answer(answer['id'])
+
+
 def __upload_file_if_any(form_request, item, send_from_directory, app):
     """
     Uploads the POST-ed file if the request contains an image.

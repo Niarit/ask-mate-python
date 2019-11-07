@@ -38,3 +38,17 @@ def delete_from_question(cursor, question_id):
                    {
                        'question_id': question_id
                    })
+
+
+@connection.connection_handler
+def get_comments_for_an_answer(cursor, answer_id):
+    cursor.execute("""
+                    SELECT * FROM comment
+                    WHERE answer_id = %(answer_id)s
+                    ORDER BY id ASC;
+                    """,
+                   {
+                       'answer_id': answer_id
+                   })
+    comments = cursor.fetchall()
+    return comments
