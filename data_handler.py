@@ -72,6 +72,13 @@ def add_answer(question_id, request, upload_image_func, app):
     DAL.answers.add_new(request_form)
 
 
+def add_answer(question_id, request, upload_image_func, app):
+    request_form = dict(request.form)
+    __upload_file_if_any(request, request_form, upload_image_func, app)
+    request_form['question_id'] = question_id
+    DAL.answers.add_new(request_form)
+
+
 def edit_question(request, question_data, send_from_directory, app):
     form_request = dict(request.form)
     __delete_image(question_data, app)
