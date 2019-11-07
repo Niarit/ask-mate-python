@@ -95,7 +95,7 @@ def delete_answer(answer_id):
 @app.route('/search')
 def search():
     result = data_handler.search(request)
-    return render_template('question/display_all.html', questions=result)
+    return render_template('search/search_result.html', questions=result)
 
 
 @app.route('/answer/<int:answer_id>/edit', methods=['GET', 'POST'])
