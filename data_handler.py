@@ -2,6 +2,7 @@ import DAL.answers
 import DAL.comments
 import DAL.questions
 import DAL.searching
+import DAL.tags
 import os
 import uuid
 
@@ -182,6 +183,25 @@ def comment_on_answer(request):
 def get_comments_for_answers(answers):
     for answer in answers:
         answer['comments'] = DAL.comments.get_comments_for_an_answer(answer['id'])
+
+
+def add_tag(request):
+    tag = dict(request.form)
+    DAL.tags.add_new(tag)
+
+
+def get_all_tags():
+    tag_data = DAL.tags.get_all()
+    return tag_data
+
+
+def get_tags_for_question(question):
+    question['tags'] = DAL.tags.get_all_for_a_question(question['id'])
+
+
+def add_tag_to_question(request):
+    tag = dict(request.form)
+    DAL.tags.add_to_question(tag)
 
 
 def __upload_file_if_any(form_request, item, send_from_directory, app):

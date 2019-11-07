@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Tag to Question{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h1>{{ question['title'] }}</h1>
+        <p class="lead">{{ question['message'] | safe }}</p>
+        <form action="{{ url_for('add_tag', question_id=question['id']) }}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="question_id" value="{{ question['id'] }}">
+            <div class="form-group">
+                <label for="tag">Select existing tag</label>
+                <select name="id" id="tag" class="selectpicker form-control">
+                    {% for tag in tags %}
+                        <option value="{{ tag['id'] }}">{{ tag['name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary mb-3">Add</button>
+        </form>
+        <form action="{{ url_for('create_tag') }}" method="POST" enctype="multipart/form-data" autocomplete="OFF">
+            <div class="form-group">
+                <label for="name">or Create new Tag</label>
+                <input name="name" type="text" class="form-control" id="name" placeholder="Name" aria-describedby="name">
+            </div>
+            <button type="submit" class="btn btn-primary mb-3">Create</button>
+        </form>
+        <a class="btn btn-info" href="{{ url_for('show_answers', question_id=question['id']) }}">Back to the Question</a>
+        <a class="btn btn-info" href="{{ url_for('show_questions') }}">Back to Main menu</a>
+    </div>
+{% endblock %}

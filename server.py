@@ -29,6 +29,7 @@ def add_question():
 @app.route('/question/<int:question_id>')
 def show_answers(question_id):
     question_data = data_handler.get_one_question(question_id)
+    data_handler.get_tags_for_question(question_data)
     data_handler.increase_view_number(question_data)
     answers = data_handler.get_answers_for_a_question(question_id)
     data_handler.get_comments_for_answers(answers)
@@ -138,6 +139,25 @@ def comment_on_answer(answer_id):
         data_handler.comment_on_answer(request)
         return redirect(url_for('show_answers', question_id=answer_data['question_id']))
     return render_template('comment/create_for_answer.html', answer=answer_data)
+
+
+@app.route('/tag', methods=['GET', 'POST'])
+def create_tag():
+    if request.method == 'POST':
+        data_handler.add_tag(request)
+        return redirect(request.referrer)
+    tags_data = data_handler.get_all_tags()
+    return render_template('tag/create.html', tags=tags_data)
+
+
+@app.route('/question/<int:question_id>/new-tag', methods=['GET', 'POST'])
+def add_tag(question_id):
+    if request.method == 'POST':
+        data_handler.add_tag_to_question(request)
+        return redirect(url_for('show_answers', question_id=question_id))
+    question_data = data_handler.get_one_question(question_id)
+    tags_data = data_handler.get_all_tags()
+    return render_template('tag/add_to_question.html', question=question_data, tags=tags_data)
 
 
 if __name__ == '__main__':
