@@ -55,3 +55,31 @@ def update(cursor, data):
                        'message': data['message'],
                        'edited_count': data['edited_count']
                    })
+
+
+@connection.connection_handler
+def delete_from_question(cursor, comment_id):
+    cursor.execute("""
+                    DELETE FROM comment
+                    WHERE id = %(id)s
+                    RETURNING question_id, answer_id;
+                    """,
+                   {
+                       'id': comment_id
+                   })
+    question_id = cursor.fetchone()
+    return question_id
+
+
+@connection.connection_handler
+def get_comments_for_an_answer(cursor, answer_id):
+    cursor.execute("""
+                    SELECT * FROM comment
+                    WHERE answer_id = %(answer_id)s
+                    ORDER BY id ASC;
+                    """,
+                   {
+                       'answer_id': answer_id
+                   })
+    comments = cursor.fetchall()
+    return comments

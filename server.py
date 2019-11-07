@@ -31,6 +31,7 @@ def show_answers(question_id):
     question_data = data_handler.get_one_question(question_id)
     data_handler.increase_view_number(question_data)
     answers = data_handler.get_answers_for_a_question(question_id)
+    data_handler.get_comments_for_answers(answers)
     return render_template('question/display_one.html', question=question_data, current_answers=answers)
 
 
@@ -122,6 +123,21 @@ def comment_on_question(question_id):
         data_handler.comment_on_question(request)
         return redirect(url_for('show_answers', question_id=question_id))
     return render_template('comment/create_for_question.html', question=question_data)
+
+
+@app.route('/comments/<comment_id>/delete')
+def delete_comment(comment_id):
+    question_id = data_handler.delete_comment(comment_id)
+    return redirect(url_for('show_answers', question_id=question_id))
+
+
+@app.route('/answer/<int:answer_id>/new-comment', methods=['GET', 'POST'])
+def comment_on_answer(answer_id):
+    answer_data = data_handler.get_answer_with_its_question(answer_id)
+    if request.method == 'POST':
+        data_handler.comment_on_answer(request)
+        return redirect(url_for('show_answers', question_id=answer_data['question_id']))
+    return render_template('comment/create_for_answer.html', answer=answer_data)
 
 
 if __name__ == '__main__':

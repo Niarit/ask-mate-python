@@ -5,9 +5,16 @@
 {% block content %}
 <div class="jumbotron" align="center">
     <h1 class="display-3"> Ask Mate! </h1>
+    <h2>Latest questions</h2>
+    <form method="get" action="{{ url_for('search') }}">
+        <input type="text" class="searchTerm" placeholder="What are you looking for?" name="q">
+        <button type="submit" class="searchButton">
+            <i class="fa fa-search"></i>
+        </button>
+    </form>
 </div>
 <div class="header_button">
-    <a href="{{ url_for('show_questions')}}" class="btn btn-primary">All questions</a>
+    <a href="{{ url_for('show_questions')}}" class="btn btn-info">All questions</a>
     <a href="{{ url_for('add_question')}}" class="btn btn-primary f-right">Ask a question</a>
 </div>
     <table class="table">
