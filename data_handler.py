@@ -53,6 +53,13 @@ def get_answer_with_its_question(answer_id):
     return answer_data
 
 
+def get_comment_with_its_question(comment_id):
+    comment_data = DAL.comments.select_one(comment_id)
+    question_data = DAL.questions.select_one(comment_data['question_id'])
+    comment_data['question'] = question_data
+    return comment_data
+
+
 def get_answers_for_a_question(question_id):
     answers = DAL.answers.get_answers_for_a_question(question_id)
     return answers
@@ -129,6 +136,19 @@ def edit_answer(request):
     edited_answer['vote_number'] = answer['vote_number']
     DAL.answers.update(edited_answer)
     return answer['question_id']
+
+
+def edit_comment(request):
+    edited_comment = dict(request)
+    comment = DAL.comments.select_one(edited_comment['id'])
+    if comment['edited_count']:
+        edited_comment['edited_count'] = comment['edited_count'] + 1
+    else:
+        edited_comment['edited_count'] = 1
+    # print(comment)
+    # print(edited_comment)
+    DAL.comments.update(edited_comment)
+    return comment['question_id']
 
 
 def comment_on_question(request):

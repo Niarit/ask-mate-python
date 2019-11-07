@@ -106,6 +106,15 @@ def edit_answer(answer_id):
     return render_template('answer/edit.html', answer=answer)
 
 
+@app.route('/comments/<int:comment_id>/edit', methods=['GET', 'POST'])
+def edit_comment(comment_id):
+    if request.method == 'POST':
+        question_id = data_handler.edit_comment(request.form)
+        return redirect(url_for('show_answers', question_id=question_id))
+    comment = data_handler.get_comment_with_its_question(comment_id)
+    return render_template('comment/edit.html', comment=comment)
+
+
 @app.route('/question/<int:question_id>/new-comment', methods=['GET', 'POST'])
 def comment_on_question(question_id):
     question_data = data_handler.get_one_question(question_id)
