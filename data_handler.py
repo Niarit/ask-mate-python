@@ -137,8 +137,9 @@ def comment_on_question(request):
     DAL.comments.add_new(comment)
 
 
-def delete_comment(question_id, comment_id):
-    DAL.comments.delete_from_question(question_id, comment_id)
+def delete_comment(comment_id):
+    comment = DAL.comments.delete_from_question(comment_id)
+    return comment['question_id']
 
 
 def comment_on_answer(request):
