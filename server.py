@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, send_from_directory, url_for
 
 import data_handler
+import util
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads/images/'
@@ -164,6 +165,11 @@ def add_tag(question_id):
 def remote_tag_from_question(question_id, tag_id):
     data_handler.remote_tag_from_question(question_id, tag_id)
     return redirect(request.referrer)
+
+
+@app.template_filter('pretty_time')
+def pretty_datetime_for_ui_filter(datetime):
+    return util.pretty_datetime_for_ui(datetime)
 
 
 if __name__ == '__main__':

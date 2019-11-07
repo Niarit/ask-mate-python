@@ -8,7 +8,7 @@
     <div class="jumbotron">
         <h1>{{ question['title'] }}</h1>
 
-        <small class="form-text text-muted mb-3">Posted: {{ question['submission_time'] }}</small>
+        <small class="form-text text-muted mb-3">Posted: {{ question['submission_time'] | pretty_time }}</small>
 
         <p class="lead">{{ question['message'] | safe }}</p>
 
@@ -40,7 +40,7 @@
                     <div class="col-md-10 border-top border-bottom p-1">
                         <span>
                             {{ comment['message'] }}
-                            <small class="text-muted">- {{ comment['submission_time'] }} {% if comment['edited_count'] %} edited {{ comment['edited_count'] }} time(s) {% endif %} </small>
+                            <small class="text-muted">- {{ comment['submission_time'] | pretty_time }} {% if comment['edited_count'] %} edited {{ comment['edited_count'] }} time(s) {% endif %} </small>
                             <a class="text-danger comment_delete" href="/comments/{{ comment['id'] }}/delete">Delete comment</a>
                             <a class="comment_delete" href="/comments/{{ comment['id'] }}/edit">Edit comment</a>
                         </span>
@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-sm">
                         <p>{{ answer['message'] | safe}}</p>
-                        <small class="form-text text-muted mb-3 d-inline-block">Posted: {{ question['submission_time'] }}</small>
+                        <small class="form-text text-muted mb-3 d-inline-block">Posted: {{ question['submission_time'] | pretty_time }}</small>
                         <a href="/answer/{{ answer['id'] }}/edit" class="text-warning">Edit answer</a>
                         <a href="/answer/{{ answer['id'] }}/new-comment" class="text-primary">Add comment</a>
                         <a href="/answer/{{ answer['id'] }}/delete?question_id={{ question['id'] }}" class="text-danger">Delete answer</a>
@@ -75,7 +75,7 @@
                                     <div class="col-md-10 border-top border-bottom p-1">
                                         <span>
                                             {{ comment['message'] }}
-                                            <small class="text-muted">- {{ comment['submission_time'] }}</small>
+                                            <small class="text-muted">- {{ comment['submission_time'] | pretty_time }}</small>
                                             <a id="" class="text-danger comment_delete" href="/comments/{{ comment['id'] }}/delete">Delete comment</a>
                                         </span>
                                     </div>

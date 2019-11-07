@@ -4,15 +4,13 @@ Helper functions which can be called from any other layer. (but mainly from the 
 
 import time
 from datetime import datetime
-
-
 import data_handler
 
 
 
-def timestamp_for_ui(timestamp):
-    timestamp = int(timestamp)
-    old_time = datetime.fromtimestamp(int(timestamp))
+def pretty_datetime_for_ui(dt):
+    timestamp = (dt - datetime(1970, 1, 1)).total_seconds()
+    old_time = dt
     current_time = datetime.now()
     time_delta = current_time - old_time
     total_minutes = (time_delta.total_seconds() // 60)

@@ -29,7 +29,7 @@
         </thead>
 			{% for question in questions %}
 				<tr>
-                    <td align="right">{{ question['submission_time'] }}</td>
+                    <td align="right">{{ question['submission_time'] | pretty_time }}</td>
                     <td><a href="{{ url_for('show_answers', question_id=question['id']) }}">{{ question['title'] }}</a> </td>
                     <td>{{ question['message'] | safe}}</td>
                     <td align="right" id="v_number">{{ question['view_number'] }}</td>
