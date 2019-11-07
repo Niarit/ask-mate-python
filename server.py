@@ -7,6 +7,11 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads/images/'
 
 
 @app.route('/')
+def show_five_question():
+    questions = data_handler.route_five_list()
+    return render_template('question/display_five.html', questions=questions)
+
+
 @app.route('/list')
 def show_questions():
     result_data = data_handler.route_list(request)
@@ -24,6 +29,7 @@ def add_question():
 @app.route('/question/<int:question_id>')
 def show_answers(question_id):
     question_data = data_handler.get_one_question(question_id)
+    data_handler.increase_view_number(question_data)
     answers = data_handler.get_answers_for_a_question(question_id)
     return render_template('question/display_one.html', question=question_data, current_answers=answers)
 
@@ -89,6 +95,15 @@ def delete_answer(answer_id):
 def search():
     result = data_handler.search(request)
     return render_template('question/display_all.html', questions=result)
+
+
+@app.route('/answer/<int:answer_id>/edit', methods=['GET', 'POST'])
+def edit_answer(answer_id):
+    if request.method == 'POST':
+        question_id = data_handler.edit_answer(request.form)
+        return redirect(url_for('show_answers', question_id=question_id))
+    answer = data_handler.get_answer_with_its_question(answer_id)
+    return render_template('answer/edit.html', answer=answer)
 
 
 if __name__ == '__main__':

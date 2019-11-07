@@ -12,6 +12,17 @@ def get_questions(cursor, column, order):
 
 
 @connection.connection_handler
+def get_five_newest(cursor):
+    cursor.execute("""
+                    SELECT * FROM question
+                    ORDER BY submission_time DESC
+                    LIMIT 5
+                    """)
+    questions = cursor.fetchall()
+    return questions
+
+
+@connection.connection_handler
 def add_new(cursor, data):
     cursor.execute("""
                     INSERT INTO question ( view_number, vote_number, title, message, image)

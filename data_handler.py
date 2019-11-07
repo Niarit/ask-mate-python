@@ -13,6 +13,11 @@ def search(request):
     return question_ids
 
 
+def route_five_list():
+    data = DAL.questions.get_five_newest()
+    return data
+
+
 def route_list(request):
     order_direction = 'DESC'
     if 'order_direction' in request.args:
@@ -39,26 +44,16 @@ def get_one_question(question_id):
     return question_data
 
 
+def get_answer_with_its_question(answer_id):
+    answer_data = DAL.answers.select_one(answer_id)
+    question_data = DAL.questions.select_one(answer_data['question_id'])
+    answer_data['question'] = question_data
+    return answer_data
+
+
 def get_answers_for_a_question(question_id):
     answers = DAL.answers.get_answers_for_a_question(question_id)
     return answers
-
-#
-#
-# def add_new_answer(question_id):
-#     if request.method == 'POST':
-#         answer = dict(request.form)
-#         answer['question_id'] = question_id
-#         __upload_file_if_any(request, answer)
-#         data_handler.insert_answer(answer)
-#         return redirect(f'/question/{question_id}')
-#     question_id = int(question_id)
-#     questions = data_handler.get_data('questions')
-#     question_row_index = data_handler.get_row_index_by_id(question_id, questions)
-#     question = questions[question_row_index]
-#     # questions = data_handler.get_data('questions')
-#     # title = ''.join([question['title'] for question in questions if question['id'] == int(question_id)])
-#     return render_template('answer/create.html', question=question)
 
 
 def add_answer(question_id, request, upload_image_func, app):
@@ -76,6 +71,11 @@ def edit_question(request, question_data, send_from_directory, app):
     form_request['vote_number'] = question_data['vote_number']
     form_request['id'] = question_data['id']
     DAL.questions.update(form_request)
+
+
+def increase_view_number(question_data):
+    question_data['view_number'] += 1
+    DAL.questions.update(question_data)
 
 
 def question_vote_up(question_id):
@@ -119,6 +119,13 @@ def delete_answer(answer_id, app):
     __delete_image(answer, app)
     DAL.answers.delete(answer)
     return question_id
+
+
+def edit_answer(request):
+    answer = dict(request)
+    DAL.answers.update(answer)
+    answer = DAL.answers.select_one(answer['id'])
+    return answer['question_id']
 
 
 def __upload_file_if_any(form_request, item, send_from_directory, app):
