@@ -115,6 +115,13 @@ def comment_on_question(question_id):
     return render_template('comment/create_for_question.html', question=question_data)
 
 
+@app.route('/question/<int:question_id>/delete-comment')
+def delete_comment(question_id):
+    data_handler.delete_comment(question_id)
+    return redirect(url_for('show_answers', question_id=question_id))
+
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

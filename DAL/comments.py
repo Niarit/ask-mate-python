@@ -27,3 +27,14 @@ def add_new(cursor, data):
                        'answer_id': data['answer_id'],
                        'message': data['message'],
                    })
+
+
+@connection.connection_handler
+def delete_from_question(cursor, question_id):
+    cursor.execute("""
+                    DELETE FROM comment
+                    WHERE question_id = %(question_id)s;
+                    """,
+                   {
+                       'question_id': question_id
+                   })
