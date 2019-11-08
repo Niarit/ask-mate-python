@@ -162,5 +162,6 @@ span.delete-button-icon {
 }
 
 span.highlight {
-    color: red;
+    background-color: #00B4CC;
+    color: white;
 }
