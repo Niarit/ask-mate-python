@@ -39,10 +39,15 @@
                     <div class="col-md-2"></div>
                     <div class="col-md-10 border-top border-bottom p-1">
                         <span>
-                            {{ comment['message'] }}
-                            <small class="text-muted">- {{ comment['submission_time'] | pretty_time }} {% if comment['edited_count'] %} - edited {{ comment['edited_count'] }} time(s) - {% endif %} </small>
-                            <a class="text-danger comment_delete" href="/comments/{{ comment['id'] }}/delete">Delete comment</a>
-                            <a class="text-warning comment_delete" href="/comments/{{ comment['id'] }}/edit">Edit comment</a>
+                            <small>
+                                {{ comment['message'] }}
+                            </small>
+                            <br>
+                            <small class="text-muted">- {{ comment['submission_time'] | pretty_time }} {% if comment['edited_count'] %} - edited {{ comment['edited_count'] }} time(s) {% endif %} </small>
+                            <small>
+                                <a class="text-danger comment_delete" href="/comments/{{ comment['id'] }}/delete">Delete comment</a>
+                                <a class="text-warning comment_delete" href="/comments/{{ comment['id'] }}/edit">Edit comment</a>
+                            </small>
                         </span>
                     </div>
                 </div>
@@ -74,10 +79,15 @@
                                     <div class="col-md-2"></div>
                                     <div class="col-md-10 border-top border-bottom p-1">
                                         <span>
-                                            {{ comment['message'] }}
+                                            <small>
+                                                {{ comment['message'] }}
+                                            </small>
+                                            <br>
                                             <small class="text-muted">- {{ comment['submission_time'] | pretty_time }} {% if comment['edited_count'] %} - edited {{ comment['edited_count'] }} time(s) - {% endif %}</small>
-                                            <a id="" class="text-danger comment_delete" href="/comments/{{ comment['id'] }}/delete">Delete comment</a>
-                                            <a class="text-warning comment_delete" href="/comments/{{ comment['id'] }}/edit">Edit comment</a>
+                                            <small>
+                                                <a id="" class="text-danger comment_delete" href="/comments/{{ comment['id'] }}/delete">Delete comment</a>
+                                                <a class="text-warning comment_delete" href="/comments/{{ comment['id'] }}/edit">Edit comment</a>
+                                            </small>
                                         </span>
                                     </div>
                                 </div>
