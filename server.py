@@ -177,6 +177,12 @@ def highlight_phrase():
     return util.highlight_phrase()
 
 
+@app.route('/all-users')
+def show_all_users():
+    data = data_handler.show_all_users()
+    return render_template('user/all_users.html', data=data)
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',

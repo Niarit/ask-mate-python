@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ data['user_name'] }}'s page
+{% endblock %}
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-3"> {{ data['user_name'] }}'s page </h1>
+</div>
+    <p> User name: {{ data['user_name'] }}</p>
+    <a class="btn btn-warning" href="">Edit question</a>
+    <p> Password </p>
+    <a class="btn btn-warning" href="">Edit question</a>
+

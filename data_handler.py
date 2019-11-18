@@ -3,6 +3,7 @@ import DAL.comments
 import DAL.questions
 import DAL.searching
 import DAL.tags
+import DAL.users
 import os
 import uuid
 import time
@@ -254,3 +255,8 @@ def __delete_image(item, app):
 
     if item['image']:
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], item['image']))
+
+
+def show_all_users():
+    data = DAL.users.get_all_users()
+    return data
