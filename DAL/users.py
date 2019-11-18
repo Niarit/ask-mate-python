@@ -18,3 +18,16 @@ def get_all_users(cursor):
                     SELECT id, user_name FROM users""")
     all_users = cursor.fetchall()
     return all_users
+
+
+@connection.connection_handler
+def edit_user(cursor, user_data):
+    cursor.execute("""
+                    UPDATE users
+                    SET user_name = %(user_name)s,
+                        pw = %(user_pw)s """,
+                   {
+                       'user_name': user_data['user_name'],
+                       'user_pw': user_data['password']
+                   })
+
