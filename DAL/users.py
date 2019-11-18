@@ -31,3 +31,14 @@ def edit_user(cursor, user_data):
                        'user_pw': user_data['password']
                    })
 
+
+@connection.connection_handler
+def get_one_user(cursor, user_name):
+    cursor.execute("""
+                    SELECT * FROM users
+                    WHERE user_name = %(user_name)s""",
+                   {
+                       'user_name': user_name
+                   })
+    user_data = cursor.fetchone()
+    return user_data

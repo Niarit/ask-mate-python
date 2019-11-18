@@ -191,6 +191,12 @@ def show_all_users():
     return render_template('user/all_users.html', data=data)
 
 
+@app.route('/<user_name>')
+def show_user_page(user_name):
+    user_data = data_handler.show_one_user(user_name)
+    return render_template('user/user_page.html', data=user_data)
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
