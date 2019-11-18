@@ -7,6 +7,6 @@ def add_user(cursor, data):
                     INSERT INTO users (user_name, pw)
                     VALUES (%(user_name)s, %(pw)s)""",
                    {
-                       'user_name' : data['user_name']
-                       'pw' : data['password']
+                       'user_name': data['user_name'],
+                       'pw': data['password']
                    })
