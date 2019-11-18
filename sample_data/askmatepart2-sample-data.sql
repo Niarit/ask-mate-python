@@ -24,8 +24,7 @@ DROP SEQUENCE IF EXISTS public.user_id_seq;
 CREATE TABLE users (
     id serial NOT NULL,
     user_name text,
-    pw text,
-    is_active boolean
+    pw text
 );
 
 DROP TABLE IF EXISTS public.question;
@@ -79,6 +78,8 @@ CREATE TABLE tag (
     name text
 );
 
+ALTER TABLE ONLY users
+    ADD CONSTRAINT pk_user_id PRIMARY KEY (id);
 
 ALTER TABLE ONLY answer
     ADD CONSTRAINT pk_answer_id PRIMARY KEY (id);
@@ -105,7 +106,7 @@ ALTER TABLE ONLY answer
     ADD CONSTRAINT fk_user_answer_id FOREIGN KEY (user_id) REFERENCES users(id);
 
 ALTER TABLE ONLY question_tag
-    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE,
+    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY comment
     ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE;
