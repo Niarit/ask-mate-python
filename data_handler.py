@@ -8,6 +8,7 @@ import os
 import uuid
 import time
 from datetime import datetime
+import bcrypt
 
 
 __ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -208,6 +209,21 @@ def add_tag_to_question(request):
 
 def remote_tag_from_question(question_id, tag_id):
     DAL.tags.remove_from_question(question_id, tag_id)
+
+
+def register_a_user(request):
+    username = request.form['username']
+    passwd = hash_password(request.form['password'])
+    data = {
+        'user_name': username,
+        'password': passwd
+    }
+    DAL.users.add_user(data)
+
+
+def hash_password(plain_text_password):
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
 
 
 def __upload_file_if_any(form_request, item, send_from_directory, app):

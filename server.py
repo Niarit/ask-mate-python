@@ -167,6 +167,14 @@ def remote_tag_from_question(question_id, tag_id):
     return redirect(request.referrer)
 
 
+@app.route('/registration', methods=['GET', 'POST'])
+def user_registration():
+    if request.method == 'POST':
+        data_handler.register_a_user(request)
+        return redirect(url_for('show_questions'))
+    return render_template('user/reg.html')
+
+
 @app.template_filter('pretty_time')
 def pretty_datetime_for_ui_filter(datetime):
     return util.pretty_datetime_for_ui(datetime)
