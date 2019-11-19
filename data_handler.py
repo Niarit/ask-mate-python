@@ -40,10 +40,11 @@ def route_list(request):
     return sorted_questions, order_direction
 
 
-def add_question(request, upload_image_func, app):
+def add_question(request, upload_image_func, app, session):
     request_form = dict(request.form)
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
     __upload_file_if_any(request, request_form, upload_image_func, app)
-    DAL.questions.add_new(request_form)
+    DAL.questions.add_new(request_form, session['id'])
 
 
 def get_one_question(question_id):

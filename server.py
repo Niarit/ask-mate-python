@@ -26,7 +26,7 @@ def show_questions():
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        data_handler.add_question(request, send_from_directory, app)
+        data_handler.add_question(request, send_from_directory, app, session)
         return redirect('/list')
     return render_template('question/create.html', username=session['username'])
 

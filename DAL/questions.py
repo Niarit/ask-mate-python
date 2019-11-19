@@ -23,16 +23,18 @@ def get_five_newest(cursor):
 
 
 @connection.connection_handler
-def add_new(cursor, data):
+def add_new(cursor, data, user_id):
     cursor.execute("""
-                    INSERT INTO question ( view_number, vote_number, title, message, image)
+                    INSERT INTO question ( view_number, vote_number, title, message, image, user_id)
                     VALUES 
-                        (0,0,%(title)s,%(message)s,%(image)s);
+                        (0,0,%(title)s,%(message)s,%(image)s, %(user_id)s);
                     """,
                    {
                        'title': data['title'],
                        'message': data['message'],
-                       'image': data['image']})
+                       'image': data['image'],
+                       'user_id': user_id
+                   })
 
 
 @connection.connection_handler
