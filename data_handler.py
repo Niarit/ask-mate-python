@@ -1,3 +1,4 @@
+import DAL.accepted_answers
 import DAL.answers
 import DAL.comments
 import DAL.questions
@@ -120,6 +121,10 @@ def answer_vote_down(answer_id):
     answer['vote_number'] = answer['vote_number'] - 1
     DAL.answers.update(answer)
     return answer['question_id']
+
+
+def answer_accept(question_id, answer_id):
+    DAL.accepted_answers.add(question_id, answer_id)
 
 
 def delete_question(question_id, app):

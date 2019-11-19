@@ -78,6 +78,13 @@ CREATE TABLE tag (
     name text
 );
 
+DROP TABLE IF EXISTS public.accepted_answers;
+CREATE TABLE public.accepted_answers
+(
+    question_id integer UNIQUE NOT NULL,
+    answer_id integer NOT NULL
+);
+
 ALTER TABLE ONLY users
     ADD CONSTRAINT pk_user_id PRIMARY KEY (id);
 
@@ -96,6 +103,10 @@ ALTER TABLE ONLY question_tag
 
 ALTER TABLE ONLY tag
     ADD CONSTRAINT pk_tag_id PRIMARY KEY (id);
+
+ALTER TABLE ONLY accepted_answers
+    ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id) ON DELETE CASCADE,
+    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY comment
     ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id) ON DELETE CASCADE,

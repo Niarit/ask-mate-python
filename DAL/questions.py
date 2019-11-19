@@ -72,8 +72,15 @@ def delete(cursor, data):
 @connection.connection_handler
 def select_one(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM question
-                    WHERE id = %(id)s;
+                    SELECT
+                        question.*,
+                        CASE
+                            WHEN accepted_answers.question_id IS NULL THEN False
+                            ELSE True
+                        END AS has_accepted_answer
+                    FROM question
+                    LEFT JOIN accepted_answers ON question.id = accepted_answers.question_id
+                    WHERE question.id = %(id)s;
                     """,
                    {'id': id_})
     one_row = cursor.fetchone()

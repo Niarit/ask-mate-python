@@ -88,6 +88,12 @@ def answer_vote_down(answer_id):
     return redirect(url_for('show_answers', question_id=answer))
 
 
+@app.route('/question/<int:question_id>/answer/<int:answer_id>/accept')
+def answer_accept(question_id, answer_id):
+    data_handler.answer_accept(question_id, answer_id)
+    return redirect(request.referrer)
+
+
 @app.route('/question/<int:question_id>/delete')
 def delete_question(question_id):
     data_handler.delete_question(question_id, app)
