@@ -213,7 +213,7 @@ def show_all_users():
     return render_template('user/all_users.html', data=data, username=session['username'])
 
 
-@app.route('/<user_name>')
+@app.route('/user/<user_id>')
 def show_user_page(user_name):
     user_data = data_handler.show_one_user(user_name)
     return render_template('user/user_page.html', data=user_data)
