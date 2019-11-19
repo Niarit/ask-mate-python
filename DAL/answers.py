@@ -38,16 +38,18 @@ def add_answer(cursor, q_id, data):
 
 
 @connection.connection_handler
-def add_new(cursor, data):
+def add_new(cursor, data, user_id):
     cursor.execute("""
-                    INSERT INTO answer (vote_number, question_id, message, image)
+                    INSERT INTO answer (vote_number, question_id, message, image, user_id)
                     VALUES 
-                        (0,%(question_id)s,%(message)s,%(image)s);
+                        (0,%(question_id)s,%(message)s,%(image)s,%(user_id)s);
                     """,
                    {
                        'question_id': data['question_id'],
                        'message': data['message'],
-                       'image': data['image']})
+                       'image': data['image'],
+                       'user_id': user_id
+                   })
 
 
 @connection.connection_handler
@@ -98,3 +100,5 @@ def get_question_id_from_answer(cursor, ans_id):
                    })
     one_row = cursor.fetchone()
     return one_row
+
+

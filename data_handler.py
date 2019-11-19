@@ -74,11 +74,12 @@ def get_answers_for_a_question(question_id):
     return answers
 
 
-def add_answer(question_id, request, upload_image_func, app):
+def add_answer(question_id, request, upload_image_func, app, session):
     request_form = dict(request.form)
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
     __upload_file_if_any(request, request_form, upload_image_func, app)
     request_form['question_id'] = question_id
-    DAL.answers.add_new(request_form)
+    DAL.answers.add_new(request_form, session['id'])
 
 
 def edit_question(request, question_data, send_from_directory, app):

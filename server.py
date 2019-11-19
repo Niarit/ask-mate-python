@@ -45,7 +45,7 @@ def show_answers(question_id):
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def add_new_answer(question_id):
     if request.method == 'POST':
-        data_handler.add_answer(question_id, request, send_from_directory, app)
+        data_handler.add_answer(question_id, request, send_from_directory, app, session)
         return redirect(url_for('show_answers', question_id=question_id))
     question_data = data_handler.get_one_question(question_id)
     return render_template('answer/create.html', question=question_data, username=session['username'])
