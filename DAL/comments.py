@@ -16,16 +16,17 @@ def get_comments_for_a_question(cursor, question_id):
 
 
 @connection.connection_handler
-def add_new(cursor, data):
+def add_new(cursor, data, user_id):
     cursor.execute("""
-                    INSERT INTO comment (question_id, answer_id, message)
+                    INSERT INTO comment (question_id, answer_id, message, user_id)
                     VALUES
-                        (%(question_id)s, %(answer_id)s, %(message)s);
+                        (%(question_id)s, %(answer_id)s, %(message)s, %(user_id)s);
                     """,
                    {
                        'question_id': data['question_id'],
                        'answer_id': data['answer_id'],
                        'message': data['message'],
+                       'user_id': user_id
                    })
 
 
