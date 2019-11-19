@@ -13,6 +13,7 @@ def show_five_question():
     questions = data_handler.route_five_list()
     if 'username' not in session:
         session['username'] = ''
+    user_id = data_handler.get_user_id(session['username'])
     return render_template('question/display_five.html', questions=questions, username=session['username'])
 
 
@@ -187,6 +188,7 @@ def login_user():
     if request.method == 'POST':
         if data_handler.verify_login(request):
             session['username'] = request.form['username']
+            session['id'] = data_handler.get_user_id(session['username'])
             return redirect(url_for('show_five_question'))
     return render_template('user/login.html', username=session['username'])
 
@@ -214,8 +216,8 @@ def show_all_users():
 
 
 @app.route('/user/<user_id>')
-def show_user_page(user_name):
-    user_data = data_handler.show_one_user(user_name)
+def show_user_page(user_id):
+    user_data = data_handler.show_one_user(user_id)
     return render_template('user/user_page.html', data=user_data)
 
 

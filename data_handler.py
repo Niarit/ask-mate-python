@@ -284,6 +284,11 @@ def show_all_users():
     return data
 
 
-def show_one_user(user_name):
-    user_data = DAL.users.get_one_user(user_name)
+def show_one_user(user_id):
+    user_data = DAL.users.get_one_user(user_id)
     return user_data
+
+
+def get_user_id(username):
+    user_id = DAL.users.get_user_id(username)
+    return user_id['id']
