@@ -166,7 +166,8 @@ def add_tag(question_id):
         return redirect(url_for('show_answers', question_id=question_id))
     question_data = data_handler.get_one_question(question_id)
     tags_data = data_handler.get_all_tags()
-    return render_template('tag/add_to_question.html', question=question_data, tags=tags_data, username=session['username'])
+    return render_template('tag/add_to_question.html', question=question_data, tags=tags_data,
+                           username=session['username'])
 
 
 @app.route('/question/<int:question_id>/tag/<int:tag_id>/delete')
@@ -186,17 +187,16 @@ def user_registration():
 @app.route('/login', methods=['GET', 'POST'])
 def login_user():
     if request.method == 'POST':
-        if data_handler.verify_login(request):
-            session['username'] = request.form['username']
-            session['id'] = data_handler.get_user_id(session['username'])
+        if data_handler.verify_login(request, session):
             return redirect(url_for('show_five_question'))
     return render_template('user/login.html', username=session['username'])
 
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
-    return redirect(url_for('show_five_question'))
+    session['username'] = ''
+    session['id'] = ''
+    return redirect(request.referrer)
 
 
 @app.template_filter('pretty_time')

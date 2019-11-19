@@ -226,10 +226,13 @@ def hash_password(plain_text_password):
     return hashed_bytes.decode('utf-8')
 
 
-def verify_login(request):
+def verify_login(request, session):
     hashed_bytes_password = DAL.users.get_password(request.form['username'])
     if hashed_bytes_password:
-        return bcrypt.checkpw(request.form['password'].encode('utf-8'), hashed_bytes_password['pw'].encode('utf-8'))
+        is_success = bcrypt.checkpw(request.form['password'].encode('utf-8'), hashed_bytes_password['pw'].encode('utf-8'))
+        session['username'] = request.form['username']
+        session['id'] = DAL.users.get_one_user(session['username'])['id']
+        return is_success
 
 
 def __upload_file_if_any(form_request, item, send_from_directory, app):
