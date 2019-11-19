@@ -292,6 +292,5 @@ def show_one_user(user_id):
     return user_data
 
 
-def get_user_id(username):
-    user_id = DAL.users.get_user_id(username)
-    return user_id['id']
+def is_logged_in(session):
+    return '' != session['username']

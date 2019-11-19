@@ -13,7 +13,6 @@ def show_five_question():
     questions = data_handler.route_five_list()
     if 'username' not in session:
         session['username'] = ''
-    user_id = data_handler.get_user_id(session['username'])
     return render_template('question/display_five.html', questions=questions, username=session['username'])
 
 
@@ -27,7 +26,7 @@ def show_questions():
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        data_handler.add_question(request,send_from_directory, app)
+        data_handler.add_question(request, send_from_directory, app)
         return redirect('/list')
     return render_template('question/create.html', username=session['username'])
 
@@ -196,7 +195,7 @@ def login_user():
 def logout():
     session['username'] = ''
     session['id'] = ''
-    return redirect(request.referrer)
+    return redirect(url_for('show_five_question'))
 
 
 @app.template_filter('pretty_time')
@@ -219,6 +218,11 @@ def show_all_users():
 def show_user_page(user_id):
     user_data = data_handler.show_one_user(user_id)
     return render_template('user/user_page.html', data=user_data)
+
+
+@app.context_processor
+def is_logged():
+    return dict(is_logged_in=data_handler.is_logged_in(session))
 
 
 if __name__ == '__main__':
