@@ -282,3 +282,8 @@ def __delete_image(item, app):
 def show_all_users():
     data = DAL.users.get_all_users()
     return data
+
+
+def show_one_user(user_name):
+    user_data = DAL.users.get_one_user(user_name)
+    return user_data

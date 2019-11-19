@@ -165,3 +165,12 @@ span.highlight {
     background-color: #00B4CC;
     color: white;
 }
+
+.ui {
+    font-size: large;
+    color: #11557C;
+}
+
+.ui:hover{
+    color: #11557C;
+}
