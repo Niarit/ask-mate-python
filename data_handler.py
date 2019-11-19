@@ -162,10 +162,11 @@ def edit_comment(request):
     return comment['question_id']
 
 
-def comment_on_question(request):
+def comment_on_question(request, session):
     comment = dict(request.form)
     comment['answer_id'] = None
-    DAL.comments.add_new(comment)
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
+    DAL.comments.add_new(comment, session['id'])
 
 
 def delete_comment(comment_id):

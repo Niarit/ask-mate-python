@@ -129,7 +129,7 @@ def edit_comment(comment_id):
 def comment_on_question(question_id):
     question_data = data_handler.get_one_question(question_id)
     if request.method == 'POST':
-        data_handler.comment_on_question(request)
+        data_handler.comment_on_question(request, session)
         return redirect(url_for('show_answers', question_id=question_id))
     return render_template('comment/create_for_question.html', question=question_data, username=session['username'])
 
@@ -231,3 +231,4 @@ if __name__ == '__main__':
         port=8000,
         debug=True,
     )
+
