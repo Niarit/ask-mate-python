@@ -103,7 +103,8 @@ ALTER TABLE ONLY question_tag
     ADD CONSTRAINT pk_question_tag_id PRIMARY KEY (question_id, tag_id);
 
 ALTER TABLE ONLY tag
-    ADD CONSTRAINT pk_tag_id PRIMARY KEY (id);
+    ADD CONSTRAINT pk_tag_id PRIMARY KEY (id),
+    ADD CONSTRAINT un_tag_name UNIQUE (name);
 
 ALTER TABLE ONLY accepted_answers
     ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id) ON DELETE CASCADE,
