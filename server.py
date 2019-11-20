@@ -210,9 +210,9 @@ def add_tag(question_id):
 
 
 @app.route('/question/<int:question_id>/tag/<int:tag_id>/delete')
-def remote_tag_from_question(question_id, tag_id):
+def remove_tag_from_question(question_id, tag_id):
     if data_handler.is_logged_in(session):
-        data_handler.remote_tag_from_question(question_id, tag_id)
+        data_handler.remove_tag_from_question(question_id, tag_id)
     else:
         return redirect('/login')
     return redirect(request.referrer)

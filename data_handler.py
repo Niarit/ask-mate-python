@@ -216,7 +216,7 @@ def add_tag_to_question(request):
     DAL.tags.add_to_question(tag)
 
 
-def remote_tag_from_question(question_id, tag_id):
+def remove_tag_from_question(question_id, tag_id):
     DAL.tags.remove_from_question(question_id, tag_id)
 
 
