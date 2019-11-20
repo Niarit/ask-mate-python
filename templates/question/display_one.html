@@ -31,6 +31,7 @@
         <a class="btn btn-warning" href="/question/{{ question['id'] }}/edit">Edit question</a>
         <a class="btn btn-primary" href="/question/{{ question['id'] }}/new-comment">Add comment</a>
         <a class="btn btn-primary" href="{{ url_for('add_tag', question_id=question['id']) }}">Add tag</a>
+        <a class="btn btn-primary" href="/tags">All tags</a>
         <a class="btn btn-danger f-right" href="/question/{{ question['id'] }}/delete">Delete question</a>
 
         <div class="container mt-5 mb-5">

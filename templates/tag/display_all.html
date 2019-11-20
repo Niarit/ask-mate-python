@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}
+    Tags
+{% endblock %}
+{% block content %}
+    <div class="jumbotron" align="center">
+        <h1 class="display-3"> Tags </h1>
+        <table class="table">
+            <tr>
+                <th>Tag</th>
+                <th>Questions</th>
+            </tr>
+            {% for key in data %}
+                <tr>
+                    <td>{{ key }}</td>
+                    <td>
+                        {% for value in data[key] %}
+                            {% if value['title'] %}
+                                <a href="/question/{{ value['id'] }}">{{ value['title'] }}</a><br />
+                            {% else %}
+                                <p>No question for this tag</p>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <a class="btn btn-info" href="{{ url_for('show_questions') }}">Back to Home</a>
+{% endblock %}
