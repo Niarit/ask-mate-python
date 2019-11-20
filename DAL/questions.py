@@ -108,3 +108,14 @@ def select_one(cursor, id_):
     one_row = cursor.fetchone()
     return one_row
 
+
+@connection.connection_handler
+def get_users_question(cursor, user_id):
+    cursor.execute("""
+                    SELECT * FROM question
+                    WHERE user_id = %(user_id)s""",
+                   {
+                       'user_id': user_id
+                   })
+    users_questions = cursor.fetchall()
+    return users_questions

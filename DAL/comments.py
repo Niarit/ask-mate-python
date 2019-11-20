@@ -113,3 +113,29 @@ def get_comments_for_an_answer(cursor, answer_id):
                    })
     comments = cursor.fetchall()
     return comments
+
+
+@connection.connection_handler
+def get_users_comments_for_answers(cursor, user_id):
+    cursor.execute("""
+                    SELECT comment.answer_id, comment.message FROM comment
+                    JOIN answer ON comment.answer_id = answer.id
+                    WHERE comment.user_id = %(user_id)s""",
+                   {
+                       'user_id': user_id
+                   })
+    users_answer_comments = cursor.fetchall()
+    return users_answer_comments
+
+
+@connection.connection_handler
+def get_users_comments_for_questions(cursor, user_id):
+    cursor.execute("""
+                    SELECT comment.question_id, comment.message FROM comment
+                    JOIN question ON comment.question_id = question.id
+                    WHERE comment.user_id = %(user_id)s""",
+                   {
+                       'user_id': user_id
+                   })
+    users_question_comments = cursor.fetchall()
+    return users_question_comments
