@@ -24,7 +24,8 @@ DROP SEQUENCE IF EXISTS public.user_id_seq;
 CREATE TABLE users (
     id serial NOT NULL,
     user_name text,
-    pw text
+    pw text,
+    create_time timestamp without time zone DEFAULT CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS public.question;
