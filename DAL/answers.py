@@ -4,7 +4,16 @@ import connection
 @connection.connection_handler
 def get_answers(cursor):
     cursor.execute("""
-                    SELECT * FROM answer;
+                    SELECT answer.id, 
+                        submission_time, 
+                        vote_number,
+                        question_id,
+                        message, 
+                        image,
+                        user_id,
+                        users.user_name 
+                        FROM answer
+                    JOIN users ON answer.user_id = users.id;
                     """)
     all_answers = cursor.fetchall()
     return all_answers
@@ -85,8 +94,17 @@ def delete(cursor, data):
 @connection.connection_handler
 def select_one(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM answer
-                    WHERE id = %(id)s;
+                    SELECT answer.id, 
+                        submission_time, 
+                        vote_number,
+                        question_id,
+                        message, 
+                        image,
+                        user_id,
+                        users.user_name 
+                        FROM answer
+                    JOIN users ON answer.user_id = users.id
+                    WHERE answer.id = %(id)s;
                     """,
                    {'id': id_})
     one_row = cursor.fetchone()

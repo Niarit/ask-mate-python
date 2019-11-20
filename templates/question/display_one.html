@@ -7,9 +7,8 @@
 {% block content %}
     <div class="jumbotron">
         <h1>{{ question['title'] }}</h1>
-
-        <small class="form-text text-muted mb-3">Posted: {{ question['submission_time'] | pretty_time }}</small>
-
+        <small class="form-text text-muted mb-3">Posted at: {{ question['submission_time'] | pretty_time }}</small>
+        <small class="form-text text-muted mb-3">Posted by: {{ question['user_name'] }}</small>
         <p class="lead">{{ question['message'] | safe }}</p>
 
         {% if question['image'] %}
@@ -42,6 +41,10 @@
                         <span>
                             <small>
                                 {{ comment['message'] }}
+                            </small>
+                            <br>
+                            <small class="text-muted">
+                                Posted by: {{ comment['user_name'] }}
                             </small>
                             <br>
                             <small class="text-muted">- {{ comment['submission_time'] | pretty_time }} {% if comment['edited_count'] %} - edited {{ comment['edited_count'] }} time(s) {% endif %} </small>
@@ -92,6 +95,10 @@
                                         <span>
                                             <small>
                                                 {{ comment['message'] }}
+                                            </small>
+                                            <br>
+                                            <small class="text-muted">
+                                                Posted by: {{ comment['user_name'] }}
                                             </small>
                                             <br>
                                             <small class="text-muted">- {{ comment['submission_time'] | pretty_time }} {% if comment['edited_count'] %} - edited {{ comment['edited_count'] }} time(s) - {% endif %}</small>

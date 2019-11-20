@@ -4,7 +4,16 @@ import connection
 @connection.connection_handler
 def get_comments_for_a_question(cursor, question_id):
     cursor.execute("""
-                    SELECT * FROM comment
+                    SELECT comment.id,
+                        question_id,
+                        answer_id,
+                        message,
+                        submission_time,
+                        edited_count,
+                        user_id,
+                        users.user_name 
+                        FROM comment
+                    JOIN users ON comment.user_id = users.id
                     WHERE question_id = %(question_id)s
                     ORDER BY id ASC;
                     """,
@@ -33,8 +42,17 @@ def add_new(cursor, data, user_id):
 @connection.connection_handler
 def select_one(cursor, comment_id):
     cursor.execute("""
-                    SELECT * FROM comment
-                    WHERE id = %(c_id)s
+                    SELECT comment.id,
+                        question_id,
+                        answer_id,
+                        message,
+                        submission_time,
+                        edited_count,
+                        user_id,
+                        users.user_name 
+                        FROM comment
+                    JOIN users ON comment.user_id = users.id
+                    WHERE comment.id = %(c_id)s
                     """,
                    {
                        'c_id': comment_id,
@@ -77,7 +95,16 @@ def delete_from_question(cursor, comment_id):
 @connection.connection_handler
 def get_comments_for_an_answer(cursor, answer_id):
     cursor.execute("""
-                    SELECT * FROM comment
+                    SELECT comment.id,
+                        question_id,
+                        answer_id,
+                        message,
+                        submission_time,
+                        edited_count,
+                        user_id,
+                        users.user_name 
+                        FROM comment
+                    JOIN users ON comment.user_id = users.id
                     WHERE answer_id = %(answer_id)s
                     ORDER BY id ASC;
                     """,

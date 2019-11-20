@@ -4,8 +4,18 @@ import connection
 @connection.connection_handler
 def get_questions(cursor, column, order):
     cursor.execute(f"""
-                    SELECT * FROM question
-                    ORDER BY {column} {order}; 
+                    SELECT question.id, 
+                        submission_time, 
+                        view_number, 
+                        vote_number, 
+                        title, 
+                        message, 
+                        image, 
+                        user_id, 
+                        user_name 
+                        FROM question
+                    JOIN users ON question.user_id = users.id
+                    ORDER BY {column} {order};
                     """)
     all_questions = cursor.fetchall()
     return all_questions
@@ -14,7 +24,17 @@ def get_questions(cursor, column, order):
 @connection.connection_handler
 def get_five_newest(cursor):
     cursor.execute("""
-                    SELECT * FROM question
+                    SELECT question.id, 
+                        submission_time, 
+                        view_number, 
+                        vote_number, 
+                        title, 
+                        message, 
+                        image, 
+                        user_id, 
+                        user_name 
+                        FROM question
+                    JOIN users ON question.user_id = users.id
                     ORDER BY submission_time DESC
                     LIMIT 5
                     """)
@@ -73,13 +93,15 @@ def delete(cursor, data):
 def select_one(cursor, id_):
     cursor.execute("""
                     SELECT
-                        question.*,
+                        question.*, 
+                        users.user_name,
                         CASE
                             WHEN accepted_answers.question_id IS NULL THEN False
                             ELSE True
                         END AS has_accepted_answer
                     FROM question
-                    LEFT JOIN accepted_answers ON question.id = accepted_answers.question_id
+                    LEFT JOIN accepted_answers ON question.id = accepted_answers.question_id                  
+                    JOIN users ON question.user_id = users.id
                     WHERE question.id = %(id)s;
                     """,
                    {'id': id_})
