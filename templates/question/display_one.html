@@ -66,6 +66,16 @@
                         <a href="/answer/{{ answer['id'] }}/vote_down">
                            <img src="/static/img/down.png" alt="Vote down" class="mx-auto d-block">
                         </a>
+                       <div class="text-center">
+                           {% if answer['is_accepted'] %}
+                                <img src="{{ url_for('static', filename="img/checked-checkmark.png") }}" alt="Accepted answer checkmark">
+                           {% elif question['has_accepted_answer'] %}
+                           {% else %}
+                                <a href="{{ url_for('answer_accept', answer_id=answer['id'], question_id=question['id']) }}">
+                                    <img src="{{ url_for('static', filename="img/unchecked-checkmark.png") }}" alt="Not yet accepted answer">
+                                </a>
+                           {% endif %}
+                       </div>
                     </div>
                     <div class="col-sm">
                         <p>{{ answer['message'] | safe}}</p>
