@@ -295,5 +295,16 @@ def show_one_user(user_id):
     return user_data
 
 
+def get_tags_with_questions():
+    sql_data = DAL.tags.get_tags_with_questions()
+    data = {}
+    for item in sql_data:
+        if item['name'] not in data:
+            data[item['name']] = [item]
+        else:
+            data[item['name']] += [item]
+    return data
+
+
 def is_logged_in(session):
     return '' != session['username']
