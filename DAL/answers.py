@@ -24,9 +24,11 @@ def get_answers_for_a_question(cursor, q_id):
     cursor.execute("""
                     SELECT
                         answer.*,
-                        accepted_answers.answer_id AS is_accepted
+                        accepted_answers.answer_id AS is_accepted,
+                        users.user_name
                     FROM answer
                     LEFT JOIN accepted_answers ON answer.id = accepted_answers.answer_id
+                    JOIN users ON answer.user_id = users.id
                     WHERE answer.question_id = %(q_id)s
                     ORDER BY id ASC;
                     """,

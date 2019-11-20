@@ -83,6 +83,7 @@
                     <div class="col-sm">
                         <p>{{ answer['message'] | safe}}</p>
                         <small class="form-text text-muted mb-3 d-inline-block">Posted: {{ question['submission_time'] | pretty_time }} </small>
+                        <small class="text-muted"> Posted by: {{ answer['user_name'] }}</small>
                         <a href="/answer/{{ answer['id'] }}/edit" class="text-warning">Edit answer</a>
                         <a href="/answer/{{ answer['id'] }}/new-comment" class="text-primary">Add comment</a>
                         <a href="/answer/{{ answer['id'] }}/delete?question_id={{ question['id'] }}" class="text-danger">Delete answer</a>
