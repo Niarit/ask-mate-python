@@ -303,7 +303,6 @@ def get_tags_with_questions():
             data[item['name']] = [item]
         else:
             data[item['name']] += [item]
-    print(data)
     return data
 
 
