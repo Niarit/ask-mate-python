@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, send_from_directory
 
 import data_handler
 import util
+from functools import wraps
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads/images/'
@@ -16,19 +17,22 @@ def show_five_question():
     return render_template('question/display_five.html', questions=questions, username=session['username'])
 
 
+@app.route('/add-question', methods=['GET', 'POST'])
+def add_question():
+    if request.method == 'POST':
+        if data_handler.is_logged_in(session):
+            data_handler.add_question(request, send_from_directory, app, session)
+            return redirect('/list')
+        else:
+            return redirect('/login')
+    return render_template('question/create.html', username=session['username'])
+
+
 @app.route('/list')
 def show_questions():
     result_data = data_handler.route_list(request)
     return render_template('question/display_all.html', questions=result_data[0], order_direction=result_data[1],
                            username=session['username'])
-
-
-@app.route('/add-question', methods=['GET', 'POST'])
-def add_question():
-    if request.method == 'POST':
-        data_handler.add_question(request, send_from_directory, app, session)
-        return redirect('/list')
-    return render_template('question/create.html', username=session['username'])
 
 
 @app.route('/question/<int:question_id>')
@@ -45,8 +49,11 @@ def show_answers(question_id):
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def add_new_answer(question_id):
     if request.method == 'POST':
-        data_handler.add_answer(question_id, request, send_from_directory, app, session)
-        return redirect(url_for('show_answers', question_id=question_id))
+        if data_handler.is_logged_in(session):
+            data_handler.add_answer(question_id, request, send_from_directory, app, session)
+            return redirect(url_for('show_answers', question_id=question_id))
+        else:
+            return redirect('/login')
     question_data = data_handler.get_one_question(question_id)
     return render_template('answer/create.html', question=question_data, username=session['username'])
 
@@ -55,8 +62,11 @@ def add_new_answer(question_id):
 def edit_question(question_id):
     question_data = data_handler.get_one_question(question_id)
     if request.method == 'POST':
-        data_handler.edit_question(request, question_data, send_from_directory, app)
-        return redirect(url_for('show_answers', question_id=question_id))
+        if data_handler.is_logged_in(session):
+            data_handler.edit_question(request, question_data, send_from_directory, app)
+            return redirect(url_for('show_answers', question_id=question_id))
+        else:
+            return redirect('/login')
     return render_template('question/edit.html',
                            title='Edit Question',
                            question_id=question_id,
@@ -96,13 +106,19 @@ def answer_accept(question_id, answer_id):
 
 @app.route('/question/<int:question_id>/delete')
 def delete_question(question_id):
-    data_handler.delete_question(question_id, app)
+    if data_handler.is_logged_in(session):
+        data_handler.delete_question(question_id, app)
+    else:
+        return redirect('/login')
     return redirect(url_for('show_questions'))
 
 
 @app.route('/answer/<int:answer_id>/delete')
 def delete_answer(answer_id):
-    question_id = data_handler.delete_answer(answer_id, app)
+    if data_handler.is_logged_in(session):
+        question_id = data_handler.delete_answer(answer_id, app)
+    else:
+        return redirect('/login')
     return redirect(url_for('show_answers', question_id=question_id))
 
 
@@ -116,8 +132,11 @@ def search():
 @app.route('/answer/<int:answer_id>/edit', methods=['GET', 'POST'])
 def edit_answer(answer_id):
     if request.method == 'POST':
-        question_id = data_handler.edit_answer(request.form)
-        return redirect(url_for('show_answers', question_id=question_id))
+        if data_handler.is_logged_in(session):
+            question_id = data_handler.edit_answer(request.form)
+            return redirect(url_for('show_answers', question_id=question_id))
+        else:
+            return redirect('/login')
     answer = data_handler.get_answer_with_its_question(answer_id)
     return render_template('answer/edit.html', answer=answer, username=session['username'])
 
@@ -125,8 +144,11 @@ def edit_answer(answer_id):
 @app.route('/comments/<int:comment_id>/edit', methods=['GET', 'POST'])
 def edit_comment(comment_id):
     if request.method == 'POST':
-        question_id = data_handler.edit_comment(request.form)
-        return redirect(url_for('show_answers', question_id=question_id))
+        if data_handler.is_logged_in(session):
+            question_id = data_handler.edit_comment(request.form)
+            return redirect(url_for('show_answers', question_id=question_id))
+        else:
+            return redirect('/login')
     comment = data_handler.get_comment_with_its_question(comment_id)
     return render_template('comment/edit.html', comment=comment, username=session['username'])
 
@@ -135,14 +157,20 @@ def edit_comment(comment_id):
 def comment_on_question(question_id):
     question_data = data_handler.get_one_question(question_id)
     if request.method == 'POST':
-        data_handler.comment_on_question(request, session)
-        return redirect(url_for('show_answers', question_id=question_id))
+        if data_handler.is_logged_in(session):
+            data_handler.comment_on_question(request, session)
+            return redirect(url_for('show_answers', question_id=question_id))
+        else:
+            return redirect('/login')
     return render_template('comment/create_for_question.html', question=question_data, username=session['username'])
 
 
 @app.route('/comments/<comment_id>/delete')
 def delete_comment(comment_id):
-    question_id = data_handler.delete_comment(comment_id)
+    if data_handler.is_logged_in(session):
+        question_id = data_handler.delete_comment(comment_id)
+    else:
+        return redirect('/login')
     return redirect(url_for('show_answers', question_id=question_id))
 
 
@@ -150,8 +178,11 @@ def delete_comment(comment_id):
 def comment_on_answer(answer_id):
     answer_data = data_handler.get_answer_with_its_question(answer_id)
     if request.method == 'POST':
-        data_handler.comment_on_answer(request)
-        return redirect(url_for('show_answers', question_id=answer_data['question_id']))
+        if data_handler.is_logged_in(session):
+            data_handler.comment_on_answer(request, session)
+            return redirect(url_for('show_answers', question_id=answer_data['question_id']))
+        else:
+            return redirect('/login')
     return render_template('comment/create_for_answer.html', answer=answer_data, username=session['username'])
 
 
@@ -167,8 +198,11 @@ def create_tag():
 @app.route('/question/<int:question_id>/new-tag', methods=['GET', 'POST'])
 def add_tag(question_id):
     if request.method == 'POST':
-        data_handler.add_tag_to_question(request)
-        return redirect(url_for('show_answers', question_id=question_id))
+        if data_handler.is_logged_in(session):
+            data_handler.add_tag_to_question(request)
+            return redirect(url_for('show_answers', question_id=question_id))
+        else:
+            return redirect('/login')
     question_data = data_handler.get_one_question(question_id)
     tags_data = data_handler.get_all_tags()
     return render_template('tag/add_to_question.html', question=question_data, tags=tags_data,
@@ -177,7 +211,10 @@ def add_tag(question_id):
 
 @app.route('/question/<int:question_id>/tag/<int:tag_id>/delete')
 def remote_tag_from_question(question_id, tag_id):
-    data_handler.remote_tag_from_question(question_id, tag_id)
+    if data_handler.is_logged_in(session):
+        data_handler.remote_tag_from_question(question_id, tag_id)
+    else:
+        return redirect('/login')
     return redirect(request.referrer)
 
 

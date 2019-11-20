@@ -185,10 +185,11 @@ def delete_comment(comment_id):
         return relevant_question['question_id']
 
 
-def comment_on_answer(request):
+def comment_on_answer(request, session):
     comment = dict(request.form)
     comment['question_id'] = None
-    DAL.comments.add_new(comment)
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
+    DAL.comments.add_new(comment, session['id'])
 
 
 def get_comments_for_answers(answers):
