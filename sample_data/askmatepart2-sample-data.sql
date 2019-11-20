@@ -126,7 +126,16 @@ ALTER TABLE ONLY comment
 ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE;
 
-INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
+INSERT INTO users VALUES (1, 'Zetetic','$2b$12$NIB/JMT4b5v8I4wN4gn.lec4jonisMhwAnvb//DhykEkIFRXFU.PC', '2017-11-11 11:06:00');
+INSERT INTO users VALUES (2, 'Nugament','$2b$12$NIB/JMT4b5v8I4wN4gn.lec4jonisMhwAnvb//DhykEkIFRXFU.PC', '2018-05-25 08:59:00');
+INSERT INTO users VALUES (3, 'Aardwolf','$2b$12$NIB/JMT4b5v8I4wN4gn.lec4jonisMhwAnvb//DhykEkIFRXFU.PC', '2018-07-30 05:37:00');
+INSERT INTO users VALUES (4, 'Utricide','$2b$12$NIB/JMT4b5v8I4wN4gn.lec4jonisMhwAnvb//DhykEkIFRXFU.PC', '2017-09-14 12:28:00');
+INSERT INTO users VALUES (5, 'Mythography','$2b$12$NIB/JMT4b5v8I4wN4gn.lec4jonisMhwAnvb//DhykEkIFRXFU.PC', '2016-02-22 00:49:00');
+INSERT INTO users VALUES (6, 'Surcingle','$2b$12$NIB/JMT4b5v8I4wN4gn.lec4jonisMhwAnvb//DhykEkIFRXFU.PC', '2019-04-20 01:11:00');
+INSERT INTO users VALUES (7, 'Syncline','$2b$12$NIB/JMT4b5v8I4wN4gn.lec4jonisMhwAnvb//DhykEkIFRXFU.PC', '2019-12-01 04:50:00');
+INSERT INTO users VALUES (8, 'Trapezoid','$2b$12$NIB/JMT4b5v8I4wN4gn.lec4jonisMhwAnvb//DhykEkIFRXFU.PC', '2017-01-05 06:32:00');
+
+INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL, 1);
 INSERT INTO question VALUES (1, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
 
 I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
@@ -135,17 +144,17 @@ BUT in my theme i also using jquery via webpack so the loading order is now foll
 
 jquery
 booklet
-app.js (bundled file with webpack, including jquery)', NULL);
+app.js (bundled file with webpack, including jquery)', NULL, 3);
 INSERT INTO question VALUES (2, '2017-05-01 10:41:00', 1364, 57, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
-', NULL);
+', NULL, 2);
 SELECT pg_catalog.setval('question_id_seq', 2, true);
 
-INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', 4, 0, 'You need to use brackets: my_list = []', NULL);
-INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', 35, 0, 'Look it up in the Python docs', NULL);
+INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', 4, 0, 'You need to use brackets: my_list = []', NULL, 5);
+INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', 35, 0, 'Look it up in the Python docs', NULL, 7);
 SELECT pg_catalog.setval('answer_id_seq', 2, true);
 
-INSERT INTO comment VALUES (1, 0, NULL, 'Please clarify the question as it is too vague!', '2017-05-01 05:49:00');
-INSERT INTO comment VALUES (2, NULL, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00');
+INSERT INTO comment VALUES (1, 0, NULL, 'Please clarify the question as it is too vague!', '2017-05-01 05:49:00', 6);
+INSERT INTO comment VALUES (2, NULL, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00', 8);
 SELECT pg_catalog.setval('comment_id_seq', 2, true);
 
 INSERT INTO tag VALUES (1, 'python');

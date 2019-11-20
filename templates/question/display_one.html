@@ -19,7 +19,7 @@
         {% endif %}
         <div class="form-group">
             {% for tag in question['tags'] %}
-                <a href="{{ url_for('remote_tag_from_question', question_id=question['id'],tag_id=tag['id']) }}" class="delete-button-link m-1 border border-info rounded p-2">
+                <a href="{{ url_for('remove_tag_from_question', question_id=question['id'],tag_id=tag['id']) }}" class="delete-button-link m-1 border border-info rounded p-2">
                     <span>
                         {{ tag['name'] }}
                         <span class="delete-button-icon">×</span>
