@@ -8,6 +8,7 @@ import DAL.users
 import os
 import uuid
 import time
+import validate
 from datetime import datetime
 import bcrypt
 
@@ -43,9 +44,12 @@ def route_list(request):
 
 def add_question(request, upload_image_func, app, session):
     request_form = dict(request.form)
-    session['id'] = DAL.users.get_one_user(session['username'])['id']
-    __upload_file_if_any(request, request_form, upload_image_func, app)
-    DAL.questions.add_new(request_form, session['id'])
+    errors = validate.as_question(request_form)
+    if not errors:
+        session['id'] = DAL.users.get_one_user(session['username'])['id']
+        __upload_file_if_any(request, request_form, upload_image_func, app)
+        DAL.questions.add_new(request_form, session['id'])
+    return errors
 
 
 def get_one_question(question_id):

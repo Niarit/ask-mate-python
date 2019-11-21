@@ -3,6 +3,9 @@
 {% block content %}
     <div class="jumbotron">
         <h1>Ask Question</h1>
+
+        {% include 'error_messages.html' %}
+
         <form action="/add-question" method="POST" enctype="multipart/form-data" autocomplete="off">
             <div class="form-group">
                 <label for="title">Title</label>
@@ -11,7 +14,7 @@
 
             <div class="form-group">
                 <label for="title">Question</label>
-                <textarea name="message" class="form-control" aria-label="Question" minlength="10"></textarea>
+                <textarea name="message" class="form-control" aria-label="Question" minlength="10" required></textarea>
                 <small class="form-text text-muted">Be as specific as possible with Your problem.</small>
             </div>
 
