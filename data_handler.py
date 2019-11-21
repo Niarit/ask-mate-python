@@ -18,8 +18,11 @@ __ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 def search(request):
     phrase = request.args.get('q')
-    question_ids = DAL.searching.in_questions(phrase)
-    return question_ids
+    errors = validate.as_search_query(request.args)
+    question_ids = []
+    if not errors:
+        question_ids = DAL.searching.in_questions(phrase)
+    return question_ids, errors, phrase
 
 
 def route_five_list():

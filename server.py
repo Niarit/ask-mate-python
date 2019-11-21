@@ -131,8 +131,8 @@ def delete_answer(answer_id):
 
 @app.route('/search')
 def search():
-    result = data_handler.search(request)
-    return render_template('search/search_result.html', questions=result, phrase=request.args.get('q'),
+    result, errors, phrase = data_handler.search(request)
+    return render_template('search/search_result.html', questions=result, phrase=phrase, errors=errors,
                            username=session['username'])
 
 
