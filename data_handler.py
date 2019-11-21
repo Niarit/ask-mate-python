@@ -200,12 +200,10 @@ def get_comments_for_answers(answers):
 def add_tag(request):
     tag = dict(request.form)
     tags = DAL.tags.get_all()
-    is_in = False
     for item in tags:
-        if item['name'] == tag['name']:
-            is_in = True
-    if not is_in:
-        DAL.tags.add_new(tag)
+        if not tag['name'] or item['name'] == tag['name']:
+            return None
+    DAL.tags.add_new(tag)
 
 
 def get_all_tags():
@@ -220,12 +218,10 @@ def get_tags_for_question(question):
 def add_tag_to_question(request):
     tag = dict(request.form)
     tags = DAL.tags.get_all_for_a_question(int(tag['question_id']))
-    is_in = False
     for item in tags:
         if int(tag['id']) == item['id']:
-            is_in = True
-    if not is_in:
-        DAL.tags.add_to_question(tag)
+            return None
+    DAL.tags.add_to_question(tag)
 
 
 def remove_tag_from_question(question_id, tag_id):
