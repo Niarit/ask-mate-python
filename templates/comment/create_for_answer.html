@@ -16,7 +16,7 @@
             <input type="hidden" name="answer_id" value="{{ answer['id']}}">
             <div class="form-group">
                 <label for="message">Your comment</label>
-                <textarea name="message" id="message" class="form-control" aria-label="Question"></textarea>
+                <textarea name="message" id="message" class="form-control" aria-label="Question" minlength="10"></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary mb-3">Submit</button>
