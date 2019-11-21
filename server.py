@@ -264,12 +264,14 @@ def show_user_page(user_id):
     users_answers = data_handler.get_users_answers(session)
     users_question_comments = data_handler.get_users_comments(session)[1]
     users_answer_comments = data_handler.get_users_comments(session)[0]
+    user_rep = data_handler.get_user_reputation(session)
     return render_template('user/user_page.html',
                            data=user_data,
                            user_questions=users_question,
                            user_answers=users_answers,
                            user_q_comments=users_question_comments,
-                           users_a_comments=users_answer_comments)
+                           users_a_comments=users_answer_comments,
+                           user_rep=user_rep)
 
 
 @app.route('/tags')

@@ -55,3 +55,16 @@ def get_one_user(cursor, user_name):
                    })
     user_data = cursor.fetchone()
     return user_data
+
+
+@connection.connection_handler
+def get_user_rep(cursor, user_id):
+    cursor.execute("""
+                    SELECT reputation FROM users
+                    WHERE id = %(user_id)s""",
+                   {
+                       'user_id': user_id
+                   })
+    reputation = cursor.fetchone()
+    return reputation
+
