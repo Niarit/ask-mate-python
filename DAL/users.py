@@ -21,14 +21,16 @@ def get_all_users(cursor):
 
 
 @connection.connection_handler
-def edit_user(cursor, user_data):
+def edit_user(cursor, user_data, user_id):
     cursor.execute("""
                     UPDATE users
                     SET user_name = %(user_name)s,
-                        pw = %(user_pw)s """,
+                        pw = %(user_pw)s 
+                    WHERE id = %(user_id)s""",
                    {
                        'user_name': user_data['user_name'],
-                       'user_pw': user_data['password']
+                       'user_pw': user_data['password'],
+                       'user_id': user_id
                    })
 
 

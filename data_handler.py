@@ -346,3 +346,4 @@ def get_users_comments(session):
 def get_user_reputation(session):
     session['id'] = DAL.users.get_one_user(session['username'])['id']
     return DAL.users.get_user_rep(session['id'])
+
