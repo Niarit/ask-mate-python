@@ -30,8 +30,11 @@ def show_five_question():
 @only_authenticated
 def add_question():
     if request.method == 'POST':
-        data_handler.add_question(request, send_from_directory, app, session)
-        return redirect('/list')
+        errors = data_handler.add_question(request, send_from_directory, app, session)
+        if not errors:
+            return redirect('/list')
+        else:
+            return render_template('question/create.html', errors=errors)
     return render_template('question/create.html', username=session['username'])
 
 
@@ -128,8 +131,8 @@ def delete_answer(answer_id):
 
 @app.route('/search')
 def search():
-    result = data_handler.search(request)
-    return render_template('search/search_result.html', questions=result, phrase=request.args.get('q'),
+    result, errors, phrase = data_handler.search(request)
+    return render_template('search/search_result.html', questions=result, phrase=phrase, errors=errors,
                            username=session['username'])
 
 
