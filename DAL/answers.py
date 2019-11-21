@@ -126,3 +126,18 @@ def get_question_id_from_answer(cursor, ans_id):
     return one_row
 
 
+@connection.connection_handler
+def get_users_answers(cursor, user_id):
+    cursor.execute("""
+                    SELECT question.title,
+                        answer.message,
+                        answer.submission_time,
+                        answer.vote_number, 
+                        answer.question_id FROM answer
+                    JOIN question ON answer.question_id = question.id
+                    WHERE answer.user_id = %(user_id)s""",
+                   {
+                       'user_id': user_id
+                   })
+    users_answers = cursor.fetchall()
+    return users_answers

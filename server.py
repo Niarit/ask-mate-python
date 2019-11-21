@@ -238,7 +238,7 @@ def login_user():
 def logout():
     session['username'] = ''
     session['id'] = ''
-    return redirect(request.referrer)
+    return redirect(url_for('show_five_question'))
 
 
 @app.template_filter('pretty_time')
@@ -260,7 +260,18 @@ def show_all_users():
 @app.route('/user/<user_id>')
 def show_user_page(user_id):
     user_data = data_handler.show_one_user(user_id)
-    return render_template('user/user_page.html', data=user_data)
+    users_question = data_handler.get_users_questions(session)
+    users_answers = data_handler.get_users_answers(session)
+    users_question_comments = data_handler.get_users_comments(session)[1]
+    users_answer_comments = data_handler.get_users_comments(session)[0]
+    user_rep = data_handler.get_user_reputation(session)
+    return render_template('user/user_page.html',
+                           data=user_data,
+                           user_questions=users_question,
+                           user_answers=users_answers,
+                           user_q_comments=users_question_comments,
+                           users_a_comments=users_answer_comments,
+                           user_rep=user_rep)
 
 
 @app.route('/tags')
@@ -272,6 +283,7 @@ def show_tags():
 @app.context_processor
 def is_logged():
     return dict(is_logged_in=data_handler.is_logged_in(session))
+
 
 
 if __name__ == '__main__':
