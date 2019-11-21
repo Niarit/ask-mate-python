@@ -6,12 +6,12 @@
         <form action="/add-question" method="POST" enctype="multipart/form-data" autocomplete="off">
             <div class="form-group">
                 <label for="title">Title</label>
-                <input name="title" type="text" class="form-control" id="title" aria-describedby="title" placeholder="Short, descriptive title of Your problem">
+                <input name="title" type="text" class="form-control" id="title" aria-describedby="title" placeholder="Short, descriptive title of Your problem" pattern=".{6,}" required title="6 characters minimum">
             </div>
 
             <div class="form-group">
                 <label for="title">Question</label>
-                <textarea name="message" class="form-control" aria-label="Question"></textarea>
+                <textarea name="message" class="form-control" aria-label="Question" minlength="10"></textarea>
                 <small class="form-text text-muted">Be as specific as possible with Your problem.</small>
             </div>
 

@@ -22,7 +22,7 @@
         <form action="{{ url_for('create_tag') }}" method="POST" enctype="multipart/form-data" autocomplete="OFF">
             <div class="form-group">
                 <label for="name">or Create new Tag</label>
-                <input name="name" type="text" class="form-control" id="name" placeholder="Name" aria-describedby="name">
+                <input name="name" type="text" class="form-control" id="name" placeholder="Name" aria-describedby="name" pattern=".{3,}" title="3 characters minimum">
             </div>
             <button type="submit" class="btn btn-primary mb-3">Create</button>
         </form>
