@@ -118,7 +118,7 @@ def get_comments_for_an_answer(cursor, answer_id):
 @connection.connection_handler
 def get_users_comments_for_answers(cursor, user_id):
     cursor.execute("""
-                    SELECT comment.answer_id, comment.message FROM comment
+                    SELECT comment.message, answer.question_id, comment.submission_time FROM comment
                     JOIN answer ON comment.answer_id = answer.id
                     WHERE comment.user_id = %(user_id)s""",
                    {
@@ -131,7 +131,7 @@ def get_users_comments_for_answers(cursor, user_id):
 @connection.connection_handler
 def get_users_comments_for_questions(cursor, user_id):
     cursor.execute("""
-                    SELECT comment.question_id, comment.message FROM comment
+                    SELECT comment.question_id, comment.message, comment.submission_time FROM comment
                     JOIN question ON comment.question_id = question.id
                     WHERE comment.user_id = %(user_id)s""",
                    {

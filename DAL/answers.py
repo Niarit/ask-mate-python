@@ -129,7 +129,11 @@ def get_question_id_from_answer(cursor, ans_id):
 @connection.connection_handler
 def get_users_answers(cursor, user_id):
     cursor.execute("""
-                    SELECT question.title, answer.message, answer.question_id FROM answer
+                    SELECT question.title,
+                        answer.message,
+                        answer.submission_time,
+                        answer.vote_number, 
+                        answer.question_id FROM answer
                     JOIN question ON answer.question_id = question.id
                     WHERE answer.user_id = %(user_id)s""",
                    {

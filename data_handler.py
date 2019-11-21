@@ -314,3 +314,22 @@ def get_tags_with_questions():
 
 def is_logged_in(session):
     return '' != session['username']
+
+
+def get_users_questions(session):
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
+    users_questions = DAL.questions.get_users_question(session['id'])
+    return users_questions
+
+
+def get_users_answers(session):
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
+    users_answers = DAL.answers.get_users_answers(session['id'])
+    return users_answers
+
+
+def get_users_comments(session):
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
+    users_comments_questions = DAL.comments.get_users_comments_for_questions(session['id'])
+    users_comments_answers = DAL.comments.get_users_comments_for_answers(session['id'])
+    return users_comments_answers, users_comments_questions
