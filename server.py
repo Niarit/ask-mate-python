@@ -222,10 +222,13 @@ def user_registration():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_user():
+    errors = []
     if request.method == 'POST':
         if data_handler.verify_login(request, session):
             return redirect(url_for('show_five_question'))
-    return render_template('user/login.html', username=session['username'])
+        else:
+            errors.append('Unknown username or password')
+    return render_template('user/login.html', username=session['username'], errors=errors)
 
 
 @app.route('/logout')
