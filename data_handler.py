@@ -32,11 +32,19 @@ def route_five_list():
 
 def route_list(request):
     order_direction = 'DESC'
-    if 'order_direction' in request.args:
-        order_direction = request.args.get('order_direction')
+    if 'order_direction' in request.args and request.args.get('order_direction') == 'ASC':
+        order_direction = 'ASC'
     column_name = 'submission_time'
     if 'order_by' in request.args:
-        column_name = request.args.get('order_by')
+        column_names = [
+            'submission_time',
+            'title',
+            'message',
+            'view_number',
+            'vote_number',
+        ]
+        if request.args.get('order_by') in column_names:
+            column_name = request.args.get('order_by')
     sorted_questions = DAL.questions.get_questions(column_name, order_direction)
     if order_direction == 'DESC':
         order_direction = 'ASC'
