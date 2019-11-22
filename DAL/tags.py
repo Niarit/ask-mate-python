@@ -46,3 +46,15 @@ def remove_from_question(cursor, question_id, tag_id):
                     DELETE FROM question_tag
                     WHERE question_id=%d AND tag_id=%d
                     """ % (question_id, tag_id))
+
+
+@connection.connection_handler
+def get_tags_with_questions(cursor):
+    cursor.execute("""
+                    SELECT tag.name, question.title, question.id FROM tag
+                    LEFT JOIN question_tag on tag.id = question_tag.tag_id
+                    LEFT JOIN question ON  question.id = question_tag.question_id
+                    ORDER BY tag.name, title;
+                    """)
+    data = cursor.fetchall()
+    return data

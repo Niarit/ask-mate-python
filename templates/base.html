@@ -26,6 +26,37 @@
     <link href="https://fonts.googleapis.com/css?family=Rubik+Mono+One&display=swap" rel="stylesheet">
 </head>
 <body>
+{# ----=====NAVBAR=====---- #}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+        {% if is_logged_in %}
+                <li class="navbar-text">
+                    <span>You logged in as</span>
+                </li>
+                <li>
+                    <a class="nav-link" href="{{ url_for('show_user_page', user_id=session['id'])}}">{{ session['username'] }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+        {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login_user') }}">Login <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('user_registration') }}">Register</a>
+                </li>
+        {% endif %}
+    </ul>
+  </div>
+</nav>
+
+
 <div class="container">
     {% block content %}
     {% endblock %}
@@ -37,7 +68,9 @@
 </body>
 <footer>
     <p align="right" class="footer_text">Created by: Zoltán Jakubecz, Tamás Poszlovszki, Zsófia Deák (All rights reserved.)</p>
-    <img src={{ url_for ('static', filename="img/Ask_mate_logo.png")}} width="60" height="75" alt="Logo">
+    <a href="{{ url_for('show_all_users') }}">
+        <img src={{ url_for ('static', filename="img/Ask_mate_logo.png")}} width="60" height="75" alt="Logo">
+    </a>
     ASK MATE!
 </footer>
 </html>

@@ -7,7 +7,7 @@
     <form action="/question/{{ question['id'] }}/new-answer" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="answer">Answer:</label><br>
-            <textarea class="form-control" cols="45" rows="5" name="message" id="answer"></textarea><br>
+            <textarea class="form-control" cols="45" rows="5" name="message" id="answer" minlength="10"></textarea><br>
         </div>
 
             <div class="input-group mb-3">

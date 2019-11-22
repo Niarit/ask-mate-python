@@ -7,7 +7,7 @@
     <h1 class="display-3"> Ask Mate! </h1>
     <h2>Latest questions</h2>
     <form method="get" action="{{ url_for('search') }}">
-        <input type="text" class="searchTerm" placeholder="What are you looking for?" name="q">
+        <input type="text" class="searchTerm" placeholder="What are you looking for?" name="q" pattern=".{2,}" title="2 characters minimum" required>
         <button type="submit" class="searchButton">
             <i class="fa fa-search"></i>
         </button>
@@ -42,6 +42,7 @@
                             <img src="/static/img/down.png" alt="">
                         </a>
                     </td>
+                    <td align="left"><small class="form-text text-muted mb-3">Posted by: {{ question['user_name'] }}</small></td>
 				</tr>
         {% endfor %}
     </table>

@@ -1,12 +1,16 @@
+import DAL.accepted_answers
 import DAL.answers
 import DAL.comments
 import DAL.questions
 import DAL.searching
 import DAL.tags
+import DAL.users
 import os
 import uuid
 import time
+import validate
 from datetime import datetime
+import bcrypt
 
 
 __ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -14,8 +18,11 @@ __ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 def search(request):
     phrase = request.args.get('q')
-    question_ids = DAL.searching.in_questions(phrase)
-    return question_ids
+    errors = validate.as_search_query(request.args)
+    question_ids = []
+    if not errors:
+        question_ids = DAL.searching.in_questions(phrase)
+    return question_ids, errors, phrase
 
 
 def route_five_list():
@@ -25,11 +32,19 @@ def route_five_list():
 
 def route_list(request):
     order_direction = 'DESC'
-    if 'order_direction' in request.args:
-        order_direction = request.args.get('order_direction')
+    if 'order_direction' in request.args and request.args.get('order_direction') == 'ASC':
+        order_direction = 'ASC'
     column_name = 'submission_time'
     if 'order_by' in request.args:
-        column_name = request.args.get('order_by')
+        column_names = [
+            'submission_time',
+            'title',
+            'message',
+            'view_number',
+            'vote_number',
+        ]
+        if request.args.get('order_by') in column_names:
+            column_name = request.args.get('order_by')
     sorted_questions = DAL.questions.get_questions(column_name, order_direction)
     if order_direction == 'DESC':
         order_direction = 'ASC'
@@ -38,10 +53,14 @@ def route_list(request):
     return sorted_questions, order_direction
 
 
-def add_question(request, upload_image_func, app):
+def add_question(request, upload_image_func, app, session):
     request_form = dict(request.form)
-    __upload_file_if_any(request, request_form, upload_image_func, app)
-    DAL.questions.add_new(request_form)
+    errors = validate.as_question(request_form)
+    if not errors:
+        session['id'] = DAL.users.get_one_user(session['username'])['id']
+        __upload_file_if_any(request, request_form, upload_image_func, app)
+        DAL.questions.add_new(request_form, session['id'])
+    return errors
 
 
 def get_one_question(question_id):
@@ -71,11 +90,12 @@ def get_answers_for_a_question(question_id):
     return answers
 
 
-def add_answer(question_id, request, upload_image_func, app):
+def add_answer(question_id, request, upload_image_func, app, session):
     request_form = dict(request.form)
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
     __upload_file_if_any(request, request_form, upload_image_func, app)
     request_form['question_id'] = question_id
-    DAL.answers.add_new(request_form)
+    DAL.answers.add_new(request_form, session['id'])
 
 
 def edit_question(request, question_data, send_from_directory, app):
@@ -119,6 +139,10 @@ def answer_vote_down(answer_id):
     return answer['question_id']
 
 
+def answer_accept(question_id, answer_id):
+    DAL.accepted_answers.add(question_id, answer_id)
+
+
 def delete_question(question_id, app):
     question = DAL.questions.select_one(question_id)
     question_answers = DAL.answers.get_answers_for_a_question(question_id)
@@ -160,10 +184,11 @@ def edit_comment(request):
     return comment['question_id']
 
 
-def comment_on_question(request):
+def comment_on_question(request, session):
     comment = dict(request.form)
     comment['answer_id'] = None
-    DAL.comments.add_new(comment)
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
+    DAL.comments.add_new(comment, session['id'])
 
 
 def delete_comment(comment_id):
@@ -175,10 +200,11 @@ def delete_comment(comment_id):
         return relevant_question['question_id']
 
 
-def comment_on_answer(request):
+def comment_on_answer(request, session):
     comment = dict(request.form)
     comment['question_id'] = None
-    DAL.comments.add_new(comment)
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
+    DAL.comments.add_new(comment, session['id'])
 
 
 def get_comments_for_answers(answers):
@@ -188,6 +214,10 @@ def get_comments_for_answers(answers):
 
 def add_tag(request):
     tag = dict(request.form)
+    tags = DAL.tags.get_all()
+    for item in tags:
+        if not tag['name'] or item['name'] == tag['name']:
+            return None
     DAL.tags.add_new(tag)
 
 
@@ -202,11 +232,39 @@ def get_tags_for_question(question):
 
 def add_tag_to_question(request):
     tag = dict(request.form)
+    tags = DAL.tags.get_all_for_a_question(int(tag['question_id']))
+    for item in tags:
+        if int(tag['id']) == item['id']:
+            return None
     DAL.tags.add_to_question(tag)
 
 
-def remote_tag_from_question(question_id, tag_id):
+def remove_tag_from_question(question_id, tag_id):
     DAL.tags.remove_from_question(question_id, tag_id)
+
+
+def register_a_user(request):
+    username = request.form['username']
+    passwd = hash_password(request.form['password'])
+    data = {
+        'user_name': username,
+        'password': passwd
+    }
+    DAL.users.add_user(data)
+
+
+def hash_password(plain_text_password):
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+
+def verify_login(request, session):
+    hashed_bytes_password = DAL.users.get_password(request.form['username'])
+    if hashed_bytes_password:
+        is_success = bcrypt.checkpw(request.form['password'].encode('utf-8'), hashed_bytes_password['pw'].encode('utf-8'))
+        session['username'] = request.form['username']
+        session['id'] = DAL.users.get_one_user(session['username'])['id']
+        return is_success
 
 
 def __upload_file_if_any(form_request, item, send_from_directory, app):
@@ -254,3 +312,53 @@ def __delete_image(item, app):
 
     if item['image']:
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], item['image']))
+
+
+def show_all_users():
+    data = DAL.users.get_all_users()
+    return data
+
+
+def show_one_user(user_id):
+    user_data = DAL.users.get_one_user(user_id)
+    return user_data
+
+
+def get_tags_with_questions():
+    sql_data = DAL.tags.get_tags_with_questions()
+    data = {}
+    for item in sql_data:
+        if item['name'] not in data:
+            data[item['name']] = [item]
+        else:
+            data[item['name']] += [item]
+    return data
+
+
+def is_logged_in(session):
+    return '' != session['username']
+
+
+def get_users_questions(session):
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
+    users_questions = DAL.questions.get_users_question(session['id'])
+    return users_questions
+
+
+def get_users_answers(session):
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
+    users_answers = DAL.answers.get_users_answers(session['id'])
+    return users_answers
+
+
+def get_users_comments(session):
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
+    users_comments_questions = DAL.comments.get_users_comments_for_questions(session['id'])
+    users_comments_answers = DAL.comments.get_users_comments_for_answers(session['id'])
+    return users_comments_answers, users_comments_questions
+
+
+def get_user_reputation(session):
+    session['id'] = DAL.users.get_one_user(session['username'])['id']
+    return DAL.users.get_user_rep(session['id'])
+
