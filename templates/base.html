@@ -68,7 +68,9 @@
 </body>
 <footer>
     <p align="right" class="footer_text">Created by: Zoltán Jakubecz, Tamás Poszlovszki, Zsófia Deák (All rights reserved.)</p>
-    <img src={{ url_for ('static', filename="img/Ask_mate_logo.png")}} width="60" height="75" alt="Logo">
+    <a href="{{ url_for('show_all_users') }}">
+        <img src={{ url_for ('static', filename="img/Ask_mate_logo.png")}} width="60" height="75" alt="Logo">
+    </a>
     ASK MATE!
 </footer>
 </html>
