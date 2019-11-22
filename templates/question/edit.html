@@ -8,11 +8,11 @@
         <form action="/question/{{ question_id }}/edit" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Question Title: </label><br>
-                <input class="form-control" type="text" name="title" id="title" required minlength="5" value="{{ question_data['title'] }}">
+                <input class="form-control" type="text" name="title" id="title" required pattern=".{6,}" title="6 characters minimum" value="{{ question_data['title'] }}">
             </div>
             <div class="form-group">
                 <label for="message">Question:</label><br>
-                <textarea class="form-control" name="message" id="message" cols="40" rows="4" required>{{ question_data['message'].replace('<br>', '\n') }}</textarea>
+                <textarea class="form-control" name="message" id="message" cols="40" rows="4" required minlength="10">{{ question_data['message'].replace('<br>', '\n') }}</textarea>
             </div>
 
             {% if question_data['image'] %}

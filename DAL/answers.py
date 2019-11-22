@@ -4,7 +4,16 @@ import connection
 @connection.connection_handler
 def get_answers(cursor):
     cursor.execute("""
-                    SELECT * FROM answer;
+                    SELECT answer.id, 
+                        submission_time, 
+                        vote_number,
+                        question_id,
+                        message, 
+                        image,
+                        user_id,
+                        users.user_name 
+                        FROM answer
+                    JOIN users ON answer.user_id = users.id;
                     """)
     all_answers = cursor.fetchall()
     return all_answers
@@ -13,8 +22,14 @@ def get_answers(cursor):
 @connection.connection_handler
 def get_answers_for_a_question(cursor, q_id):
     cursor.execute("""
-                    SELECT * FROM answer
-                    WHERE question_id = %(q_id)s
+                    SELECT
+                        answer.*,
+                        accepted_answers.answer_id AS is_accepted,
+                        users.user_name
+                    FROM answer
+                    LEFT JOIN accepted_answers ON answer.id = accepted_answers.answer_id
+                    JOIN users ON answer.user_id = users.id
+                    WHERE answer.question_id = %(q_id)s
                     ORDER BY id ASC;
                     """,
                    {
@@ -38,16 +53,18 @@ def add_answer(cursor, q_id, data):
 
 
 @connection.connection_handler
-def add_new(cursor, data):
+def add_new(cursor, data, user_id):
     cursor.execute("""
-                    INSERT INTO answer (vote_number, question_id, message, image)
+                    INSERT INTO answer (vote_number, question_id, message, image, user_id)
                     VALUES 
-                        (0,%(question_id)s,%(message)s,%(image)s);
+                        (0,%(question_id)s,%(message)s,%(image)s,%(user_id)s);
                     """,
                    {
                        'question_id': data['question_id'],
                        'message': data['message'],
-                       'image': data['image']})
+                       'image': data['image'],
+                       'user_id': user_id
+                   })
 
 
 @connection.connection_handler
@@ -79,8 +96,17 @@ def delete(cursor, data):
 @connection.connection_handler
 def select_one(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM answer
-                    WHERE id = %(id)s;
+                    SELECT answer.id, 
+                        submission_time, 
+                        vote_number,
+                        question_id,
+                        message, 
+                        image,
+                        user_id,
+                        users.user_name 
+                        FROM answer
+                    JOIN users ON answer.user_id = users.id
+                    WHERE answer.id = %(id)s;
                     """,
                    {'id': id_})
     one_row = cursor.fetchone()
@@ -98,3 +124,20 @@ def get_question_id_from_answer(cursor, ans_id):
                    })
     one_row = cursor.fetchone()
     return one_row
+
+
+@connection.connection_handler
+def get_users_answers(cursor, user_id):
+    cursor.execute("""
+                    SELECT question.title,
+                        answer.message,
+                        answer.submission_time,
+                        answer.vote_number, 
+                        answer.question_id FROM answer
+                    JOIN question ON answer.question_id = question.id
+                    WHERE answer.user_id = %(user_id)s""",
+                   {
+                       'user_id': user_id
+                   })
+    users_answers = cursor.fetchall()
+    return users_answers

@@ -4,8 +4,18 @@ import connection
 @connection.connection_handler
 def get_questions(cursor, column, order):
     cursor.execute(f"""
-                    SELECT * FROM question
-                    ORDER BY {column} {order}; 
+                    SELECT question.id, 
+                        submission_time, 
+                        view_number, 
+                        vote_number, 
+                        title, 
+                        message, 
+                        image, 
+                        user_id, 
+                        user_name 
+                        FROM question
+                    JOIN users ON question.user_id = users.id
+                    ORDER BY {column} {order};
                     """)
     all_questions = cursor.fetchall()
     return all_questions
@@ -14,7 +24,17 @@ def get_questions(cursor, column, order):
 @connection.connection_handler
 def get_five_newest(cursor):
     cursor.execute("""
-                    SELECT * FROM question
+                    SELECT question.id, 
+                        submission_time, 
+                        view_number, 
+                        vote_number, 
+                        title, 
+                        message, 
+                        image, 
+                        user_id, 
+                        user_name 
+                        FROM question
+                    JOIN users ON question.user_id = users.id
                     ORDER BY submission_time DESC
                     LIMIT 5
                     """)
@@ -23,16 +43,18 @@ def get_five_newest(cursor):
 
 
 @connection.connection_handler
-def add_new(cursor, data):
+def add_new(cursor, data, user_id):
     cursor.execute("""
-                    INSERT INTO question ( view_number, vote_number, title, message, image)
+                    INSERT INTO question ( view_number, vote_number, title, message, image, user_id)
                     VALUES 
-                        (0,0,%(title)s,%(message)s,%(image)s);
+                        (0,0,%(title)s,%(message)s,%(image)s, %(user_id)s);
                     """,
                    {
                        'title': data['title'],
                        'message': data['message'],
-                       'image': data['image']})
+                       'image': data['image'],
+                       'user_id': user_id
+                   })
 
 
 @connection.connection_handler
@@ -70,10 +92,30 @@ def delete(cursor, data):
 @connection.connection_handler
 def select_one(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM question
-                    WHERE id = %(id)s;
+                    SELECT
+                        question.*, 
+                        users.user_name,
+                        CASE
+                            WHEN accepted_answers.question_id IS NULL THEN False
+                            ELSE True
+                        END AS has_accepted_answer
+                    FROM question
+                    LEFT JOIN accepted_answers ON question.id = accepted_answers.question_id                  
+                    JOIN users ON question.user_id = users.id
+                    WHERE question.id = %(id)s;
                     """,
                    {'id': id_})
     one_row = cursor.fetchone()
     return one_row
 
+
+@connection.connection_handler
+def get_users_question(cursor, user_id):
+    cursor.execute("""
+                    SELECT * FROM question
+                    WHERE user_id = %(user_id)s""",
+                   {
+                       'user_id': user_id
+                   })
+    users_questions = cursor.fetchall()
+    return users_questions

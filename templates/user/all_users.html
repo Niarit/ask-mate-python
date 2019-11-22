@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}
+    All users
+{% endblock %}
+{% block content %}
+<div class="jumbotron" align="center">
+    <h1 class="display-3"> All users </h1>
+</div>
+<div class="header_button_full">
+    <a href="{{ url_for('add_question')}}" class="btn btn-primary f-right">Ask a question</a>
+</div>
+    <table class="table">
+        <thead class="thead-light">
+        <tr align="center">
+            <th>User ID</th>
+            <th>User Name</th>
+        </tr>
+        </thead>
+			{% for user in data %}
+				<tr align="center">
+                    <td>{{ user['id'] }}</td>
+                    <td>{{ user['user_name']}}</td>
+				</tr>
+        {% endfor %}
+    </table>
+    <a class="btn btn-info" href="{{ url_for('show_questions') }}">Back to Home</a>
+{% endblock %}

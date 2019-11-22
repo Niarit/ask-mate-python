@@ -4,7 +4,16 @@ import connection
 @connection.connection_handler
 def get_comments_for_a_question(cursor, question_id):
     cursor.execute("""
-                    SELECT * FROM comment
+                    SELECT comment.id,
+                        question_id,
+                        answer_id,
+                        message,
+                        submission_time,
+                        edited_count,
+                        user_id,
+                        users.user_name 
+                        FROM comment
+                    JOIN users ON comment.user_id = users.id
                     WHERE question_id = %(question_id)s
                     ORDER BY id ASC;
                     """,
@@ -16,24 +25,34 @@ def get_comments_for_a_question(cursor, question_id):
 
 
 @connection.connection_handler
-def add_new(cursor, data):
+def add_new(cursor, data, user_id):
     cursor.execute("""
-                    INSERT INTO comment (question_id, answer_id, message)
+                    INSERT INTO comment (question_id, answer_id, message, user_id)
                     VALUES
-                        (%(question_id)s, %(answer_id)s, %(message)s);
+                        (%(question_id)s, %(answer_id)s, %(message)s, %(user_id)s);
                     """,
                    {
                        'question_id': data['question_id'],
                        'answer_id': data['answer_id'],
                        'message': data['message'],
+                       'user_id': user_id
                    })
 
 
 @connection.connection_handler
 def select_one(cursor, comment_id):
     cursor.execute("""
-                    SELECT * FROM comment
-                    WHERE id = %(c_id)s
+                    SELECT comment.id,
+                        question_id,
+                        answer_id,
+                        message,
+                        submission_time,
+                        edited_count,
+                        user_id,
+                        users.user_name 
+                        FROM comment
+                    JOIN users ON comment.user_id = users.id
+                    WHERE comment.id = %(c_id)s
                     """,
                    {
                        'c_id': comment_id,
@@ -76,7 +95,16 @@ def delete_from_question(cursor, comment_id):
 @connection.connection_handler
 def get_comments_for_an_answer(cursor, answer_id):
     cursor.execute("""
-                    SELECT * FROM comment
+                    SELECT comment.id,
+                        question_id,
+                        answer_id,
+                        message,
+                        submission_time,
+                        edited_count,
+                        user_id,
+                        users.user_name 
+                        FROM comment
+                    JOIN users ON comment.user_id = users.id
                     WHERE answer_id = %(answer_id)s
                     ORDER BY id ASC;
                     """,
@@ -85,3 +113,29 @@ def get_comments_for_an_answer(cursor, answer_id):
                    })
     comments = cursor.fetchall()
     return comments
+
+
+@connection.connection_handler
+def get_users_comments_for_answers(cursor, user_id):
+    cursor.execute("""
+                    SELECT comment.message, answer.question_id, comment.submission_time FROM comment
+                    JOIN answer ON comment.answer_id = answer.id
+                    WHERE comment.user_id = %(user_id)s""",
+                   {
+                       'user_id': user_id
+                   })
+    users_answer_comments = cursor.fetchall()
+    return users_answer_comments
+
+
+@connection.connection_handler
+def get_users_comments_for_questions(cursor, user_id):
+    cursor.execute("""
+                    SELECT comment.question_id, comment.message, comment.submission_time FROM comment
+                    JOIN question ON comment.question_id = question.id
+                    WHERE comment.user_id = %(user_id)s""",
+                   {
+                       'user_id': user_id
+                   })
+    users_question_comments = cursor.fetchall()
+    return users_question_comments

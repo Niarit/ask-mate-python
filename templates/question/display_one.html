@@ -7,9 +7,8 @@
 {% block content %}
     <div class="jumbotron">
         <h1>{{ question['title'] }}</h1>
-
-        <small class="form-text text-muted mb-3">Posted: {{ question['submission_time'] | pretty_time }}</small>
-
+        <small class="form-text text-muted mb-3">Posted at: {{ question['submission_time'] | pretty_time }}</small>
+        <small class="form-text text-muted mb-3">Posted by: {{ question['user_name'] }}</small>
         <p class="lead">{{ question['message'] | safe }}</p>
 
         {% if question['image'] %}
@@ -20,7 +19,7 @@
         {% endif %}
         <div class="form-group">
             {% for tag in question['tags'] %}
-                <a href="{{ url_for('remote_tag_from_question', question_id=question['id'],tag_id=tag['id']) }}" class="delete-button-link m-1 border border-info rounded p-2">
+                <a href="{{ url_for('remove_tag_from_question', question_id=question['id'],tag_id=tag['id']) }}" class="delete-button-link m-1 border border-info rounded p-2">
                     <span>
                         {{ tag['name'] }}
                         <span class="delete-button-icon">×</span>
@@ -31,6 +30,7 @@
         <a class="btn btn-warning" href="/question/{{ question['id'] }}/edit">Edit question</a>
         <a class="btn btn-primary" href="/question/{{ question['id'] }}/new-comment">Add comment</a>
         <a class="btn btn-primary" href="{{ url_for('add_tag', question_id=question['id']) }}">Add tag</a>
+        <a class="btn btn-primary" href="/tags">All tags</a>
         <a class="btn btn-danger f-right" href="/question/{{ question['id'] }}/delete">Delete question</a>
 
         <div class="container mt-5 mb-5">
@@ -41,6 +41,10 @@
                         <span>
                             <small>
                                 {{ comment['message'] }}
+                            </small>
+                            <br>
+                            <small class="text-muted">
+                                Posted by: {{ comment['user_name'] }}
                             </small>
                             <br>
                             <small class="text-muted">- {{ comment['submission_time'] | pretty_time }} {% if comment['edited_count'] %} - edited {{ comment['edited_count'] }} time(s) {% endif %} </small>
@@ -65,10 +69,21 @@
                         <a href="/answer/{{ answer['id'] }}/vote_down">
                            <img src="/static/img/down.png" alt="Vote down" class="mx-auto d-block">
                         </a>
+                       <div class="text-center">
+                           {% if answer['is_accepted'] %}
+                                <img src="{{ url_for('static', filename="img/checked-checkmark.png") }}" alt="Accepted answer checkmark">
+                           {% elif question['has_accepted_answer'] %}
+                           {% else %}
+                                <a href="{{ url_for('answer_accept', answer_id=answer['id'], question_id=question['id']) }}">
+                                    <img src="{{ url_for('static', filename="img/unchecked-checkmark.png") }}" alt="Not yet accepted answer">
+                                </a>
+                           {% endif %}
+                       </div>
                     </div>
                     <div class="col-sm">
                         <p>{{ answer['message'] | safe}}</p>
                         <small class="form-text text-muted mb-3 d-inline-block">Posted: {{ question['submission_time'] | pretty_time }} </small>
+                        <small class="text-muted"> Posted by: {{ answer['user_name'] }}</small>
                         <a href="/answer/{{ answer['id'] }}/edit" class="text-warning">Edit answer</a>
                         <a href="/answer/{{ answer['id'] }}/new-comment" class="text-primary">Add comment</a>
                         <a href="/answer/{{ answer['id'] }}/delete?question_id={{ question['id'] }}" class="text-danger">Delete answer</a>
@@ -81,6 +96,10 @@
                                         <span>
                                             <small>
                                                 {{ comment['message'] }}
+                                            </small>
+                                            <br>
+                                            <small class="text-muted">
+                                                Posted by: {{ comment['user_name'] }}
                                             </small>
                                             <br>
                                             <small class="text-muted">- {{ comment['submission_time'] | pretty_time }} {% if comment['edited_count'] %} - edited {{ comment['edited_count'] }} time(s) - {% endif %}</small>

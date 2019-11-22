@@ -7,6 +7,12 @@ h2 {
     color: #00B4CC;
 }
 
+h3 {
+    font-family: 'Rubik Mono One', sans-serif;
+    font-size: large;
+    color: #11557C;
+}
+
 a:link {
     text-decoration: none;
     color: blue;
@@ -164,4 +170,13 @@ span.delete-button-icon {
 span.highlight {
     background-color: #00B4CC;
     color: white;
+}
+
+.ui {
+    font-size: large;
+    color: #11557C;
+}
+
+.ui:hover{
+    color: #11557C;
 }
